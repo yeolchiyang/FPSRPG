@@ -49,6 +49,7 @@ ExportedObj/
 *.csproj
 *.sln
 *.vsconfig
+*.[Ss]ettings
 
 # Unity3D generated meta files
 *.pidb.meta

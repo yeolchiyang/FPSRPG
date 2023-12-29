@@ -7,6 +7,8 @@ public class PlayerCtrl : MonoBehaviour
     private Transform tr;
     public float speed = 10f;
     public float turnspeed = 80f;
+   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,5 +27,9 @@ public class PlayerCtrl : MonoBehaviour
 
         tr.Translate(moveDir.normalized * speed * Time.deltaTime);
         tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
+       /* if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Rigidbody.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
+        }*/
     }
 }

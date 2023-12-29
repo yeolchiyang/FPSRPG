@@ -14,6 +14,7 @@ public class FollowCamera : MonoBehaviour
     public float turnspeed = 80f;
     public float camspeed = 10f;
     public Vector3 offset;
+    public float smoothSpeed = 0.125f;
     Vector3 TargetPos;
     // Start is called before the first frame update
     void Start()

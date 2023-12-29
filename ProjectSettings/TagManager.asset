@@ -4,11 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-<<<<<<< HEAD
-  - Enemy
-=======
   - Map
->>>>>>> main
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -20,7 +20,9 @@ public class FollowCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         camTr = GetComponent<Transform>();
+        camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
     }
    
     // Update is called once per frame

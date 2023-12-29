@@ -5,64 +5,53 @@ using static UnityEngine.GraphicsBuffer;
 
 public class FollowCamera : MonoBehaviour
 {
-    public Transform target;
+    public Transform targetTr;
+    Transform camTr;
     public bool changepos = false;
     [Range(-1f, 2f)]
-    public float offsetX = 0.0f;            // 카메라의 x좌표
-    public float offsetY = 10.0f;           // 카메라의 y좌표
-    public float offsetZ = -10.0f;
+    public float distance = 0.0f;            // 카메라의 x좌표
+    public float height = 2.0f;           // 카메라의 y좌표
     public float turnspeed = 80f;
     public float camspeed = 10f;
-    public Vector3 offset;
-    Vector3 TargetPos;
+    private float rotationY;
+    float a;
+    public float rot_X=8;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        camTr = GetComponent<Transform>();
     }
-
+   
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log("aaa");
         float r = Input.GetAxis("Mouse X");
-        if (target != null)
-        {
-            // 대상의 현재 위치에 오프셋을 더하고, 부드러운 이동을 위해 Lerp 사용
-            Vector3 desiredPosition = target.position + offset;
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-            transform.position = smoothedPosition;
-
-            // 대상을 바라보도록 카메라의 회전 조절
-            transform.LookAt(target);
-        }
-        /*TargetPos = new Vector3(
-             Target.transform.position.x + offsetX,
-             Target.transform.position.y + offsetY,
-             Target.transform.position.z + offsetZ
-             );
-
+        a += turnspeed * Time.deltaTime * r;
+        // transform.Rotate(0,turnspeed * Time.deltaTime * r,0,Space.World);
        
-        transform.position = Vector3.Lerp(transform.position, TargetPos, Time.deltaTime * camspeed);
-        //camTr.position = taargetTr.position + (-taargetTr.forward * distance) + (Vector3.up * height);*/
-        transform.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
 
         if (changepos)
         {
+            transform.rotation = Quaternion.Euler(0, a, 0);
+            camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 changepos = false;
-                offsetY = 2f;
-                offsetZ = 2F;
+                distance = 2f;
+                height = 2F;
+                
             }
         }
         else
         {
+            transform.rotation = Quaternion.Euler(rot_X, a, 0);
+            camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 changepos = true;
-                offsetZ = -0.5f;
-                offsetY = 1.6f;
+                distance = -0.5f;
+                height = 1.6f;
             }
         }
     }

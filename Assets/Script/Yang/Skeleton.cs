@@ -6,6 +6,8 @@ using UnityEngine.UI;
 namespace Yang{
     public class Skeleton : MonoBehaviour
     {
+        private EnemyStat stat;
+
 
         private UnityEngine.AI.NavMeshAgent skeletonNav;
         //임시, 테스트 후 삭제
@@ -14,6 +16,7 @@ namespace Yang{
         private void Awake()
         {
             skeletonNav = GetComponent<UnityEngine.AI.NavMeshAgent>();
+            stat = GetComponent<EnemyStat>();
         }
 
         private void Start()

@@ -10,11 +10,11 @@ public class ContralConditionBar : MonoBehaviour
 
     //일시 파라미터
     [SerializeField] float currentHP = 100;
-    [SerializeField] float maxHP = 100;
     [SerializeField] float currentMP = 100;
-    [SerializeField] float maxMP = 100;
     [SerializeField] float currentEXP = 10;
-    [SerializeField] float maxEXP = 100;
+    float maxHP = 100;
+    float maxMP = 100;
+    float maxEXP = 100;
 
     private void Start()
     {

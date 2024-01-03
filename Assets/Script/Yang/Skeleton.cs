@@ -8,7 +8,7 @@ namespace Yang{
     public class Skeleton : MonoBehaviour
     {
         private EnemyStat stat;
-        private IState rootState;
+        public IState rootState;
         private UnityEngine.AI.NavMeshAgent skeletonNav;
         [SerializeField] private Animator skeletonAnimator;
 
@@ -40,7 +40,7 @@ namespace Yang{
                         SetIdle();
                     })
                     .End()
-                .State<EnemyWalkState>(Walk)
+                .State<EnemyWalkState>(Walk)//걷는 것만 구현
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Walk} State");
@@ -88,16 +88,9 @@ namespace Yang{
                             SetAttack();
                         }
                     })
-                    .Condition(() =>
+                    .Event(Damaged, state =>
                     {
-                        //타격을 받을 경우, 공격중인 상태라도 전환
-                        return false;
-                    },
-                    state =>
-                    {
-                        //Damaged로 전환
-                        Debug.Log($"{Damaged}로 전환");
-                        state.Parent.ChangeState(Damaged);
+                        state.ChangeState(Damaged);
                     })
                     .Condition(() => 
                     {
@@ -132,10 +125,11 @@ namespace Yang{
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Die} State");
+                        SetDead();
                     })
                     .End()
                 .Build();
-            rootState.ChangeState(Walk);
+            rootState.ChangeState(Die);
             skeletonNav.stoppingDistance = stat.AttackRange;
         }
 
@@ -185,8 +179,6 @@ namespace Yang{
             Debug.Log("Attack 중인가? : " + isAttacking);
             return isAttacking;
         }
-
-
 
         private void SetDamaged(float damage)
         {

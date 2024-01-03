@@ -36,21 +36,21 @@ namespace Yang{
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Idle} State");
-                        setIdle();
+                        SetIdle();
                     })
                     .End()
                 .State<State>(Walk)
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Walk} State");
-                        setWalk();
+                        SetWalk();
                     })
                     .End()
                 .State<State>(Run)
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Run} State");
-                        setRun();
+                        SetRun();
                     })
                     .End()
                 .State<State>(Attack)
@@ -97,49 +97,59 @@ namespace Yang{
             rootState.ChangeState(Walk);
             skeletonNav.SetDestination(targetPoint.position);
         }
-        
 
-        private void setIdle()
+        private void FixedUpdate()
+        {
+            rootState.Update(Time.fixedDeltaTime);
+        }
+
+
+        private void SetIdle()
         {
             setBoolAnimation(Idle);
             stopNavigtaion();
         }
         
-        private void setWalk()
+        private void SetWalk()
         {
             setBoolAnimation(Walk);
             startNavigtaion(stat.WalkSpeed);
         }
 
-        private void setRun()
+        private void SetRun()
         {
             setBoolAnimation(Run);
             startNavigtaion(stat.RunSpeed);
         }
 
-        private void setAttack()
+        private void SetAttack()
         {
             setTriggerAnimation(Attack);
             stopNavigtaion();
+
+        }
+        private void IsAttacked()
+        {
+
         }
 
-        private void setDamaged(float damage)
+        private void SetDamaged(float damage)
         {
             stat.Hp -= damage;
             setTriggerAnimation(Damaged);
             stopNavigtaion();
         }
 
-        private void setDead()
+        private void SetDead()
         {
             setTriggerAnimation(Die);
             stopNavigtaion();
         }
 
         //현재 미사용
-        private void setStun()
+        private void SetStun()
         {
-            setIdle();//Idle 재활용
+            SetIdle();//Idle 재활용
             stopNavigtaion();
         }
 

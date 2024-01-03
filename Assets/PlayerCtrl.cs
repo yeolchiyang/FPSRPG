@@ -9,7 +9,8 @@ public class PlayerCtrl : MonoBehaviour
     public float speed = 10f;
     public float turnspeed = 80f;
     public int JumpPower;
-    bool IsJumping;
+    bool IsJumping = true;
+
 
 
     // Start is called before the first frame update
@@ -45,7 +46,7 @@ public class PlayerCtrl : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Map"))
         {
-            IsJumping=true;
+            IsJumping = true;
         }
     }
 }

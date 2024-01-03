@@ -10,6 +10,7 @@ public class BasicAim : MonoBehaviour
 
     private void Start()
     {
+        gameObject.SetActive(false);
         anim = GetComponent<Animator>();
     }
 

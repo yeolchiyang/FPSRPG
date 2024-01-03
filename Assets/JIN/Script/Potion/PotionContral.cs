@@ -6,9 +6,9 @@ public class PortionContral : MonoBehaviour
 {
     Animator anim;
     [SerializeField] GameObject[] Portions;
-    [SerializeField] GameObject[] PortionEffects;
+    [SerializeField] GameObject DebineEff;
     List<PortionCount> PortionList = new List<PortionCount> ();
-    List<GameObject> PortionEffectList = new List<GameObject>();
+    
 
     private void Start()
     {
@@ -18,33 +18,26 @@ public class PortionContral : MonoBehaviour
             PortionCount PC = Portions[i].GetComponent<PortionCount>();
             PortionList.Add(PC);    //index 0:체력  1:상태이상
         }
-        for (int i = 0; i < PortionEffects.Length; ++i)
-        {
-            GameObject obj = PortionEffects[i];
-            obj.SetActive(false);
-            PortionEffectList.Add(obj);    //index 0:회복이펙트  1:상태이상 회복이펙트
-        }
+        DebineEff.SetActive (false);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown("1"))
+        if (Input.GetKeyDown("5"))
             PortionList[0].AddPotion(1);
-        if (Input.GetKeyDown("2"))
+        if (Input.GetKeyDown("6"))
             PortionList[0].ReducePotion(1);
-        if (Input.GetKeyDown("3"))
+        if (Input.GetKeyDown("7"))
             PortionList[1].AddPotion(1);
-        if (Input.GetKeyDown("4"))
+        if (Input.GetKeyDown("8"))
         {
             PortionList[1].ReducePotion(1);
-            //DisplayEffect(PortionEffectList[1]);
+            DebineEffect();
         }
     }
 
-    void DisplayEffect(GameObject obj)
+    void DebineEffect()
     {
-        obj.SetActive(true);
-        anim = obj.GetComponent<Animator>();
-        anim.SetTrigger("Debine");
+        DebineEff.SetActive(true);
     }
 }

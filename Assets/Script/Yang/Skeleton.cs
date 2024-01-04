@@ -12,6 +12,7 @@ namespace Yang{
         public IState rootState;
         private UnityEngine.AI.NavMeshAgent skeletonNav;
         [SerializeField] private Animator skeletonAnimator;
+        [SerializeField] private GameObject skeletonHitEffect;
 
         private const string Idle = "Idle";
         private const string Walk = "Walk";
@@ -112,7 +113,7 @@ namespace Yang{
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Damaged} State");
-                        SetDamaged(5);
+                        
                     })
                     .Condition(() =>
                     {
@@ -175,12 +176,13 @@ namespace Yang{
         /// 애니메이션 중간에 가해지는 데미지, 애니메이션 클립에 해당 함수 존재
         /// </summary>
         /// <param name="physicalDamage">enemyStat의 physicalDamage를 매개변수로 추가</param>
-        private void IsAttacked(int physicalDamage)
+        private void IsAttacked()
         {
             //맞는 순간 사거리 내에 있어야만 Damage
             if (IsTargetReached())
             {
-                Debug.Log($"Player에게 {physicalDamage}Damage");
+                Debug.Log($"Player에게 {stat.PhysicalDamage}Damage");
+                playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
             }
         }
         private bool IsAttackAnimationPlaying()
@@ -190,11 +192,14 @@ namespace Yang{
             return isAttacking;
         }
 
-        public void SetDamaged(float damage)
+        public void SetDamaged(RaycastHit hit, float damage)
         {
             stat.CurrentHp -= damage;
             SetTriggerAnimation(Damaged);
+            GameObject spawnedDecal = Instantiate(
+                skeletonHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
             StopNavigtaion();
+            rootState.ChangeState(Damaged);
             if(stat.CurrentHp <= 0f)
             {
                 rootState.ChangeState(Die);
@@ -230,9 +235,9 @@ namespace Yang{
             float timer = 0f;
             while (true)
             {
-                transform.position += Vector3.down * Time.fixedDeltaTime * 0.5f;
-                timer += Time.deltaTime;
-                if(timer > 3f)
+                transform.position += Vector3.down * Time.fixedDeltaTime * 0.1f;
+                timer += Time.fixedDeltaTime;
+                if(timer > 5f)
                 {
                     ObjectSpawner.objectSpawner.CurrentSpawnedCount--;
                     ObjectPool.objectPool.PoolObject(gameObject);
@@ -311,7 +316,8 @@ namespace Yang{
         {
             bool isTargetReached = false;
             float distanceToPlayer = Vector3.Distance(
-                            playerObject.transform.position, transform.position);
+                            playerObject.transform.position, 
+                            transform.position);
             if (distanceToPlayer <= stat.AttackRange)
             {
                 isTargetReached = true;

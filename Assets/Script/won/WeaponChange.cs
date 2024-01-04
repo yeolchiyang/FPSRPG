@@ -8,6 +8,7 @@ public class WeaponChange : MonoBehaviour
     Transform tr;
     public GameObject[] Weapon;
     int currentWeaponNumber = 0;
+    public float WeaponDamage;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,5 +42,6 @@ public class WeaponChange : MonoBehaviour
             Weapon[i].SetActive(false);
         }
         Weapon[currentWeaponNumber].SetActive(true);
+        WeaponDamage = currentWeaponNumber * 5;
     }
 }

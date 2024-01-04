@@ -13,10 +13,12 @@ public class Player_Shoot : MonoBehaviour
     public GameObject BulletStartPoint;
     Transform BulletSatEffect;
     public float ShootDamage = 10f;
+    public GameObject Gun;
+    PlayerCtrl shootcheck;
 
     private void Start()
     {
-         BulletSatEffect = BulletStartPoint.GetComponent<Transform>();
+        BulletSatEffect = BulletStartPoint.GetComponent<Transform>();
     }
     float Range = 100f;
     private void Update()
@@ -32,6 +34,7 @@ public class Player_Shoot : MonoBehaviour
             if (psshoot != null)
             {
                 psshoot.Play();
+                
             }
 
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
@@ -44,6 +47,14 @@ public class Player_Shoot : MonoBehaviour
                 
                 ParticleSystem ps = bulletEffect.GetComponent<ParticleSystem>();
                 Enemy_Health enemy = hitInfo.collider.GetComponent<Enemy_Health>();
+
+                //Vector3 targetDirection = hitInfo.point - transform.position;
+
+                //targetDirection.y = 0f;
+
+                //Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                //Gun.transform.rotation = Quaternion.Slerp(Gun.transform.rotation, targetRotation, Time.deltaTime);
+
                 if (enemy != null)
                     enemy.TakeDamage(ShootDamage);
                 if (ps != null)
@@ -53,6 +64,7 @@ public class Player_Shoot : MonoBehaviour
 
 
             }
+            shootcheck.shootingcheck();
         }
     }
 }

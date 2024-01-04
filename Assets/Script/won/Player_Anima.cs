@@ -45,6 +45,6 @@ namespace Player_animation
             animator.ResetTrigger("jump");
             animator.ResetTrigger("hit");
         }
-        
+
     }
 }

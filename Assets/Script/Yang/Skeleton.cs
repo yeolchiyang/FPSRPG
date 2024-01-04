@@ -7,8 +7,9 @@ using UnityEngine.UI;
 namespace Yang{
     public class Skeleton : MonoBehaviour
     {
+        private bool isActive = true;
         private EnemyStat stat;
-        private IState rootState;
+        public IState rootState;
         private UnityEngine.AI.NavMeshAgent skeletonNav;
         [SerializeField] private Animator skeletonAnimator;
 
@@ -40,7 +41,7 @@ namespace Yang{
                         SetIdle();
                     })
                     .End()
-                .State<EnemyWalkState>(Walk)
+                .State<EnemyWalkState>(Walk)//걷는 것만 구현
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Walk} State");
@@ -88,28 +89,20 @@ namespace Yang{
                             SetAttack();
                         }
                     })
-                    .Condition(() =>
-                    {
-                        //타격을 받을 경우, 공격중인 상태라도 전환
-                        return false;
-                    },
-                    state =>
-                    {
-                        //Damaged로 전환
-                        Debug.Log($"{Damaged}로 전환");
-                        state.Parent.ChangeState(Damaged);
-                    })
                     .Condition(() => 
                     {
                         //공격중이 아닌 상태 & 전환중이 아닌 상태 & 사거리를 벗어날 경우
                         bool isInTransition = skeletonAnimator.IsInTransition(0);
-                        return !IsAttacking() && !IsTargetReached() && !isInTransition;
+                        return !IsAttackAnimationPlaying() && 
+                                !IsTargetReached() && !isInTransition;
                     },
                     state =>
                     {
-                        //Idle로 전환
-                        Debug.Log($"{Walk}로 전환");
                         state.Parent.ChangeState(Walk);
+                    })
+                    .Event(Damaged, state =>
+                    {
+                        state.ChangeState(Damaged);
                     })
                     .End()
                 .State<State>(Damaged)
@@ -120,18 +113,21 @@ namespace Yang{
                     })
                     .Condition(() =>
                     {
-                        
-                        return false;
+                        //맞는 모션 완전히 종료 시 아래로 상태전환
+                        return !IsDamageAnimationPlaying();
                     },
                     state =>
                     {
                         //위의 조건 true 시, 실행될 코드 작성
+                        string stateName = GetBoolAnimationName();
+                        state.Parent.ChangeState(stateName);
                     })
                     .End()
                 .State<State>(Die)
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Die} State");
+                        SetDie();
                     })
                     .End()
                 .Build();
@@ -141,26 +137,29 @@ namespace Yang{
 
         private void FixedUpdate()
         {
-            rootState.Update(Time.fixedDeltaTime);
-
+            if (isActive)
+            {
+                rootState.Update(Time.fixedDeltaTime);
+            }
+            
         }
 
 
         private void SetIdle()
         {
-            setBoolAnimation(Idle);
+            SetBoolAnimation(Idle);
             StopNavigtaion();
         }
         
         private void SetWalk()
         {
-            setBoolAnimation(Walk);
+            SetBoolAnimation(Walk);
             StartNavigtaion(stat.WalkSpeed);
         }
 
         private void SetRun()
         {
-            setBoolAnimation(Run);
+            SetBoolAnimation(Run);
             StartNavigtaion(stat.RunSpeed);
         }
 
@@ -170,7 +169,7 @@ namespace Yang{
             StopNavigtaion();
         }
         /// <summary>
-        /// 애니메이션 끝자락에 가해지는 데미지
+        /// 애니메이션 끝자락에 가해지는 데미지(중간으로 수정해야 함)
         /// </summary>
         /// <param name="physicalDamage">enemyStat의 physicalDamage를 매개변수로 추가</param>
         private void IsAttacked(int physicalDamage)
@@ -178,27 +177,66 @@ namespace Yang{
             //임시로 메세지만 출력하게 구현
             Debug.Log($"Player에게 {physicalDamage}Damage");
         }
-        private bool IsAttacking()
+        private bool IsAttackAnimationPlaying()
         {
             AnimatorStateInfo currentState = skeletonAnimator.GetCurrentAnimatorStateInfo(0);
             bool isAttacking = currentState.IsName(Attack);
-            Debug.Log("Attack 중인가? : " + isAttacking);
             return isAttacking;
         }
 
-
-
-        private void SetDamaged(float damage)
+        public void SetDamaged(float damage)
         {
             stat.Hp -= damage;
             SetTriggerAnimation(Damaged);
             StopNavigtaion();
+            if(stat.Hp <= 0f)
+            {
+                rootState.ChangeState(Die);
+            }
         }
 
-        private void SetDead()
+        private bool IsDamageAnimationPlaying()
         {
+            AnimatorStateInfo currentState = skeletonAnimator.GetCurrentAnimatorStateInfo(0);
+            bool isDamageAnimationPlaying = currentState.IsName(Attack);
+            return isDamageAnimationPlaying;
+        }
+
+        //사망 시, 다른 상태전환이 되지 않도록 처리해야 합니다.
+        private Coroutine sinking;//가라앉는 것 중지 처리용 변수
+        private void SetDie()
+        {
+            this.isActive = false;
             SetTriggerAnimation(Die);
             StopNavigtaion();
+            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = false;
+            this.sinking = StartCoroutine(Sinking());
+        }
+
+        private IEnumerator Sinking()
+        {
+            yield return new WaitForSeconds(1f);
+            float timer = 0f;
+            while (true)
+            {
+                transform.position += Vector3.down * Time.fixedDeltaTime;
+                timer += Time.deltaTime;
+                if(timer > 3f)
+                {
+                    Respawn();
+                    break;
+                }
+                yield return new WaitForFixedUpdate();
+            }
+        }
+
+        private void Respawn()
+        {
+            this.isActive = true;
+            StopCoroutine(sinking);
+            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = false;
         }
 
         //현재 미사용
@@ -209,7 +247,7 @@ namespace Yang{
         }
 
 
-        private void setBoolAnimation(string state)
+        private void SetBoolAnimation(string state)
         {
             // 현재 애니메이터의 모든 파라미터를 가져옵니다.
             AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
@@ -235,12 +273,28 @@ namespace Yang{
         /// 공격, 데미지를 입었을 때 빠르게 기존 state로 전환하기 위함입니다.
         /// </summary>
         /// <returns>정의한 상태값의 string 값을 반환합니다.</returns>
-        private string GetBoolAnimation()
+        private string GetBoolAnimationName()
         {
+            string parameterName = "";
+            // 현재 애니메이터의 모든 파라미터를 가져옵니다.
+            AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
+            foreach (AnimatorControllerParameter parameter in parameters)
+            {
+                if(parameter.type == AnimatorControllerParameterType.Bool)
+                {
+                    if(parameter.defaultBool == true)
+                    {
+                        parameterName = parameter.name;
+                    }
+                }
 
-            return "";
+            }
+            return parameterName;
         }
-
+        /// <summary>
+        /// 사정거리 내에 들어온지를 감지합니다.
+        /// </summary>
+        /// <returns>사정거리에 들어올 시 true</returns>
         private bool IsTargetReached()
         {
             bool isTargetReached = false;
@@ -279,6 +333,11 @@ namespace Yang{
             skeletonNav.speed = speed;
         }
 
+        
+        private void OnCollisionEnter(Collision collision)
+        {
+            
+        }
 
     }
 }

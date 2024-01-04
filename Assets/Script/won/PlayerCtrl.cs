@@ -9,7 +9,7 @@ public class PlayerCtrl : MonoBehaviour
     private Transform tr;
     private BoxCollider bc;
     public float speed = 10f;
-    public float turnspeed = 80f;
+    public float turnspeed = 60f;
     public int JumpPower;
     bool IsJumping = true;
     Player_Anima anima;

@@ -10,15 +10,17 @@ public class FollowCamera : MonoBehaviour
     public Transform targetTr;
     Transform camTr;
     public bool changepos = false;
+    float First_MaxY = 45f;
     [Range(-1f, 2f)]
     public float distance = 2.0f;            // 카메라의 x좌표
     public float height = 2.0f;           // 카메라의 y좌표
-    public float turnspeed = 80f;
+    float turnspeed = 60f;
     public float camspeed = 10f;
-    private float rotationY;
-    float a;
-    public float b =0;
+    float ViewX;
+    [Range(0f, 1f)]
+    float FirstView =0;
     public float rot_X=8;
+    float ViewChanage = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +30,7 @@ public class FollowCamera : MonoBehaviour
         changepos = true;
         distance = 0f;
         height = 1.9f;
-        b = 0;
+        ViewChanage = 0;
 
     }
    
@@ -36,35 +38,39 @@ public class FollowCamera : MonoBehaviour
     void FixedUpdate()
     {
         camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
-        float r = Input.GetAxis("Mouse X");
-        a += turnspeed * Time.deltaTime * r;
-        b = b+Time.deltaTime;
+        float rotationX = Input.GetAxis("Mouse X");
+        float rotationY = Input.GetAxis("Mouse Y");
+        FirstView += turnspeed * Time.deltaTime * rotationY;
+        FirstView = Mathf.Clamp(FirstView, -10, First_MaxY);
+        ViewX += turnspeed * Time.deltaTime * rotationX;
+        ViewChanage = ViewChanage + Time.deltaTime;
         // transform.Rotate(0,turnspeed * Time.deltaTime * r,0,Space.World);
 
         if (changepos)
         {
-            transform.rotation = Quaternion.Euler(rot_X, a, 0);
+            transform.rotation = Quaternion.Euler(rot_X- FirstView, ViewX, 0);
             camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
-            if (Input.GetKeyDown(KeyCode.Q)&& b>=0.7f)
+            if (Input.GetKeyDown(KeyCode.Q)&& ViewChanage >= 0.7f)
             {
                 rot_X = 8;
                 changepos = false;
                 distance = 2f;
                 height = 2F;
-                b= 0;
+                ViewChanage = 0;
             }
         }
         else if (!changepos)
         {
-            transform.rotation = Quaternion.Euler(rot_X, a, 0);
+            FirstView = 0;
+            transform.rotation = Quaternion.Euler(rot_X, ViewX, 0);
             camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
-            if (Input.GetKeyDown(KeyCode.Q)&&b>=0.7)
+            if (Input.GetKeyDown(KeyCode.Q)&& ViewChanage >= 0.7)
             {
                 rot_X = 18;
                 changepos = true;
                 distance = 0f;
                 height = 1.9f;
-                b= 0;
+                ViewChanage = 0;
             }
         }
     }

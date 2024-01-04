@@ -188,7 +188,7 @@ namespace Yang{
 
 
 
-        private void SetDamaged(float damage)
+        public void SetDamaged(float damage)
         {
             stat.Hp -= damage;
             SetTriggerAnimation(Damaged);

@@ -4,6 +4,7 @@ using System.Drawing;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using Player_animation;
+using Yang;
 
 public class Player_Shoot : MonoBehaviour
 {
@@ -43,9 +44,9 @@ public class Player_Shoot : MonoBehaviour
                 GameObject bulletEffect = Instantiate(BulletEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
                 
                 ParticleSystem ps = bulletEffect.GetComponent<ParticleSystem>();
-                Enemy_Health enemy = hitInfo.collider.GetComponent<Enemy_Health>();
+                Skeleton enemy = hitInfo.collider.GetComponent<Skeleton>();
                 if (enemy != null)
-                    enemy.TakeDamage(ShootDamage);
+                    enemy.SetDamaged(ShootDamage);
                 if (ps != null)
                 {
                     ps.Play();

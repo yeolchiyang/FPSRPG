@@ -12,6 +12,7 @@ namespace Yang{
         public IState rootState;
         private UnityEngine.AI.NavMeshAgent skeletonNav;
         [SerializeField] private Animator skeletonAnimator;
+        [SerializeField] private GameObject skeletonHitEffect;
 
         private const string Idle = "Idle";
         private const string Walk = "Walk";
@@ -30,7 +31,10 @@ namespace Yang{
             stat = GetComponent<EnemyStat>();
             playerObject = GameObject.FindWithTag("Player");
         }
-
+        private void OnEnable()
+        {
+            Respawn();
+        }
         private void Start()
         {
             rootState = new StateMachineBuilder()
@@ -109,7 +113,7 @@ namespace Yang{
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Damaged} State");
-                        SetDamaged(5);
+                        
                     })
                     .Condition(() =>
                     {
@@ -169,13 +173,17 @@ namespace Yang{
             StopNavigtaion();
         }
         /// <summary>
-        /// 애니메이션 끝자락에 가해지는 데미지(중간으로 수정해야 함)
+        /// 애니메이션 중간에 가해지는 데미지, 애니메이션 클립에 해당 함수 존재
         /// </summary>
         /// <param name="physicalDamage">enemyStat의 physicalDamage를 매개변수로 추가</param>
-        private void IsAttacked(int physicalDamage)
+        private void IsAttacked()
         {
-            //임시로 메세지만 출력하게 구현
-            Debug.Log($"Player에게 {physicalDamage}Damage");
+            //맞는 순간 사거리 내에 있어야만 Damage
+            if (IsTargetReached())
+            {
+                Debug.Log($"Player에게 {stat.PhysicalDamage}Damage");
+                playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
+            }
         }
         private bool IsAttackAnimationPlaying()
         {
@@ -184,12 +192,15 @@ namespace Yang{
             return isAttacking;
         }
 
-        public void SetDamaged(float damage)
+        public void SetDamaged(RaycastHit hit, float damage)
         {
-            stat.Hp -= damage;
+            stat.CurrentHp -= damage;
             SetTriggerAnimation(Damaged);
+            GameObject spawnedDecal = Instantiate(
+                skeletonHitEffect, hit.point, Quaternion.LookRotation(hit.normal));
             StopNavigtaion();
-            if(stat.Hp <= 0f)
+            rootState.ChangeState(Damaged);
+            if(stat.CurrentHp <= 0f)
             {
                 rootState.ChangeState(Die);
             }
@@ -203,7 +214,7 @@ namespace Yang{
         }
 
         //사망 시, 다른 상태전환이 되지 않도록 처리해야 합니다.
-        private Coroutine sinking;//가라앉는 것 중지 처리용 변수
+        
         private void SetDie()
         {
             this.isActive = false;
@@ -211,20 +222,25 @@ namespace Yang{
             StopNavigtaion();
             GetComponent<CapsuleCollider>().enabled = false;
             GetComponent<Rigidbody>().isKinematic = false;
-            this.sinking = StartCoroutine(Sinking());
+            StartCoroutine(Sinking());
         }
-
+        /// <summary>
+        /// 가라앉기 시작하고 3초 후, ObejctSpawner의 현재 소환 수 감소
+        /// ObjectPool로 돌아가기
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator Sinking()
         {
             yield return new WaitForSeconds(1f);
             float timer = 0f;
             while (true)
             {
-                transform.position += Vector3.down * Time.fixedDeltaTime;
-                timer += Time.deltaTime;
-                if(timer > 3f)
+                transform.position += Vector3.down * Time.fixedDeltaTime * 0.1f;
+                timer += Time.fixedDeltaTime;
+                if(timer > 5f)
                 {
-                    Respawn();
+                    ObjectSpawner.objectSpawner.CurrentSpawnedCount--;
+                    ObjectPool.objectPool.PoolObject(gameObject);
                     break;
                 }
                 yield return new WaitForFixedUpdate();
@@ -234,9 +250,10 @@ namespace Yang{
         private void Respawn()
         {
             this.isActive = true;
-            StopCoroutine(sinking);
-            GetComponent<CapsuleCollider>().enabled = false;
-            GetComponent<Rigidbody>().isKinematic = false;
+            this.stat.CurrentHp = this.stat.MaxHp;
+            GetComponent<CapsuleCollider>().enabled = true;
+            GetComponent<Rigidbody>().isKinematic = true;
+
         }
 
         //현재 미사용
@@ -299,7 +316,8 @@ namespace Yang{
         {
             bool isTargetReached = false;
             float distanceToPlayer = Vector3.Distance(
-                            playerObject.transform.position, transform.position);
+                            playerObject.transform.position, 
+                            transform.position);
             if (distanceToPlayer <= stat.AttackRange)
             {
                 isTargetReached = true;

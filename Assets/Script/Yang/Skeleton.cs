@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace Yang{
     public class Skeleton : MonoBehaviour
     {
+        private bool isActive = true;
         private EnemyStat stat;
         public IState rootState;
         private UnityEngine.AI.NavMeshAgent skeletonNav;
@@ -126,7 +127,7 @@ namespace Yang{
                     .Enter(state =>
                     {
                         Debug.Log($"Entering {Die} State");
-                        SetDead();
+                        SetDie();
                     })
                     .End()
                 .Build();
@@ -136,26 +137,29 @@ namespace Yang{
 
         private void FixedUpdate()
         {
-            rootState.Update(Time.fixedDeltaTime);
-
+            if (isActive)
+            {
+                rootState.Update(Time.fixedDeltaTime);
+            }
+            
         }
 
 
         private void SetIdle()
         {
-            setBoolAnimation(Idle);
+            SetBoolAnimation(Idle);
             StopNavigtaion();
         }
         
         private void SetWalk()
         {
-            setBoolAnimation(Walk);
+            SetBoolAnimation(Walk);
             StartNavigtaion(stat.WalkSpeed);
         }
 
         private void SetRun()
         {
-            setBoolAnimation(Run);
+            SetBoolAnimation(Run);
             StartNavigtaion(stat.RunSpeed);
         }
 
@@ -165,7 +169,7 @@ namespace Yang{
             StopNavigtaion();
         }
         /// <summary>
-        /// 애니메이션 끝자락에 가해지는 데미지
+        /// 애니메이션 끝자락에 가해지는 데미지(중간으로 수정해야 함)
         /// </summary>
         /// <param name="physicalDamage">enemyStat의 physicalDamage를 매개변수로 추가</param>
         private void IsAttacked(int physicalDamage)
@@ -198,10 +202,41 @@ namespace Yang{
             return isDamageAnimationPlaying;
         }
 
-        private void SetDead()
+        //사망 시, 다른 상태전환이 되지 않도록 처리해야 합니다.
+        private Coroutine sinking;//가라앉는 것 중지 처리용 변수
+        private void SetDie()
         {
+            this.isActive = false;
             SetTriggerAnimation(Die);
             StopNavigtaion();
+            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = false;
+            this.sinking = StartCoroutine(Sinking());
+        }
+
+        private IEnumerator Sinking()
+        {
+            yield return new WaitForSeconds(1f);
+            float timer = 0f;
+            while (true)
+            {
+                transform.position += Vector3.down * Time.fixedDeltaTime;
+                timer += Time.deltaTime;
+                if(timer > 3f)
+                {
+                    Respawn();
+                    break;
+                }
+                yield return new WaitForFixedUpdate();
+            }
+        }
+
+        private void Respawn()
+        {
+            this.isActive = true;
+            StopCoroutine(sinking);
+            GetComponent<CapsuleCollider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = false;
         }
 
         //현재 미사용
@@ -212,7 +247,7 @@ namespace Yang{
         }
 
 
-        private void setBoolAnimation(string state)
+        private void SetBoolAnimation(string state)
         {
             // 현재 애니메이터의 모든 파라미터를 가져옵니다.
             AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
@@ -256,7 +291,10 @@ namespace Yang{
             }
             return parameterName;
         }
-
+        /// <summary>
+        /// 사정거리 내에 들어온지를 감지합니다.
+        /// </summary>
+        /// <returns>사정거리에 들어올 시 true</returns>
         private bool IsTargetReached()
         {
             bool isTargetReached = false;

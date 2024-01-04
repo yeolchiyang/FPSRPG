@@ -11,14 +11,15 @@ public class FollowCamera : MonoBehaviour
     Transform camTr;
     public bool changepos = false;
     float First_MaxY = 45f;
+    float third_MaxY = 30f;
     [Range(-1f, 2f)]
     public float distance = 2.0f;            // 카메라의 x좌표
     public float height = 2.0f;           // 카메라의 y좌표
     float turnspeed = 60f;
     public float camspeed = 10f;
     float ViewX;
-    [Range(0f, 1f)]
     float FirstView =0;
+    float thirdView = 0;
     public float rot_X=8;
     float ViewChanage = 0;
 
@@ -42,12 +43,15 @@ public class FollowCamera : MonoBehaviour
         float rotationY = Input.GetAxis("Mouse Y");
         FirstView += turnspeed * Time.deltaTime * rotationY;
         FirstView = Mathf.Clamp(FirstView, -10, First_MaxY);
+        thirdView += turnspeed * Time.deltaTime * rotationY;
+        thirdView = Mathf.Clamp(thirdView, -10, third_MaxY);
         ViewX += turnspeed * Time.deltaTime * rotationX;
         ViewChanage = ViewChanage + Time.deltaTime;
         // transform.Rotate(0,turnspeed * Time.deltaTime * r,0,Space.World);
 
         if (changepos)
         {
+            thirdView = 0;
             transform.rotation = Quaternion.Euler(rot_X- FirstView, ViewX, 0);
             camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
             if (Input.GetKeyDown(KeyCode.Q)&& ViewChanage >= 0.7f)
@@ -62,7 +66,7 @@ public class FollowCamera : MonoBehaviour
         else if (!changepos)
         {
             FirstView = 0;
-            transform.rotation = Quaternion.Euler(rot_X, ViewX, 0);
+            transform.rotation = Quaternion.Euler(rot_X - thirdView, ViewX, 0);
             camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
             if (Input.GetKeyDown(KeyCode.Q)&& ViewChanage >= 0.7)
             {

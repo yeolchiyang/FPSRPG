@@ -6,7 +6,6 @@ using Player_animation;
 
 public class FollowCamera : MonoBehaviour
 {
-    
     public Transform targetTr;
     Transform camTr;
     public bool changepos = false;
@@ -78,4 +77,5 @@ public class FollowCamera : MonoBehaviour
             }
         }
     }
+
 }

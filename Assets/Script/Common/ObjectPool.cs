@@ -13,10 +13,6 @@ public class ObjectPool : MonoBehaviour
     //생성한 Object들을 담는 List들을 담을 배열
     private List<GameObject>[] pooledObjects;
 
-    public List<GameObject>[] PooledObjects 
-    {
-        get { return pooledObjects; }
-    }
 
     private void Awake()
     {
@@ -45,7 +41,7 @@ public class ObjectPool : MonoBehaviour
     /// 아래와 return타입이 같고, 매개변수만 GameObject인 메소드입니다.
     /// </summary>
     /// <param name="obj"></param>
-    /// <returns></returns>
+    /// <returns>꺼내올 GameObject를 넣습니다.(name이같아야 합니다)</returns>
     public GameObject GetObject(GameObject obj)
     {
         return GetObject(obj.name);

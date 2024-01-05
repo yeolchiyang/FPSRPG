@@ -12,6 +12,7 @@ namespace Yang{
         public IState rootState;
         private UnityEngine.AI.NavMeshAgent skeletonNav;
         [SerializeField] private Animator skeletonAnimator;
+        [SerializeField] private GameObject skeletonHitEffect;
 
         private const string Idle = "Idle";
         private const string Walk = "Walk";
@@ -22,7 +23,7 @@ namespace Yang{
 
         //Player를 singleton으로 저장하고 있는 객체가 있을 경우 대체할 것
         private GameObject playerObject;
-        [SerializeField] private GameObject skeletonHitEffect;
+        
 
         private void Awake()
         {
@@ -66,7 +67,7 @@ namespace Yang{
                     })
                     .Event(Damaged, state =>
                     {
-                        state.ChangeState(Damaged);
+                        state.Parent.ChangeState(Damaged);
                     })
                     .End()
                 .State<State>(Run)//전환 조건 미구현
@@ -105,7 +106,7 @@ namespace Yang{
                     })
                     .Event(Damaged, state =>
                     {
-                        state.ChangeState(Damaged);
+                        state.Parent.ChangeState(Damaged);
                     })
                     .End()
                 .State<State>(Damaged)

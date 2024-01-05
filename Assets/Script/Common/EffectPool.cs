@@ -12,10 +12,6 @@ public class EffectPool : MonoBehaviour
     //생성한 Object들을 담는 List들을 담을 배열
     private List<GameObject>[] pooledEffects;
 
-    public List<GameObject>[] PooledObjects
-    {
-        get { return pooledEffects; }
-    }
 
     private void Awake()
     {

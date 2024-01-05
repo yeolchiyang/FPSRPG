@@ -13,10 +13,6 @@ public class ObjectPool : MonoBehaviour
     //생성한 Object들을 담는 List들을 담을 배열
     private List<GameObject>[] pooledObjects;
 
-    public List<GameObject>[] PooledObjects 
-    {
-        get { return pooledObjects; }
-    }
 
     private void Awake()
     {

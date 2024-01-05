@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using Yang;
 
 public class ProjectileMover : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class ProjectileMover : MonoBehaviour
     public GameObject flash;
     private Rigidbody rb;
     public GameObject[] Detached;
+
 
     void Start()
     {
@@ -49,6 +52,7 @@ public class ProjectileMover : MonoBehaviour
     //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html
     void OnCollisionEnter(Collision collision)
     {
+        
         //Lock all axes movement and rotation
         rb.constraints = RigidbodyConstraints.FreezeAll;
         speed = 0;

@@ -31,7 +31,7 @@ public class Player_Shoot : MonoBehaviour
                
                 Skeleton enemy = hitInfo.collider.GetComponent<Skeleton>();
                 if (enemy != null)
-                    enemy.SetDamaged(ShootDamage);
+                    enemy.SetDamaged(hitInfo, ShootDamage);
                 
             }
         }

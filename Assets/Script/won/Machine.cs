@@ -5,22 +5,23 @@ using Yang;
 
 public class Machine : MonoBehaviour
 {
-    //public GameObject Bulletstartpoint;
     public GameObject BulletEffect;
     public GameObject BulletStartEffect;
     public GameObject BulletStartPoint;
+    Transform BulletSatEffect;
 
     private void Start()
     {
-
+        BulletSatEffect = BulletStartPoint.GetComponent<Transform>();
     }
+
     float Range = 100f;
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 startShootPosition = BulletStartPoint.transform.position;
-
 
             GameObject ShootEffect = Instantiate(BulletStartEffect, startShootPosition, Quaternion.identity, BulletStartPoint.transform);
 
@@ -31,19 +32,19 @@ public class Machine : MonoBehaviour
             }
 
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-            RaycastHit hitInfo = new RaycastHit();//hit 오브젝트
+            RaycastHit hitInfo = new RaycastHit();
+
             int layerMask = ~(1 << LayerMask.NameToLayer("Player"));
 
             if (Physics.Raycast(ray, out hitInfo, Range, layerMask))
             {
+                
                 GameObject bulletEffect = Instantiate(BulletEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-
                 ParticleSystem ps = bulletEffect.GetComponent<ParticleSystem>();
                 if (ps != null)
                 {
                     ps.Play();
                 }
-
 
             }
         }

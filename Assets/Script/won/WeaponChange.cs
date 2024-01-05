@@ -8,7 +8,7 @@ public class WeaponChange : MonoBehaviour
     Transform tr;
     public GameObject[] Weapon;
     int currentWeaponNumber = 0;
-    public float WeaponDamage;
+    public float WeaponDamage = 10;
     // Start is called before the first frame update
     void Start()
     {

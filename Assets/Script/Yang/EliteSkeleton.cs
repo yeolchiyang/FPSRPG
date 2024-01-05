@@ -6,9 +6,12 @@ using Yang;
 
 public class EliteSkeleton : Skeleton
 {
+    [SerializeField]
+
     private void OnEnable()
     {
-        Respawn();
+        //Respawn();
+        //엘리트몹 등장 시 일반 몹 리스폰 일시정지 및 생성되어있는 일반 몹 소멸
     }
     private void Start()
     {
@@ -17,22 +20,30 @@ public class EliteSkeleton : Skeleton
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {Idle} State");
+                    //사거리 내에 들어올 때까지, 이동금지를 구현해야 합니다
                     SetIdle();
+                })
+                .Condition(() => 
+                {
+                    //감지 사거리 내에 들어옴을 판단합니다.
+                    return false;
+                },
+                state =>
+                {
+                    //Walk state로 전환
+                    state.Parent.ChangeState(Walk);
                 })
                 .End()
             .State<EnemyWalkState>(Walk)//걷는 것만 구현
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {Walk} State");
-
-                })
-                .Update((state, deltaTime) =>
-                {
+                    //감지 사거리 내에 들어올 시, 걷기 상태로 진입합니다.
                     SetWalk();
                 })
                 .Condition(() =>
                 {
-                    //사거리 내에 들어올 경우
+                    //공격 사거리 내에 들어올 경우
                     return IsTargetReached();
                 },
                 state =>
@@ -45,7 +56,7 @@ public class EliteSkeleton : Skeleton
                     state.Parent.ChangeState(Damaged);
                 })
                 .End()
-            .State<State>(Run)//전환 조건 미구현
+            .State<State>(Run)//전환 조건 미정
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {Run} State");
@@ -56,7 +67,7 @@ public class EliteSkeleton : Skeleton
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {Attack} State");
-                    state.AttackCount = stat.AttackDelay;//진입시 공격
+                    state.AttackCount = stat.AttackDelay;//Attack 상태 진입시 공격을 유도합니다.
                 })
                 .Update((state, deltaTime) =>
                 {
@@ -112,7 +123,7 @@ public class EliteSkeleton : Skeleton
                 })
                 .End()
             .Build();
-        rootState.ChangeState(Walk);
+        rootState.ChangeState(Idle);
         skeletonNav.stoppingDistance = stat.AttackRange;
     }
 

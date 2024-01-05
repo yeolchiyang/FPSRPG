@@ -24,10 +24,6 @@ public class NormalSkeleton : Skeleton
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {Walk} State");
-
-                })
-                .Update((state, deltaTime) =>
-                {
                     SetWalk();
                 })
                 .Condition(() =>

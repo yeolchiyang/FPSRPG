@@ -17,13 +17,14 @@ public class Player_Shoot : MonoBehaviour
 
     private void Start()
     {
-         BulletSatEffect = BulletStartPoint.GetComponent<Transform>();
+        BulletSatEffect = BulletStartPoint.GetComponent<Transform>();
     }
     float Range = 100f;
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            StartCoroutine("Shootmotion");
             Vector3 startShootPosition = BulletStartPoint.transform.position;
 
 
@@ -51,9 +52,53 @@ public class Player_Shoot : MonoBehaviour
                 {
                     ps.Play();
                 }
-
-
             }
+        }
+
+    
+    }
+
+    public float recoilForce = 0.01f;
+    public GameObject gun;
+    private Vector3 initialGunPosition;
+
+    public void ApplyRecoil()
+    {
+        initialGunPosition = gun.transform.position;
+
+        // 발사 후 반동을 적용
+        Vector3 recoilDirection = gun.transform.right * recoilForce;
+        gun.transform.position += recoilDirection;
+        
+    }
+
+    bool shooting = false;
+
+    IEnumerator Shootmotion()
+    {
+        Quaternion orirot =  gun.transform.rotation;
+        Quaternion next = orirot * Quaternion.Euler(0,0,-10f);
+        float timer = 0;
+        if (!shooting)
+        {
+            while (timer < 1f)
+            {
+                timer += Time.deltaTime * 10f;
+                gun.transform.rotation = Quaternion.Lerp(orirot, next, timer);
+                yield return new WaitForEndOfFrame();
+            }
+            shooting = true;
+        }
+
+        if (shooting)
+        {
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime * 10f;
+                gun.transform.rotation = Quaternion.Lerp(orirot, next, timer);
+                yield return new WaitForEndOfFrame();
+            }
+            shooting= false;
         }
     }
 }

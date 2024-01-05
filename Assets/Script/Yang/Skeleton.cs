@@ -22,7 +22,7 @@ namespace Yang{
 
         //Player를 singleton으로 저장하고 있는 객체가 있을 경우 대체할 것
         private GameObject playerObject;
-
+        [SerializeField] private GameObject skeletonHitEffect;
 
         private void Awake()
         {
@@ -189,13 +189,35 @@ namespace Yang{
             bool isAttacking = currentState.IsName(Attack);
             return isAttacking;
         }
-
+        /// <summary>
+        /// 맞았을 때, 이펙트가 발생되지 않습니다.
+        /// </summary>
+        /// <param name="damage"></param>
         public void SetDamaged(float damage)
         {
             stat.CurrentHp -= damage;
             SetTriggerAnimation(Damaged);
             StopNavigtaion();
             if(stat.CurrentHp <= 0f)
+            {
+                rootState.ChangeState(Die);
+            }
+        }
+        /// <summary>
+        /// Raycast를 이용한 공격 시, 상호작용 가능한 메소드 입니다.
+        /// 맞은 장소에 이펙트가 생깁니다.
+        /// </summary>
+        /// <param name="hit">RaycastHit Object 넣어주세요</param>
+        /// <param name="damage">가하고자 하는 데미지 넣어주세요</param>
+        public void SetDamaged(RaycastHit hit, float damage)
+        {
+            stat.CurrentHp -= damage;
+            SetTriggerAnimation(Damaged);
+            StopNavigtaion();
+            GameObject spawnedDecal = Instantiate(
+               skeletonHitEffect, hit.point, 
+               Quaternion.LookRotation(hit.normal));
+            if (stat.CurrentHp <= 0f)
             {
                 rootState.ChangeState(Die);
             }

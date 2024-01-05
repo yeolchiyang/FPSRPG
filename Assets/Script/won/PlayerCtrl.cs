@@ -14,8 +14,6 @@ public class PlayerCtrl : MonoBehaviour
     bool IsJumping = true;
     Player_Anima anima;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +38,9 @@ public class PlayerCtrl : MonoBehaviour
 
         tr.Translate(moveDir.normalized * speed * Time.deltaTime);
         tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
-       if (Input.GetKeyDown(KeyCode.Space))
+        //tr.Rotate(Random.insideUnitCircle);
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (IsJumping)
             {
@@ -51,11 +51,11 @@ public class PlayerCtrl : MonoBehaviour
             
         }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Map"))
         {
-
             IsJumping = true;
         }
     }

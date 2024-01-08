@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] int hillPortionCount = 0;
     [SerializeField] int debinePortionCount = 0;
-    [SerializeField] QuestUI questUI;
+    //[SerializeField] QuestUI questUI;
 
     int bookCount = 0;
 
@@ -19,12 +20,12 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown("9")) 
-        {
-            AddBookCount();
-            print(bookCount);
-            questUI.Create_QSlot(0);
-        }
+        //if (Input.GetKeyDown("9"))
+        //{
+        //    AddBookCount();
+        //    print(bookCount);
+        //    questUI.Create_QSlot(0);
+        //}
     }
 
 

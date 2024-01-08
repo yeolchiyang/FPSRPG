@@ -1,0 +1,150 @@
+fileFormatVersion: 2
+guid: aa476cf34d3d46d478aa560a935400c6
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      43: 4300000
+    second: ORC
+  - first:
+      43: 4300002
+    second: SHOULDER_PADS
+  - first:
+      43: 4300004
+    second: BELLY_CLOTHE
+  - first:
+      43: 4300006
+    second: FOREARM_ARMOR001
+  - first:
+      43: 4300008
+    second: axe001
+  - first:
+      43: 4300010
+    second: FOREARM_ARMOR
+  - first:
+      43: 4300012
+    second: ORC_PONYTAIL
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips:
+  - 8ec43b9d3a5d54745a4f96cedc73abd7
+  - 73d282189d8e1a74188dcc8f28f12497
+  - c026a66a2ba284f4ebc5442be778081b
+  - 43087120e65de1f459db140e51cf946c
+  - 3f13fd9f037a09e43991b5008035d9b3
+  - f50fb31ed4e32cf4192033a45e0fa1bd
+  - c0a3774fd41baab4281f1ce0adff6f0c
+  - f74815380b1a9d347afcd5cb2ad2cbde
+  - fccda02e63a7acb4db2a79065a6ac167
+  - b39e8c36d856d874ea1874cb49c2b1f4
+  - 1b94b0095c8121847afb078ec041ceef
+  - 6bbb4e5419a63d246854f57853006296
+  - a7bb80e1345d25b47b0088b6df1886b9
+  - 1be012fd0e004a6468678f799b909388
+  - c6390c66044a8414bbbb0f7267af8ef6
+  - 09b73ef2fcae8f84c855595be3b74c9f
+  - 04cb361f0fa99184fa8e9f1e3c003fa6
+  - d838d881a89a4fe43ad993d93d71490b
+  - 5e4ea5056f6294a4d866eb4cd256f388
+  - 338bf0e5b8a623143acae8a2a840c5aa
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.01
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 1
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

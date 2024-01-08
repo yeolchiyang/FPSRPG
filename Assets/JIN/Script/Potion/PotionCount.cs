@@ -6,12 +6,21 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class PortionCount : MonoBehaviour
 {
-    [SerializeField] int portionIndex = 0;
-    [SerializeField] int portionCount = 10;
+    [SerializeField] int portionIndex;
+    int portionCount;
     public UnityEngine.UI.Text CountText;
 
     private void Start()
     {
+        if(portionIndex == 0)
+        {
+            portionCount = Inventory.inventory.getHillPortionCount();
+        }
+
+        if (portionIndex == 1)
+        {
+            portionCount = Inventory.inventory.getDebinePortionCount();
+        }
         CountPortion();
     }
 
@@ -31,6 +40,7 @@ public class PortionCount : MonoBehaviour
     public void AddPotion(int data)
     {
         portionCount += data;
+        Inventory.inventory.setPortionInfo(portionIndex, portionCount);
         CountPortion();
     }
 
@@ -39,6 +49,7 @@ public class PortionCount : MonoBehaviour
         if (portionCount > 0)
         {
             portionCount -= data;
+            Inventory.inventory.setPortionInfo(portionIndex, portionCount); ;
             CountPortion();
             //포션 사용 사운드 첨부가능
         }
@@ -47,5 +58,10 @@ public class PortionCount : MonoBehaviour
             Debug.Log("Potion is empty. You can use this potion");
             //사용 불가 사운드 첨부가능
         }
+    }
+
+    public bool isEmpty()
+    {
+        return portionCount <= 0;
     }
 }

@@ -7,16 +7,24 @@ public class UIContral : MonoBehaviour
     int currentSetArmIndex;
 
     //GameObject Boss;
+    //GameObject Player;
 
+
+    
     [SerializeField] GameObject BossHPBar;
     [SerializeField] GameObject[] Aims;
+
     [SerializeField] UnityEngine.UI.Image[] Arms;
     
+    [SerializeField] UnityEngine.UI.Text PlayerLv;
+    [SerializeField] UnityEngine.UI.Text ForceSoulCount;
+
     List<GameObject> aims = new List<GameObject>();
 
     private void Start()
     {
-        //boss = Boss.GetComponent<Boss>();
+        //Player player = Player.GetComponent<Player>()
+        //Boss boss = Boss.GetComponent<Boss>();
         for (int i = 0; i < Aims.Length; ++i) {
             aims.Add(Aims[i]);
         }
@@ -24,6 +32,9 @@ public class UIContral : MonoBehaviour
 
     void Update()
     {
+        PlayerLv.text = "" + /*player.lv*/1;
+        ForceSoulCount.text = "" + /*player.forceSoul*/10;
+
         if (Input.GetKeyDown("1"))  //basic gun
         {
             if (aims[currentSetArmIndex] != null)

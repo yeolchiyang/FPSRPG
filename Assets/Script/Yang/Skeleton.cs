@@ -1,215 +1,181 @@
 using RSG;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Yang{
-    public class Skeleton : MonoBehaviour
+    public abstract class Skeleton : MonoBehaviour
     {
-        private EnemyStat stat;
-        private IState rootState;
-        private UnityEngine.AI.NavMeshAgent skeletonNav;
-        [SerializeField] private Animator skeletonAnimator;
+        protected bool isActive = true;
+        protected EnemyStat stat;
+        public IState rootState;
+        protected UnityEngine.AI.NavMeshAgent skeletonNav;
+        [SerializeField] protected Animator skeletonAnimator;
+        [SerializeField] protected GameObject skeletonHitEffect;
 
-        private const string Idle = "Idle";
-        private const string Walk = "Walk";
-        private const string Run = "Run";
-        private const string Attack = "Attack";
-        private const string Damaged = "Damaged";
-        private const string Die = "Die";
+        protected const string Idle = "Idle";
+        protected const string Walk = "Walk";
+        protected const string Run = "Run";
+        protected const string Attack = "Attack";
+        protected const string Damaged = "Damaged";
+        protected const string Die = "Die";
 
         //Player를 singleton으로 저장하고 있는 객체가 있을 경우 대체할 것
-        private GameObject playerObject;
+        protected GameObject playerObject;
 
-
-        private void Awake()
+        protected void Awake()
         {
             skeletonNav = GetComponent<UnityEngine.AI.NavMeshAgent>();
             stat = GetComponent<EnemyStat>();
             playerObject = GameObject.FindWithTag("Player");
         }
 
-        private void Start()
+        protected void SetIdle()
         {
-            rootState = new StateMachineBuilder()
-                .State<State>(Idle)//전환 조건 미구현
-                    .Enter(state =>
-                    {
-                        Debug.Log($"Entering {Idle} State");
-                        SetIdle();
-                    })
-                    .End()
-                .State<EnemyWalkState>(Walk)
-                    .Enter(state =>
-                    {
-                        Debug.Log($"Entering {Walk} State");
-                        
-                    })
-                    .Update((state, deltaTime) =>
-                    {
-                        SetWalk();
-                    })
-                    .Condition(() =>
-                    {
-                        //사거리 내에 들어올 경우
-                        return IsTargetReached();
-                    },
-                    state =>
-                    {
-                        //Attack state로 전환
-                        state.Parent.ChangeState(Attack);
-                    })
-                    .Event(Damaged, state =>
-                    {
-                        state.ChangeState(Damaged);
-                    })
-                    .End()
-                .State<State>(Run)//전환 조건 미구현
-                    .Enter(state =>
-                    {
-                        Debug.Log($"Entering {Run} State");
-                        SetRun();
-                    })
-                    .End()
-                .State<EnemyAttackState>(Attack)
-                    .Enter(state =>
-                    {
-                        Debug.Log($"Entering {Attack} State");
-                        state.AttackCount = stat.AttackDelay;//진입시 공격
-                    })
-                    .Update((state, deltaTime) =>
-                    {
-                        //공격 딜레이에 맞춰 공격하는 애니메이션을 실행하도록 구현
-                        state.AttackCount += deltaTime;
-                        if( state.AttackCount >= stat.AttackDelay )
-                        {
-                            state.AttackCount = 0f;
-                            SetAttack();
-                        }
-                    })
-                    .Condition(() =>
-                    {
-                        //타격을 받을 경우, 공격중인 상태라도 전환
-                        return false;
-                    },
-                    state =>
-                    {
-                        //Damaged로 전환
-                        Debug.Log($"{Damaged}로 전환");
-                        state.Parent.ChangeState(Damaged);
-                    })
-                    .Condition(() => 
-                    {
-                        //공격중이 아닌 상태 & 전환중이 아닌 상태 & 사거리를 벗어날 경우
-                        bool isInTransition = skeletonAnimator.IsInTransition(0);
-                        return !IsAttacking() && !IsTargetReached() && !isInTransition;
-                    },
-                    state =>
-                    {
-                        //Idle로 전환
-                        Debug.Log($"{Walk}로 전환");
-                        state.Parent.ChangeState(Walk);
-                    })
-                    .End()
-                .State<State>(Damaged)
-                    .Enter(state =>
-                    {
-                        Debug.Log($"Entering {Damaged} State");
-                        SetDamaged(5);
-                    })
-                    .Condition(() =>
-                    {
-                        
-                        return false;
-                    },
-                    state =>
-                    {
-                        //위의 조건 true 시, 실행될 코드 작성
-                    })
-                    .End()
-                .State<State>(Die)
-                    .Enter(state =>
-                    {
-                        Debug.Log($"Entering {Die} State");
-                    })
-                    .End()
-                .Build();
-            rootState.ChangeState(Walk);
-            skeletonNav.stoppingDistance = stat.AttackRange;
-        }
-
-        private void FixedUpdate()
-        {
-            rootState.Update(Time.fixedDeltaTime);
-
-        }
-
-
-        private void SetIdle()
-        {
-            setBoolAnimation(Idle);
+            SetBoolAnimation(Idle);
             StopNavigtaion();
         }
-        
-        private void SetWalk()
+
+        protected void SetWalk()
         {
-            setBoolAnimation(Walk);
+            SetBoolAnimation(Walk);
             StartNavigtaion(stat.WalkSpeed);
         }
 
-        private void SetRun()
+        protected void SetRun()
         {
-            setBoolAnimation(Run);
+            SetBoolAnimation(Run);
             StartNavigtaion(stat.RunSpeed);
         }
 
-        private void SetAttack()
+        protected void SetAttack()
         {
             SetTriggerAnimation(Attack);
             StopNavigtaion();
         }
         /// <summary>
-        /// 애니메이션 끝자락에 가해지는 데미지
+        /// 애니메이션 중간에 가해지는 데미지, 애니메이션 클립에 해당 함수 존재
         /// </summary>
         /// <param name="physicalDamage">enemyStat의 physicalDamage를 매개변수로 추가</param>
-        private void IsAttacked(int physicalDamage)
+        protected void IsAttacked()
         {
-            //임시로 메세지만 출력하게 구현
-            Debug.Log($"Player에게 {physicalDamage}Damage");
+            //맞는 순간 사거리 내에 있어야만 Damage
+            if (IsTargetReached())
+            {
+                playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
+            }
         }
-        private bool IsAttacking()
+        /// <summary>
+        /// 맞았을 때, 이펙트가 발생되지 않습니다.
+        /// </summary>
+        /// <param name="damage">가하고자 하는 데미지 넣어주세요</param>
+        public virtual void SetDamaged(float damage)
+        {
+            stat.CurrentHp -= damage;
+            if (stat.CurrentHp <= 0f)
+            {
+                rootState.ChangeState(Die);
+            }
+            else
+            {
+                rootState.TriggerEvent(Damaged);
+                SetTriggerAnimation(Damaged);
+                StopNavigtaion();
+            }
+        }
+        /// <summary>
+        /// Raycast를 이용한 공격 시, 상호작용 가능한 메소드 입니다.
+        /// 맞은 장소에 이펙트가 생깁니다.
+        /// </summary>
+        /// <param name="hit">RaycastHit Object 넣어주세요</param>
+        /// <param name="damage">가하고자 하는 데미지 넣어주세요</param>
+        public virtual void SetDamaged(RaycastHit hit, float damage)
+        {
+            stat.CurrentHp -= damage;
+            if (stat.CurrentHp <= 0f)
+            {
+                rootState.ChangeState(Die);
+            }
+            else
+            {
+                SetTriggerAnimation(Damaged);
+                StopNavigtaion();
+                GameObject hitEffect = Instantiate(
+                   skeletonHitEffect, hit.point,
+                   Quaternion.LookRotation(hit.normal));
+                rootState.TriggerEvent(Damaged);
+            }
+        }
+
+        protected bool IsAnimationPlaying(string stateName)
         {
             AnimatorStateInfo currentState = skeletonAnimator.GetCurrentAnimatorStateInfo(0);
-            bool isAttacking = currentState.IsName(Attack);
-            Debug.Log("Attack 중인가? : " + isAttacking);
-            return isAttacking;
+            bool isAnimationPlaying = currentState.IsName(stateName);
+            return isAnimationPlaying;
         }
 
-
-
-        private void SetDamaged(float damage)
+        //사망 시, 다른 상태전환이 되지 않도록 처리해야 합니다.
+        protected void SetDie()
         {
-            stat.Hp -= damage;
-            SetTriggerAnimation(Damaged);
-            StopNavigtaion();
+            this.isActive = false;
+            if (!IsAnimationPlaying(Die))
+            {
+                SetTriggerAnimation(Die);
+                StopNavigtaion();
+                StartCoroutine(Sinking());
+            }
+        }
+        /// <summary>
+        /// 가라앉기 시작하고 3초 후, ObejctSpawner의 현재 소환 수 감소
+        /// ObjectPool로 돌아가기
+        /// </summary>
+        /// <returns></returns>
+        protected IEnumerator Sinking()
+        {
+            yield return new WaitForSeconds(1f);
+            float timer = 0f;
+            float sinkingStartTime = 3.4f;
+            float destroyTime = 5f;
+            while (true)
+            {
+                timer += Time.deltaTime;
+                if(timer > sinkingStartTime)
+                {
+                    transform.position += Vector3.down * Time.fixedDeltaTime * 0.5f;
+                }
+                if (timer > destroyTime)
+                {
+                    GetComponent<CapsuleCollider>().enabled = false;
+                    GetComponent<Rigidbody>().isKinematic = false;
+                    ObjectSpawner.objectSpawner.CurrentSpawnedCount--;
+                    ObjectPool.objectPool.PoolObject(gameObject);
+                    break;
+                }
+
+                yield return new WaitForFixedUpdate();
+            }
         }
 
-        private void SetDead()
+        protected void Respawn()
         {
-            SetTriggerAnimation(Die);
-            StopNavigtaion();
+            this.isActive = true;
+            this.stat.CurrentHp = this.stat.MaxHp;
+            GetComponent<CapsuleCollider>().enabled = true;
+            GetComponent<Rigidbody>().isKinematic = true;
+
         }
 
         //현재 미사용
-        private void SetStun()
+        protected void SetStun()
         {
             SetIdle();//Idle 재활용
             StopNavigtaion();
         }
 
 
-        private void setBoolAnimation(string state)
+        protected void SetBoolAnimation(string state)
         {
             // 현재 애니메이터의 모든 파라미터를 가져옵니다.
             AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
@@ -235,13 +201,30 @@ namespace Yang{
         /// 공격, 데미지를 입었을 때 빠르게 기존 state로 전환하기 위함입니다.
         /// </summary>
         /// <returns>정의한 상태값의 string 값을 반환합니다.</returns>
-        private string GetBoolAnimation()
+        protected string GetBoolAnimationName()
         {
+            string parameterName = "";
+            // 현재 애니메이터의 모든 파라미터를 가져옵니다.
+            AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
+            foreach (AnimatorControllerParameter parameter in parameters)
+            {
+                if(parameter.type == AnimatorControllerParameterType.Bool)
+                {
+                    //true인 파라미터면
+                    if(skeletonAnimator.GetBool(parameter.name))
+                    {
+                        parameterName = parameter.name;
+                    }
+                }
 
-            return "";
+            }
+            return parameterName;
         }
-
-        private bool IsTargetReached()
+        /// <summary>
+        /// 사정거리 내에 들어온지를 감지합니다.
+        /// </summary>
+        /// <returns>사정거리에 들어올 시 true</returns>
+        protected bool IsTargetReached()
         {
             bool isTargetReached = false;
             float distanceToPlayer = Vector3.Distance(
@@ -253,13 +236,13 @@ namespace Yang{
             return isTargetReached;
         }
 
-        private void SetTriggerAnimation(string state)
+        protected void SetTriggerAnimation(string state)
         {
             skeletonAnimator.SetTrigger(state);
         }
 
 
-        private void StopNavigtaion()
+        protected void StopNavigtaion()
         {
             if (!skeletonNav.isStopped)
             {
@@ -269,7 +252,7 @@ namespace Yang{
                 skeletonNav.velocity = Vector3.zero;
             }
         }
-        private void StartNavigtaion(float speed)
+        protected void StartNavigtaion(float speed)
         {
             skeletonNav.isStopped = false;
             skeletonNav.ResetPath();//ResetPath -> SetDestination 해야 재작동 합니다.
@@ -279,6 +262,11 @@ namespace Yang{
             skeletonNav.speed = speed;
         }
 
+        
+        private void OnCollisionEnter(Collision collision)
+        {
+            
+        }
 
     }
 }

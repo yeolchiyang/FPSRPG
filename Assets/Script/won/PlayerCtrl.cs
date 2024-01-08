@@ -9,12 +9,11 @@ public class PlayerCtrl : MonoBehaviour
     private Transform tr;
     private BoxCollider bc;
     public float speed = 10f;
-    public float turnspeed = 80f;
+    public float turnspeed = 60f;
     public int JumpPower;
     bool IsJumping = true;
+    bool asd = false;
     Player_Anima anima;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -37,10 +36,18 @@ public class PlayerCtrl : MonoBehaviour
 
         if (CheckHitWall(moveDir))
             moveDir = Vector3.zero;
+        if (!asd)
+        {
+            tr.Translate(moveDir.normalized * speed * Time.deltaTime);
+            tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
+        }
+        else
+        {
+            
+        }
+        //tr.Rotate(Random.insideUnitCircle);
 
-        tr.Translate(moveDir.normalized * speed * Time.deltaTime);
-        tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
-       if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (IsJumping)
             {
@@ -51,11 +58,11 @@ public class PlayerCtrl : MonoBehaviour
             
         }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Map"))
         {
-
             IsJumping = true;
         }
     }
@@ -79,5 +86,9 @@ public class PlayerCtrl : MonoBehaviour
             }
         }
         return false;
+    }
+    public void sss()
+    {
+        asd = true;
     }
 }

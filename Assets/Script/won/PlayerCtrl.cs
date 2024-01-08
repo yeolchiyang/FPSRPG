@@ -12,6 +12,7 @@ public class PlayerCtrl : MonoBehaviour
     public float turnspeed = 60f;
     public int JumpPower;
     bool IsJumping = true;
+    bool asd = false;
     Player_Anima anima;
 
     // Start is called before the first frame update
@@ -35,9 +36,15 @@ public class PlayerCtrl : MonoBehaviour
 
         if (CheckHitWall(moveDir))
             moveDir = Vector3.zero;
-
-        tr.Translate(moveDir.normalized * speed * Time.deltaTime);
-        tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
+        if (!asd)
+        {
+            tr.Translate(moveDir.normalized * speed * Time.deltaTime);
+            tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
+        }
+        else
+        {
+            
+        }
         //tr.Rotate(Random.insideUnitCircle);
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -79,5 +86,9 @@ public class PlayerCtrl : MonoBehaviour
             }
         }
         return false;
+    }
+    public void sss()
+    {
+        asd = true;
     }
 }

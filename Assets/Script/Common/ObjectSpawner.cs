@@ -9,7 +9,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private GameObject[] spawnPoints;
     [SerializeField] private GameObject[] enemys;
     [SerializeField] private float regenDelay = 5f;
-    [SerializeField] private int regenLimitedCount = 20;
+    [SerializeField] private int regenLimitedCount = 30;
     [SerializeField] private int currentSpawnedCount = 0;
 
     public int RegenLimitedCount

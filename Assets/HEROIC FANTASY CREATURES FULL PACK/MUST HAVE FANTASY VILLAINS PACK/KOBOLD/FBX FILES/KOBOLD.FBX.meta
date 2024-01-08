@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: 88ce468391574e041a0e355af8af35d3
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      43: 4300000
+    second: KOBOLD
+  - first:
+      43: 4300002
+    second: axe
+  - first:
+      43: 4300004
+    second: KOBOLD_SHIRT
+  - first:
+      43: 4300006
+    second: HELMET
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips:
+  - 7ef49f684e4e424408cfdcc47238e3ce
+  - b02d7d8104b3f1a49aa828664e68c7a7
+  - 87dd5268d445deb42aac5ac7daeab27a
+  - ff154c31dbd2529499e1ed6a2faca791
+  - c74c75682fffa3548b05b1bffe90d5fd
+  - 88e3511df4c6ada468bc5812bab84ccb
+  - 32d498359df53dc4790b5ccf5c0dc112
+  - 1af5b689068022c4a997b72075fdb446
+  - 1e82acc435565c6488f1c1b09c17727d
+  - b93ff3f83878e3c4bb4af77094b9ddf5
+  - 3bb66b5554b85a742a4d47da65409c72
+  - 66100d7bbc5a5b14a9c0f7523d193635
+  - bcbc0470c448cad449b11f31e5825d4b
+  - 16f74880f3c151d47b49e3281dfb54a2
+  - f345339a24342d242a24e0591d9b404b
+  - f9a20576ab9592d4f97d92ee03d83d1e
+  - 85fe5846425f4964f9ed7a760a6ef4ff
+  - de7a3ef6d87c39446b6d26e585e4ce1e
+  - 541ae1292ea769c4f9a715f20ee89179
+  - c746f043a97b8594cb5cf4f758de4a7f
+  - 0dcf5a19841e24e4aadc53102a75f1a6
+  - 69009eabefb4c8440b3f30d110a52b36
+  - 3d44d8216b3533445948786f8f48f6bd
+  - 9805023d66034d240800e6179093353b
+  - 459637667d9910a4ca61fe5042e6f6ae
+  - 7f30faad9c8a9df43a68b7547e6dab4a
+  - d2bb45a7b1420934dbd58562ec536cc0
+  - de05ef8f931c67f41bb877b1dd77b818
+  - d0cc62e7c1a1f8045b1b7b5cd47aacbb
+  - a75d4bc2a3a1f834091d29310ea6b369
+  - 5b8a153a3196cc84ebd6f64fb7ad3c81
+  - b02ee91cb3255084087c78d5b6bdbc84
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.01
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 1
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

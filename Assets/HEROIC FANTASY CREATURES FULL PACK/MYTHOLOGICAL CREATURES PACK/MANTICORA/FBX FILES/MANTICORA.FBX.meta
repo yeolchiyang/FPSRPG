@@ -1,0 +1,141 @@
+fileFormatVersion: 2
+guid: 27146ef18fe7f65478e7761fadeacf6e
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable:
+  - first:
+      43: 4300000
+    second: MANTICORA
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips:
+  - f34cc083c2a57424a89edf6fc8acf923
+  - 3f3812920d6522641a87ffda3f519063
+  - 37676184e13ea7d46b66bab9883e173c
+  - 5ba6f7b3dc2e2d54cb8b629733b39cb7
+  - 3567aa1d12d07494a9ad77984a387365
+  - 80c982a8b4545b04fa2fb2471d1f3097
+  - 0a3e634be2b6a7c4a94ba9d5b6070593
+  - 3d94054523f5f284d8f0bb1fbb273383
+  - fa09466952d85054682585db16b0e816
+  - e087b73041f9d4d43a155678fe5eb75a
+  - 4a3d4aa0d6db3014892a19b9951b5308
+  - 78036f9d7ec6223468a83bf644f0b560
+  - f7e7fc18a2b299f418b95ebd5219e9bd
+  - 8a504f8fb07fb1741936a58e5ffa1ad0
+  - 358326a5a22934c438fa5b9f5aa522b8
+  - c41e82fc13a20dc45b1250bb6247b790
+  - 1e00b6203138f7642a9f3ae95b66bd99
+  - 09fab4a7b84ce75498165cd8fad92411
+  - bb4343599629fc346b20fb4ec714bcc3
+  - d42d7496548aaa847a59cac3e0cb666c
+  - 6f732019b699b61459bea5e5a4cd5c43
+  - 95f2631f6f60fb144a219ff0fcee7166
+  - a697a53dfe89205429a8cff26d79cfe9
+  - e7b6932ded9c99941bc8a8742dfecf37
+  - f3d8150571458364a87620b206469c9c
+  - 06f9f4b7795ab644cac612c53e63a6a4
+  - 0147c6c8e2d3c6f4887a40abfd8ed68b
+  - be277995f63c765438c06c65703de6fe
+  - 19c37d888d608244788bc9c06834ea19
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.01
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 1
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,830 @@
+fileFormatVersion: 2
+guid: 047f9e0680280ed48b3213aa177c598d
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: ogre_01
+    100004: Ogrecloth_back
+    100006: Ogrecloth_front
+    100008: OgreHead
+    100010: OgreLCalf
+    100012: OgreLCollarbone
+    100014: OgreLDigit11
+    100016: OgreLDigit11 1
+    100018: OgreLDigit12
+    100020: OgreLDigit13
+    100022: OgreLDigit21
+    100024: OgreLDigit22
+    100026: OgreLDigit23
+    100028: OgreLDigit31
+    100030: OgreLDigit32
+    100032: OgreLDigit33
+    100034: OgreLFoot
+    100036: OgreLForearm
+    100038: OgreLPalm
+    100040: OgreLThigh
+    100042: OgreLUpperarm
+    100044: Ogremouth
+    100046: OgreNeck
+    100048: OgrePelvis
+    100050: OgreRCalf
+    100052: OgreRCollarbone
+    100054: OgreRDigit11
+    100056: OgreRDigit11 1
+    100058: OgreRDigit12
+    100060: OgreRDigit13
+    100062: OgreRDigit21
+    100064: OgreRDigit22
+    100066: OgreRDigit23
+    100068: OgreRDigit31
+    100070: OgreRDigit32
+    100072: OgreRDigit33
+    100074: OgreRFoot
+    100076: OgreRForearm
+    100078: OgreRibcage
+    100080: OgreRPalm
+    100082: OgreRThigh
+    100084: OgreRUpperarm
+    100086: OgreSpine1
+    100088: OgreSpine2
+    100090: OgreSpine3
+    100092: OgreLToe11
+    100094: OgreRToe11
+    400000: //RootNode
+    400002: ogre_01
+    400004: Ogrecloth_back
+    400006: Ogrecloth_front
+    400008: OgreHead
+    400010: OgreLCalf
+    400012: OgreLCollarbone
+    400014: OgreLDigit11
+    400016: OgreLDigit11 1
+    400018: OgreLDigit12
+    400020: OgreLDigit13
+    400022: OgreLDigit21
+    400024: OgreLDigit22
+    400026: OgreLDigit23
+    400028: OgreLDigit31
+    400030: OgreLDigit32
+    400032: OgreLDigit33
+    400034: OgreLFoot
+    400036: OgreLForearm
+    400038: OgreLPalm
+    400040: OgreLThigh
+    400042: OgreLUpperarm
+    400044: Ogremouth
+    400046: OgreNeck
+    400048: OgrePelvis
+    400050: OgreRCalf
+    400052: OgreRCollarbone
+    400054: OgreRDigit11
+    400056: OgreRDigit11 1
+    400058: OgreRDigit12
+    400060: OgreRDigit13
+    400062: OgreRDigit21
+    400064: OgreRDigit22
+    400066: OgreRDigit23
+    400068: OgreRDigit31
+    400070: OgreRDigit32
+    400072: OgreRDigit33
+    400074: OgreRFoot
+    400076: OgreRForearm
+    400078: OgreRibcage
+    400080: OgreRPalm
+    400082: OgreRThigh
+    400084: OgreRUpperarm
+    400086: OgreSpine1
+    400088: OgreSpine2
+    400090: OgreSpine3
+    400092: OgreLToe11
+    400094: OgreRToe11
+    4300000: ogre_01
+    7400000: run
+    11100000: //RootNode
+    13700000: ogre_01
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: run
+      takeName: 
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 1
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    human:
+    - boneName: OgrePelvis
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLThigh
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRThigh
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLCalf
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRCalf
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLFoot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRFoot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreSpine1
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreSpine2
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreNeck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreHead
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLCollarbone
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRCollarbone
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLUpperarm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRUpperarm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLForearm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRForearm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLPalm
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRPalm
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit11
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit11
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Ogremouth
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit21
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit22
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit23
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit31
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit32
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit33
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit21
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit22
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit23
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit31
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit32
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit33
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit11 1
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit12
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreLDigit13
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit11 1
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit12
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: OgreRDigit13
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: FH_ogre(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_01
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_02
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_armor
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_armplate
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_shoulderpad_00
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_shoulderpad_01
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_shoulderpad_03
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Orgre_ponnytail
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -.707106829, y: 0, z: -0, w: .707106829}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: OgrePelvis
+      position: {x: 5.21540642e-08, y: 1.02577066, z: -.0269967839}
+      rotation: {x: .499126881, y: -.500871658, z: -.499126852, w: .500871599}
+      scale: {x: 1.00000024, y: .999999464, z: 1.00000072}
+      transformModified: 1
+    - name: Ogrecloth_back
+      position: {x: -.000235748288, y: -.0675868914, z: 9.53674295e-09}
+      rotation: {x: -1.49011612e-08, y: 1.93715096e-07, z: 1, w: -1.49011612e-08}
+      scale: {x: .999999166, y: .999999762, z: .999998629}
+      transformModified: 1
+    - name: OgreSpine1
+      position: {x: -.109993741, y: -.0084156869, z: -1.90734859e-08}
+      rotation: {x: -3.87430134e-07, y: 5.96046377e-08, z: .0750588104, w: .997179151}
+      scale: {x: 1.00000012, y: .99999994, z: .999999762}
+      transformModified: 1
+    - name: OgreSpine2
+      position: {x: -.332276762, y: 0, z: 4.76837148e-09}
+      rotation: {x: 1.49011598e-07, y: -1.04308114e-07, z: .00917722192, w: .99995786}
+      scale: {x: .999999762, y: 1.00000048, z: .999999344}
+      transformModified: 1
+    - name: OgreSpine3
+      position: {x: -.283055574, y: 9.53674295e-09, z: 4.76837148e-09}
+      rotation: {x: 6.10947552e-07, y: -5.96046377e-08, z: .13224113, w: -.991217554}
+      scale: {x: .999999046, y: 1.00000083, z: .999999344}
+      transformModified: 1
+    - name: OgreRibcage
+      position: {x: -.304178774, y: -1.90734859e-08, z: -9.53674295e-09}
+      rotation: {x: -7.59959221e-07, y: 0, z: .0586718172, w: -.998277307}
+      scale: {x: .999999642, y: 1.00000072, z: 1.00000012}
+      transformModified: 1
+    - name: OgreNeck
+      position: {x: -.031087799, y: -.0397162624, z: -1.90734859e-08}
+      rotation: {x: 2.98023224e-08, y: 1.1920929e-07, z: -.138284728, w: .990392566}
+      scale: {x: .999997675, y: .999999464, z: 1}
+      transformModified: 1
+    - name: OgreHead
+      position: {x: -.290997773, y: -1.52587887e-07, z: 0}
+      rotation: {x: 2.98023259e-08, y: 0, z: -.348276317, w: -.937391937}
+      scale: {x: .999995828, y: 1.00000572, z: 1.00000012}
+      transformModified: 1
+    - name: ogre_helmelt_01
+      position: {x: 2.32693553, y: -.0632660314, z: 2.24113464e-07}
+      rotation: {x: .707106829, y: 3.09104387e-08, z: -.707106829, w: 3.09104387e-08}
+      scale: {x: 1, y: .99999994, z: .99999994}
+      transformModified: 1
+    - name: ogre_helmelt_02
+      position: {x: 2.32693458, y: -.0632657334, z: -8.58306848e-08}
+      rotation: {x: .707106829, y: 2.78235142e-08, z: -.707106829, w: 2.78235142e-08}
+      scale: {x: 1, y: .999999702, z: .999999762}
+      transformModified: 1
+    - name: ogre_helmelt_03
+      position: {x: 2.32693458, y: -.0632657334, z: -8.58306848e-08}
+      rotation: {x: .707106829, y: 2.78235142e-08, z: -.707106829, w: 2.78235142e-08}
+      scale: {x: 1, y: .999999702, z: .999999762}
+      transformModified: 1
+    - name: Ogremouth
+      position: {x: .138231203, y: .131566957, z: -1.90734859e-08}
+      rotation: {x: -1.2665987e-07, y: -8.94069672e-08, z: .873169541, w: -.487416685}
+      scale: {x: .999994576, y: 1.00000238, z: .999999285}
+      transformModified: 1
+    - name: OgreLCollarbone
+      position: {x: .0340274051, y: .322648436, z: .0456115901}
+      rotation: {x: .0485709533, y: .706315577, z: .168405443, w: .685856223}
+      scale: {x: .999998271, y: .999999821, z: 1.0000025}
+      transformModified: 1
+    - name: OgreLUpperarm
+      position: {x: -.397476077, y: 1.90734859e-08, z: 0}
+      rotation: {x: .0811912864, y: .00798795559, z: -.160775498, w: .983613491}
+      scale: {x: 1.00000083, y: .999999523, z: 1.00000226}
+      transformModified: 1
+    - name: OgreLForearm
+      position: {x: -.555343032, y: -3.81469718e-08, z: -7.62939436e-08}
+      rotation: {x: .0216210354, y: -.0310246348, z: -.0206131134, w: .999072134}
+      scale: {x: 1, y: 1.00000119, z: .999997795}
+      transformModified: 1
+    - name: OgreLPalm
+      position: {x: -.433443069, y: -5.72204577e-08, z: 1.52587887e-07}
+      rotation: {x: -.771600425, y: .110629454, z: .0126539934, w: .626285791}
+      scale: {x: .999998271, y: 1.00000072, z: .999999046}
+      transformModified: 1
+    - name: OgreLDigit31
+      position: {x: -.298581272, y: .009587707, z: -.018932933}
+      rotation: {x: -.00111026247, y: -.0499695912, z: .060005378, w: .996945918}
+      scale: {x: .999998331, y: 1.00000191, z: .999999762}
+      transformModified: 1
+    - name: OgreLDigit32
+      position: {x: -.118851319, y: 0, z: -1.90734859e-08}
+      rotation: {x: -.0083142994, y: -.00935105048, z: .0354165062, w: .9992944}
+      scale: {x: .999998689, y: 1.00000167, z: .999999702}
+      transformModified: 1
+    - name: OgreLDigit33
+      position: {x: -.0853168443, y: 3.81469718e-08, z: -2.86102289e-08}
+      rotation: {x: -.0183764175, y: -.0188599639, z: .127685204, w: .991465211}
+      scale: {x: 1.00000131, y: .999999344, z: .999999464}
+      transformModified: 1
+    - name: OgreLDigit21
+      position: {x: -.302414894, y: .0223626699, z: .0889198482}
+      rotation: {x: .00103102904, y: .0145232985, z: .0492740981, w: .998679221}
+      scale: {x: .999998927, y: 1.00000119, z: 1.0000006}
+      transformModified: 1
+    - name: OgreLDigit22
+      position: {x: -.117869489, y: 0, z: -3.81469718e-08}
+      rotation: {x: .0106385686, y: -.0224115625, z: .0320657268, w: .999177814}
+      scale: {x: .999999702, y: 1.00000048, z: .999999762}
+      transformModified: 1
+    - name: OgreLDigit23
+      position: {x: -.0965126008, y: -3.81469718e-08, z: -1.90734859e-08}
+      rotation: {x: .0129095595, y: .00481241895, z: .0233665705, w: .999632061}
+      scale: {x: 1.00000024, y: 1.0000006, z: 1.00000048}
+      transformModified: 1
+    - name: OgreLDigit11 1
+      position: {x: -.080056034, y: -.0203030389, z: .106465816}
+      rotation: {x: .523887694, y: .311701357, z: -.149012163, w: .778575242}
+      scale: {x: .999996543, y: .999999166, z: 1.00000393}
+      transformModified: 1
+    - name: OgreLDigit12
+      position: {x: -.115236051, y: 7.62939436e-08, z: 0}
+      rotation: {x: -.0241975263, y: .00804138649, z: .0322856195, w: .999153376}
+      scale: {x: .999999523, y: 1.00000036, z: .999999523}
+      transformModified: 1
+    - name: OgreLDigit13
+      position: {x: -.0977748856, y: 0, z: -7.62939436e-08}
+      rotation: {x: .0449124873, y: -.0479909703, z: .149843514, w: .986522555}
+      scale: {x: .999999106, y: 1.00000131, z: 1.00000036}
+      transformModified: 1
+    - name: OgreRCollarbone
+      position: {x: .0340272523, y: .322648436, z: -.0456115901}
+      rotation: {x: .0485709384, y: .706314981, z: -.168405682, w: -.68585676}
+      scale: {x: .999999046, y: .999999523, z: 1.00000238}
+      transformModified: 1
+    - name: OgreRUpperarm
+      position: {x: -.397476077, y: -2.38418565e-08, z: -1.52587887e-07}
+      rotation: {x: -.0811912641, y: -.00798911136, z: -.16077584, w: .983613431}
+      scale: {x: .999999762, y: 1.00000024, z: .999999881}
+      transformModified: 1
+    - name: OgreRForearm
+      position: {x: -.555342853, y: -1.90734859e-08, z: 0}
+      rotation: {x: -.0216206312, y: .031025188, z: -.0206126869, w: .999072194}
+      scale: {x: 1.00000179, y: .999998331, z: .99999851}
+      transformModified: 1
+    - name: OgreRPalm
+      position: {x: -.43344298, y: 0, z: 7.62939436e-08}
+      rotation: {x: .771600306, y: -.110629931, z: .0126541713, w: .626285672}
+      scale: {x: .999997377, y: 1.0000037, z: 1.00000072}
+      transformModified: 1
+    - name: ogre_axe_01
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745363161, y: .98953253, z: .000671607675, w: -.123568662}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: ogre_axe_02
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745354742, y: .98953259, z: .00067117071, w: -.123568818}
+      scale: {x: 1, y: .99999994, z: .999999821}
+      transformModified: 1
+    - name: ogre_club
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745360181, y: .98953259, z: .000671614951, w: -.123568662}
+      scale: {x: .999999821, y: .99999994, z: 1}
+      transformModified: 1
+    - name: ogre_hammer
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745363012, y: .98953253, z: .000671309535, w: -.123568811}
+      scale: {x: 1.00000012, y: .999999881, z: .99999994}
+      transformModified: 1
+    - name: ogre_mace
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745360181, y: .98953259, z: .000671614951, w: -.123568662}
+      scale: {x: .999999821, y: .99999994, z: 1}
+      transformModified: 1
+    - name: ogre_morningstar
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745360181, y: .98953259, z: .000671614951, w: -.123568662}
+      scale: {x: .999999821, y: .99999994, z: 1}
+      transformModified: 1
+    - name: ogre_sword
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745360255, y: .98953259, z: .000671620423, w: -.123568617}
+      scale: {x: .999999821, y: 1.00000024, z: 1}
+      transformModified: 1
+    - name: ogre_trunk
+      position: {x: -.226223975, y: -.0814734623, z: .00914594624}
+      rotation: {x: -.0745363012, y: .98953253, z: .000671309535, w: -.123568811}
+      scale: {x: 1.00000012, y: .999999881, z: .99999994}
+      transformModified: 1
+    - name: OgreRDigit31
+      position: {x: -.298581064, y: .00958747882, z: .018932933}
+      rotation: {x: .00111034315, y: .0499694683, z: .0600060746, w: .996945918}
+      scale: {x: .999999523, y: 1.00000131, z: 1.00000083}
+      transformModified: 1
+    - name: OgreRDigit32
+      position: {x: -.118851237, y: 3.81469718e-08, z: 0}
+      rotation: {x: .00831393432, y: .00935180672, z: .0354164802, w: .999294341}
+      scale: {x: .999999464, y: .999999285, z: .999998808}
+      transformModified: 1
+    - name: OgreRDigit33
+      position: {x: -.0853168815, y: 0, z: 1.90734859e-08}
+      rotation: {x: .0183762945, y: .0188599937, z: .12768507, w: .991465211}
+      scale: {x: 1.00000048, y: .999999285, z: .999999881}
+      transformModified: 1
+    - name: OgreRDigit21
+      position: {x: -.302415043, y: .0223623645, z: -.0889198184}
+      rotation: {x: -.00103112485, y: -.0145233031, z: .0492736101, w: .998679221}
+      scale: {x: .999999583, y: 1.00000083, z: 1.00000048}
+      transformModified: 1
+    - name: OgreRDigit22
+      position: {x: -.117869414, y: -7.62939436e-08, z: -1.90734859e-08}
+      rotation: {x: -.0106386235, y: .0224115141, z: .0320648663, w: .999177933}
+      scale: {x: 1.00000036, y: 1.00000012, z: 1}
+      transformModified: 1
+    - name: OgreRDigit23
+      position: {x: -.0965125263, y: 0, z: -9.53674295e-09}
+      rotation: {x: -.0129095539, y: -.00481234863, z: .0233665705, w: .999632061}
+      scale: {x: 1.00000095, y: .999999821, z: 1}
+      transformModified: 1
+    - name: OgreRDigit11 1
+      position: {x: -.0800558478, y: -.0203034207, z: -.10646572}
+      rotation: {x: -.523887873, y: -.311700583, z: -.149011776, w: .77857548}
+      scale: {x: .999999285, y: .999999881, z: 1.00000083}
+      transformModified: 1
+    - name: OgreRDigit12
+      position: {x: -.115235895, y: -7.62939436e-08, z: -1.90734859e-08}
+      rotation: {x: .0241974294, y: -.00804192573, z: .0322850086, w: .999153376}
+      scale: {x: .999999523, y: 1.00000036, z: 1.00000072}
+      transformModified: 1
+    - name: OgreRDigit13
+      position: {x: -.0977748111, y: -3.81469718e-08, z: -3.81469718e-08}
+      rotation: {x: -.0449126177, y: .0479909927, z: .149843484, w: .986522496}
+      scale: {x: .999999225, y: 1.00000012, z: .999999166}
+      transformModified: 1
+    - name: OgreLThigh
+      position: {x: -.0414363854, y: .112978511, z: .232172936}
+      rotation: {x: .0383835286, y: .996688604, z: .0226236284, w: .0680199265}
+      scale: {x: .999999881, y: 1.00000203, z: .999999881}
+      transformModified: 1
+    - name: OgreLCalf
+      position: {x: -.494934499, y: 1.33514405e-07, z: -1.14440915e-07}
+      rotation: {x: -.0795310661, y: -.00508972956, z: .102554873, w: .991529822}
+      scale: {x: .999998927, y: .999998808, z: .999999225}
+      transformModified: 1
+    - name: OgreLFoot
+      position: {x: -.514419019, y: 0, z: -3.81469718e-08}
+      rotation: {x: -.0520437285, y: .0629545376, z: -.72491616, w: .683977187}
+      scale: {x: .999999881, y: 1.00000119, z: 1.00000024}
+      transformModified: 1
+    - name: OgreLDigit11
+      position: {x: -.424821258, y: .0248138513, z: 4.04357888e-06}
+      rotation: {x: -.00555293215, y: .00047185627, z: -.0960286111, w: .995362997}
+      scale: {x: 1.00000012, y: .999999762, z: .999999642}
+      transformModified: 1
+    - name: Ogrecloth_front
+      position: {x: -.0109459683, y: .213443831, z: -2.86102289e-08}
+      rotation: {x: 0, y: 1.78813934e-07, z: 1, w: -5.96046448e-08}
+      scale: {x: .999999046, y: .999999702, z: .99999851}
+      transformModified: 1
+    - name: OgreRThigh
+      position: {x: -.0414364599, y: .112978525, z: -.232172847}
+      rotation: {x: .0383941233, y: .996677876, z: -.0226010233, w: -.0681785643}
+      scale: {x: .999999881, y: 1.00000131, z: .999999225}
+      transformModified: 1
+    - name: OgreRCalf
+      position: {x: -.49493444, y: 1.52587887e-07, z: 0}
+      rotation: {x: .0795738474, y: .00515142037, z: .10253121, w: .991528511}
+      scale: {x: .999999702, y: .999999404, z: .999999464}
+      transformModified: 1
+    - name: OgreRFoot
+      position: {x: -.514419019, y: 1.43051144e-08, z: -3.81469718e-08}
+      rotation: {x: .0520517752, y: -.0630262643, z: -.724892676, w: .683994949}
+      scale: {x: 1.00000048, y: .999999762, z: 1.00000072}
+      transformModified: 1
+    - name: OgreRDigit11
+      position: {x: -.424821377, y: .024813842, z: -4.04357888e-06}
+      rotation: {x: .0055529275, y: -.000471596402, z: -.0960271284, w: .995363116}
+      scale: {x: .999999762, y: 1.00000036, z: .999999642}
+      transformModified: 1
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 8a5df5896ae14fe44a5a9ca3ddef1687,
+    type: 3}
+  animationType: 3
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

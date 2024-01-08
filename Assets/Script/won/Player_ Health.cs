@@ -5,21 +5,40 @@ using Player_animation;
 
 public class Player_Health : MonoBehaviour
 {
+    Launcher launcher;
+    Machine machine;
+    VGSGUN VGSGUN;
+    PlayerCtrl PlayerCtrl;
     Player_Anima anima;
     public float maxHp = 100f;
     public float currentHp;
+    public float maxMp = 100f;
+    public float currentMp;
+    public float currentExp;
+    public float maxExp = 100f;
+    public float Stet = 0f;
+    public float WeaponDamage = 0f;
     // Start is called before the first frame update
     void Start()
     {
+        PlayerCtrl = GetComponent<PlayerCtrl>();
         anima = GetComponent<Player_Anima>();
         currentHp = maxHp;
+        currentMp = maxMp;
+        currentExp = 0f;
     }
 
-    
+    private void Update()
+    {
+        if(currentExp == maxExp)
+        {
+            Stet++;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "Enemy")
+        if (collision.collider.tag == "Enemy" && currentHp>0)
         {
             anima.Player_Hit();
             TakeDamage(10f);
@@ -33,8 +52,20 @@ public class Player_Health : MonoBehaviour
 
         if (currentHp <= 0)
         {
-            anima.Player_Die();
-            Debug.Log("ÇÃ·¹ÀÌ »ç¸Á");
+            die();
         }
+    }
+    public void die()
+    {
+        anima.Player_Die();
+        Debug.Log("ÇÃ·¹ÀÌ »ç¸Á");
+        PlayerCtrl.sss();
+        launcher.qwe();
+        machine.zxc();
+        VGSGUN.asd();
+    }
+    public void ADDExp()
+    {
+        currentExp += 10;
     }
 }

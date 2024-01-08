@@ -1,28 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Yang;
 
 public class shoothit : MonoBehaviour
 {
+    Skeleton skeleton;
+    public float weaponDamage;
     // Start is called before the first frame update
     void Start()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitInfo;
-
-        if (Physics.Raycast(ray, out hitInfo))
+        Debug.Log(weaponDamage);
+    }
+    // Update is called once per frame
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Enemy")
         {
-            // 충돌한 Collider에 접근합니다.
-            Collider hitCollider = hitInfo.collider;
-
-            // 여기에 원하는 작업을 수행합니다.
-            Debug.Log("Hit object: " + hitCollider.gameObject.name);
+            skeleton = collision.gameObject.GetComponent<Skeleton>();
+            skeleton.SetDamaged(weaponDamage);
         }
+
     }
 }

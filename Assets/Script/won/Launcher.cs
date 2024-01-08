@@ -15,23 +15,22 @@ public class Launcher : MonoBehaviour
     private Vector3 direction;
     private Quaternion rotation;
     public float MaxLength;
-    private float ShootDamage;
     private float Range = 100f;
+    bool ok = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        ShootDamage = WeaponChange.WeaponDamage;
+        
     }
     float shootspeed = 0;
     // Update is called once per frame
     void Update()
     {
         shootspeed = shootspeed+Time.deltaTime;
-        if (Input.GetMouseButton(0) && shootspeed >= 0.15)
+        if (Input.GetMouseButton(0) && shootspeed >= 0.15&&ok)
         {
             shootspeed = 0;
-            Debug.Log(shootspeed);
             
             GameObject  ASD = Instantiate(BulletEffect, BulletStartPoint.transform.position, BulletStartPoint.transform.rotation);
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
@@ -41,9 +40,7 @@ public class Launcher : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo, Range, layerMask))
             {
                 ASD.transform.LookAt(hitInfo.point);
-                Skeleton enemy = hitInfo.collider.GetComponent<Skeleton>();
-                if (enemy != null)
-                    enemy.SetDamaged(hitInfo, ShootDamage);
+                
             }
             else
             {
@@ -59,5 +56,8 @@ public class Launcher : MonoBehaviour
         rotation = Quaternion.LookRotation(direction);
         obj.transform.localRotation = Quaternion.Lerp(obj.transform.rotation, rotation, 1);
     }
-    
+    public void qwe()
+    {
+        ok = false;
+    }
 }

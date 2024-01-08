@@ -16,25 +16,26 @@ public class VGSGUN : MonoBehaviour
     private Vector3 direction;
     private Quaternion rotation;
     public float MaxLength;
-    float ShootDamage;
+    bool ok =true;
     float shootspeed;
     
     // Start is called before the first frame update
     void Start()
     {
         shootspeed = 0;
-        ShootDamage = WeaponChange.WeaponDamage;
+
     }
     float Range = 100f;
     // Update is called once per frame
     void Update()
     {
-        shootspeed += shootspeed+Time.deltaTime;
-        
-        if (Input.GetMouseButtonDown(0)&&shootspeed>2)
+        shootspeed = shootspeed+Time.deltaTime;
+        Debug.Log(shootspeed);
+        if (Input.GetMouseButtonDown(0) && shootspeed >= 1)
         {
+            shootspeed=0;
+            ok = false;
             GameObject obj= Instantiate(BulletEffect, BulletStartPoint.transform.position, BulletStartPoint.transform.rotation);
-            shootspeed = 0;
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             RaycastHit hitInfo = new RaycastHit();//hit 오브젝트
             int layerMask = ~(1 << LayerMask.NameToLayer("Player"));
@@ -42,10 +43,7 @@ public class VGSGUN : MonoBehaviour
             {
                 
                 obj.transform.LookAt(hitInfo.point);
-                Skeleton enemy = hitInfo.collider.GetComponent<Skeleton>();
-                if (enemy != null)
-                    enemy.SetDamaged(hitInfo, ShootDamage);
-
+               
             }
             else
             {
@@ -63,6 +61,7 @@ public class VGSGUN : MonoBehaviour
                     RotateToMouseDirection(gameObject, hit.point);
                 }
             }
+            
         }
         void RotateToMouseDirection(GameObject obj, Vector3 destination)
         {
@@ -70,5 +69,9 @@ public class VGSGUN : MonoBehaviour
             rotation = Quaternion.LookRotation(direction);
             obj.transform.localRotation = Quaternion.Lerp(obj.transform.rotation, rotation, 1);
         }
+    }
+    public void asd()
+    {
+        ok = false;
     }
 }

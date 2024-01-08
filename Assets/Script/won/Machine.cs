@@ -9,9 +9,12 @@ public class Machine : MonoBehaviour
     public GameObject BulletStartEffect;
     public GameObject BulletStartPoint;
     Transform BulletSatEffect;
+    public float ShootDamage;
+    bool ok = true;
 
     private void Start()
     {
+       
         BulletSatEffect = BulletStartPoint.GetComponent<Transform>();
     }
 
@@ -19,7 +22,7 @@ public class Machine : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&ok)
         {
             Vector3 startShootPosition = BulletStartPoint.transform.position;
 
@@ -45,8 +48,14 @@ public class Machine : MonoBehaviour
                 {
                     ps.Play();
                 }
-
+                Skeleton enemy = hitInfo.collider.GetComponent<Skeleton>();
+                if (enemy != null)
+                    enemy.SetDamaged(ShootDamage);
             }
         }
+    }
+    public void zxc()
+    {
+        ok = false;
     }
 }

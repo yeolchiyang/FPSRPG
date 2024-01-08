@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Yang;
 
 public class WeaponChange : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class WeaponChange : MonoBehaviour
     public GameObject[] Weapon;
     int currentWeaponNumber = 0;
     public float WeaponDamage = 10;
+    Skeleton skeleton;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,20 +21,24 @@ public class WeaponChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("aaa" + WeaponDamage);
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentWeaponNumber = 0;
             WeaponON();
+            WeaponDamage = 50;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             currentWeaponNumber = 1;
             WeaponON();
+            WeaponDamage = 10;
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentWeaponNumber = 2;
             WeaponON();
+            WeaponDamage = 2;
         }
     }
     void WeaponON()
@@ -42,6 +48,10 @@ public class WeaponChange : MonoBehaviour
             Weapon[i].SetActive(false);
         }
         Weapon[currentWeaponNumber].SetActive(true);
-        WeaponDamage = currentWeaponNumber * 5;
+    }
+    public void hit()
+    {
+        skeleton=GetComponent<Skeleton>();
+        skeleton.SetDamaged(WeaponDamage);
     }
 }

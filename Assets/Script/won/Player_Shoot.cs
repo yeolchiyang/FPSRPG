@@ -8,8 +8,8 @@ using Yang;
 
 public class Player_Shoot : MonoBehaviour
 {
+
     WeaponChange weaponChange;
-    float ShootDamage;
     public RaycastHit hitInfo;
     private void Start()
     {
@@ -18,7 +18,6 @@ public class Player_Shoot : MonoBehaviour
     float Range = 100f;
     private void Update()
     {
-        ShootDamage = weaponChange.WeaponDamage;
         if (Input.GetMouseButtonDown(0))
         {
            
@@ -31,7 +30,7 @@ public class Player_Shoot : MonoBehaviour
                
                 Skeleton enemy = hitInfo.collider.GetComponent<Skeleton>();
                 if (enemy != null)
-                    enemy.SetDamaged(hitInfo, ShootDamage);
+                    weaponChange.hit();
                 
             }
         }

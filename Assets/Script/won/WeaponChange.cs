@@ -21,7 +21,6 @@ public class WeaponChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("aaa" + WeaponDamage);
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentWeaponNumber = 0;

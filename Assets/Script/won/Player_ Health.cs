@@ -16,8 +16,10 @@ public class Player_Health : MonoBehaviour
     public float currentMp;
     public float currentExp;
     public float maxExp = 100f;
-    public float Stet = 0f;
+    public float lv = 1f;
+    public float forceSoul = 0f;
     public float WeaponDamage = 0f;
+    public bool BossHunting = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,10 +31,12 @@ public class Player_Health : MonoBehaviour
     }
 
     private void Update()
-    {
-        if(currentExp == maxExp)
+    {   
+        if(currentExp >= maxExp)
         {
-            Stet++;
+            currentExp -= maxExp;
+            lv++;
+            forceSoul++;
         }
     }
 
@@ -67,5 +71,9 @@ public class Player_Health : MonoBehaviour
     public void ADDExp()
     {
         currentExp += 10;
+    }
+    public void BossKill()
+    {
+        BossHunting = true;
     }
 }

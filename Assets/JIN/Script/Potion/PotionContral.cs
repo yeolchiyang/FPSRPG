@@ -6,15 +6,21 @@ public class PortionContral : MonoBehaviour
 {
     Animator anim;
     [SerializeField] GameObject[] Portions;
+    List<PortionCount> PortionList = new List<PortionCount>();
+    
     [SerializeField] GameObject DebineEff;
     [SerializeField] GameObject HillEff;
-    List<PortionCount> PortionList = new List<PortionCount> ();
+    float hillPower = 20f;
+
+    [SerializeField] GameObject Player;
+    Player_Health player;
 
     float portionDilay = 2f;
     float countTime = 0;
 
     private void Start()
     {
+        player = Player.GetComponent<Player_Health>();
         
         for (int i = 0; i < Portions.Length; ++i)
         {
@@ -35,6 +41,10 @@ public class PortionContral : MonoBehaviour
         {
             HillEff.SetActive(!PortionList[0].isEmpty());
             PortionList[0].ReducePotion(1);
+            if (player.currentHp + hillPower > 100)
+                player.currentHp = 100;
+            else
+                player.currentHp += hillPower;
             countTime = portionDilay;
         }
         if (Input.GetKeyDown("7"))

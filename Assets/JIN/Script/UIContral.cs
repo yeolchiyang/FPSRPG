@@ -7,9 +7,9 @@ public class UIContral : MonoBehaviour
     int currentSetArmIndex;
 
     //GameObject Boss;
-    //GameObject Player;
+    public GameObject Player;
 
-
+    Player_Health player;
     
     [SerializeField] GameObject BossHPBar;
     [SerializeField] GameObject[] Aims;
@@ -23,7 +23,7 @@ public class UIContral : MonoBehaviour
 
     private void Start()
     {
-        //Player player = Player.GetComponent<Player>()
+        player = Player.GetComponent<Player_Health>();
         //Boss boss = Boss.GetComponent<Boss>();
         for (int i = 0; i < Aims.Length; ++i) {
             aims.Add(Aims[i]);
@@ -32,8 +32,8 @@ public class UIContral : MonoBehaviour
 
     void Update()
     {
-        PlayerLv.text = "" + /*player.lv*/1;
-        ForceSoulCount.text = "" + /*player.forceSoul*/10;
+        PlayerLv.text = "" + player.lv;
+        ForceSoulCount.text = "" + player.forceSoul;
 
         if (Input.GetKeyDown("1"))  //basic gun
         {

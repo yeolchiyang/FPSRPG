@@ -10,7 +10,7 @@ namespace Yang{
     {
         public bool isActive = true;
         protected EnemyStat stat;
-        protected IState rootState;//상태를 관리하는 클래스입니다.
+        public IState rootState;//상태를 관리하는 클래스입니다.
         protected UnityEngine.AI.NavMeshAgent skeletonNav;
         [SerializeField] protected Animator skeletonAnimator;
         [SerializeField] protected GameObject skeletonHitEffect;
@@ -44,6 +44,32 @@ namespace Yang{
         public virtual void SetDamaged(RaycastHit hit, float damage)
         {
             
+        }
+        /// <summary>
+        /// NavMesh를 중지합니다. 모든 오브젝트에 적용 가능합니다.
+        /// </summary>
+        protected void StopNavigtaion()
+        {
+            if (!skeletonNav.isStopped)
+            {
+                skeletonNav.isStopped = true;
+                skeletonNav.updatePosition = false;
+                skeletonNav.updateRotation = false;
+                skeletonNav.velocity = Vector3.zero;
+            }
+        }
+        /// <summary>
+        /// NavMesh를 시작 또는 재시작합니다. 모든 오브젝트에 적용 가능합니다.
+        /// </summary>
+        /// <param name="speed">1초마다 speed만큼의 거리를 이동합니다.</param>
+        protected void StartNavigtaion(float speed)
+        {
+            skeletonNav.isStopped = false;
+            skeletonNav.ResetPath();//ResetPath -> SetDestination 해야 재작동 합니다.
+            skeletonNav.SetDestination(playerObject.transform.position);
+            skeletonNav.updatePosition = true;
+            skeletonNav.updateRotation = true;
+            skeletonNav.speed = speed;
         }
 
     }

@@ -10,6 +10,9 @@ public class Player_Health : MonoBehaviour
     VGSGUN VGSGUN;
     PlayerCtrl PlayerCtrl;
     Player_Anima anima;
+
+    [SerializeField] ContralConditionBar ccb;
+
     public float maxHp = 100f;
     public float currentHp;
     public float maxMp = 100f;
@@ -21,7 +24,7 @@ public class Player_Health : MonoBehaviour
     public float WeaponDamage = 0f;
     public bool BossHunting = false;
     // Start is called before the first frame update
-    void Start()
+    void Awake()    //진선윤 start -> awake 전환
     {
         PlayerCtrl = GetComponent<PlayerCtrl>();
         anima = GetComponent<Player_Anima>();
@@ -53,7 +56,7 @@ public class Player_Health : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHp -= damage;
-
+        ccb.UpdateHP();
         if (currentHp <= 0)
         {
             die();
@@ -71,6 +74,7 @@ public class Player_Health : MonoBehaviour
     public void ADDExp()
     {
         currentExp += 10;
+        ccb.UpdateEXP();
     }
     public void BossKill()
     {

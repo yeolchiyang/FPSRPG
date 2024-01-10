@@ -10,6 +10,9 @@ public class UIContral : MonoBehaviour
     public GameObject Player;
 
     Player_Health player;
+
+    [SerializeField] GameObject GameMenuWindow;
+    bool gameMenuVisible = false;
     
     [SerializeField] GameObject BossHPBar;
     [SerializeField] GameObject[] Aims;
@@ -28,6 +31,13 @@ public class UIContral : MonoBehaviour
         for (int i = 0; i < Aims.Length; ++i) {
             aims.Add(Aims[i]);
         }
+
+        GameMenuWindow.SetActive(false);
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        setAim(0);
     }
 
     void Update()
@@ -67,6 +77,11 @@ public class UIContral : MonoBehaviour
                     /*boss.currentHP*/100, /*boss.maxHP*/100, /*boss.name*/"DemonKing Diablo");
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            MenuWindowContral();
+        }
     }
 
     void setAim(int armIndex)
@@ -83,5 +98,25 @@ public class UIContral : MonoBehaviour
     {
         aims[currentSetArmIndex].SetActive(false);
         Arms[currentSetArmIndex ].color = new Color(0.17f, 0.17f, 0.17f);
+    }
+
+    public void MenuWindowContral()
+    {
+        gameMenuVisible = !gameMenuVisible;
+
+        if (gameMenuVisible == true)
+        {
+            GameMenuWindow.SetActive(gameMenuVisible);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            GameMenuWindow.SetActive(gameMenuVisible);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1f;
+        }
     }
 }

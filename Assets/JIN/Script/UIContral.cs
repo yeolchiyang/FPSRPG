@@ -7,13 +7,12 @@ public class UIContral : MonoBehaviour
     int currentSetArmIndex;
 
     //GameObject Boss;
-    //GameObject Player;
+    public GameObject Player;
+
+    Player_Health player;
     
     [SerializeField] GameObject BossHPBar;
     [SerializeField] GameObject[] Aims;
-
-    [SerializeField] GameObject MainMemu;
-    bool mainMenuActivite = false;
 
     [SerializeField] UnityEngine.UI.Image[] Arms;
     
@@ -22,27 +21,19 @@ public class UIContral : MonoBehaviour
 
     List<GameObject> aims = new List<GameObject>();
 
-    
-
     private void Start()
     {
-        //Player player = Player.GetComponent<Player>()
+        player = Player.GetComponent<Player_Health>();
         //Boss boss = Boss.GetComponent<Boss>();
-
-        MainMemu.SetActive(false);
-
         for (int i = 0; i < Aims.Length; ++i) {
             aims.Add(Aims[i]);
         }
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
-        PlayerLv.text = "" + /*player.lv*/1;
-        ForceSoulCount.text = "" + /*player.forceSoul*/10;
+        PlayerLv.text = "" + player.lv;
+        ForceSoulCount.text = "" + player.forceSoul;
 
         if (Input.GetKeyDown("1"))  //basic gun
         {
@@ -75,17 +66,6 @@ public class UIContral : MonoBehaviour
                 bossHPBarSample.setBossInfo(
                     /*boss.currentHP*/100, /*boss.maxHP*/100, /*boss.name*/"DemonKing Diablo");
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if(Time.timeScale == 1)
-                Time.timeScale = 0;
-            else if (Time.timeScale == 0)
-                Time.timeScale = 1;
-
-            mainMenuActivite = !mainMenuActivite;
-            MainMemu.SetActive(mainMenuActivite);
         }
     }
 

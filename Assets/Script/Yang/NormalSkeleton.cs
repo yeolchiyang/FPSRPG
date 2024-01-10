@@ -214,6 +214,7 @@ public class NormalSkeleton : Skeleton
             SetTriggerAnimation(Die);
             StopNavigtaion();
             StartCoroutine(Sinking());
+            playerObject.GetComponent<Player_Health>().ADDExp();
         }
     }
     /// <summary>

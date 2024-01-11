@@ -26,6 +26,7 @@ public class Player_Health : MonoBehaviour
     // Start is called before the first frame update
     void Awake()    //진선윤 start -> awake 전환
     {
+        BossHunting = false;
         PlayerCtrl = GetComponent<PlayerCtrl>();
         anima = GetComponent<Player_Anima>();
         currentHp = maxHp;
@@ -80,4 +81,5 @@ public class Player_Health : MonoBehaviour
     {
         BossHunting = true;
     }
+   
 }

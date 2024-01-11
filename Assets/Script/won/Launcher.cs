@@ -11,7 +11,7 @@ public class Launcher : MonoBehaviour
     WeaponChange WeaponChange;
     public GameObject BulletEffect;
     public GameObject BulletStartPoint;
-    public GameObject BulletEndPoint;
+    GameObject BulletEndPoint;
     private Camera Cam;
     private Ray RayMouse;
     private Vector3 direction;
@@ -29,6 +29,7 @@ public class Launcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        BulletEndPoint = GameObject.Find("BulletEnd");
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButton(0) && shootspeed >= 0.15&&ok)
         {

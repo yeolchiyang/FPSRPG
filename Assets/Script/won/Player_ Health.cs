@@ -77,8 +77,5 @@ public class Player_Health : MonoBehaviour
     {
         BossHunting = true;
     }
-    public void asd()
-    {
-        Debug.Log("qwe");
-    }
+   
 }

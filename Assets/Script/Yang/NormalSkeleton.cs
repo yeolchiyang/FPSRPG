@@ -25,14 +25,14 @@ public class NormalSkeleton : Skeleton
             .State<State>(Idle)//전환 조건 미구현
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Idle} State");
+                    //Debug.Log($"Entering {Idle} State");
                     SetIdle();
                 })
                 .End()
             .State<EnemyWalkState>(Walk)//걷는 것만 구현
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Walk} State");
+                    //Debug.Log($"Entering {Walk} State");
                     SetWalk();
                 })
                 .Condition(() =>
@@ -50,17 +50,10 @@ public class NormalSkeleton : Skeleton
                     state.Parent.ChangeState(Damaged);
                 })
                 .End()
-            .State<State>(Run)//전환 조건 미구현
-                .Enter(state =>
-                {
-                    Debug.Log($"Entering {Run} State");
-                    SetRun();
-                })
-                .End()
             .State<EnemyAttackState>(Attack)
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Attack} State");
+                    //Debug.Log($"Entering {Attack} State");
                     state.AttackCount = stat.AttackDelay;//진입시 공격
                 })
                 .Update((state, deltaTime) =>
@@ -92,7 +85,7 @@ public class NormalSkeleton : Skeleton
             .State<State>(Damaged)
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Damaged} State");
+                    //Debug.Log($"Entering {Damaged} State");
                 })
                 .Condition(() =>
                 {
@@ -112,7 +105,7 @@ public class NormalSkeleton : Skeleton
             .State<State>(Die)
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Die} State");
+                    //Debug.Log($"Entering {Die} State");
                     SetDie();
                 })
                 .End()
@@ -221,6 +214,7 @@ public class NormalSkeleton : Skeleton
             SetTriggerAnimation(Die);
             StopNavigtaion();
             StartCoroutine(Sinking());
+            playerObject.GetComponent<Player_Health>().ADDExp();
         }
     }
     /// <summary>
@@ -340,28 +334,6 @@ public class NormalSkeleton : Skeleton
     {
         skeletonAnimator.SetTrigger(state);
     }
-
-
-    private void StopNavigtaion()
-    {
-        if (!skeletonNav.isStopped)
-        {
-            skeletonNav.isStopped = true;
-            skeletonNav.updatePosition = false;
-            skeletonNav.updateRotation = false;
-            skeletonNav.velocity = Vector3.zero;
-        }
-    }
-    private void StartNavigtaion(float speed)
-    {
-        skeletonNav.isStopped = false;
-        skeletonNav.ResetPath();//ResetPath -> SetDestination 해야 재작동 합니다.
-        skeletonNav.SetDestination(playerObject.transform.position);
-        skeletonNav.updatePosition = true;
-        skeletonNav.updateRotation = true;
-        skeletonNav.speed = speed;
-    }
-
 
 
 

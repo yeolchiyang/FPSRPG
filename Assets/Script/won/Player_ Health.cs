@@ -23,6 +23,7 @@ public class Player_Health : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        BossHunting = false;
         PlayerCtrl = GetComponent<PlayerCtrl>();
         anima = GetComponent<Player_Anima>();
         currentHp = maxHp;
@@ -75,5 +76,9 @@ public class Player_Health : MonoBehaviour
     public void BossKill()
     {
         BossHunting = true;
+    }
+    public void asd()
+    {
+        Debug.Log("qwe");
     }
 }

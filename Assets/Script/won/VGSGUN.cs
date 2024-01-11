@@ -10,7 +10,7 @@ public class VGSGUN : MonoBehaviour
     WeaponChange WeaponChange;
     public GameObject BulletEffect;
     public GameObject BulletStartPoint;
-    public GameObject BulletEndPoint;
+    GameObject BulletEndPoint;
      Camera Cam;
     private Ray RayMouse;
     private Vector3 direction;
@@ -29,6 +29,7 @@ public class VGSGUN : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        BulletEndPoint = GameObject.Find("BulletEnd");
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && shootspeed >= 1 && ok)
         {

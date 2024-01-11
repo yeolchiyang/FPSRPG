@@ -12,6 +12,7 @@ public class UIContral : MonoBehaviour
     Player_Health player;
 
     [SerializeField] GameObject GameMenuWindow;
+    [SerializeField] GameObject PowerUpUI;
     bool gameMenuVisible = false;
     
     [SerializeField] GameObject BossHPBar;
@@ -33,6 +34,7 @@ public class UIContral : MonoBehaviour
         }
 
         GameMenuWindow.SetActive(false);
+        PowerUpUI.SetActive(false);
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -81,6 +83,13 @@ public class UIContral : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             MenuWindowContral();
+        }
+
+        if (Input.GetKeyDown("p"))
+        {
+            PowerUpUI.SetActive(true);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 

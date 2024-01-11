@@ -19,8 +19,8 @@ public class Player_Health : MonoBehaviour
     public float currentMp;
     public float currentExp;
     public float maxExp = 100f;
-    public float lv = 1f;
-    public float forceSoul = 0f;
+    public int lv = 1;         //Áø¼±À± float -> int
+    public int forceSoul = 0;  //Áø¼±À± float -> int
     public float WeaponDamage = 0f;
     public bool BossHunting = false;
     // Start is called before the first frame update

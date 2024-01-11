@@ -13,9 +13,12 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] GameObject ItemSlotPrefap;
     [SerializeField] GameObject SlotArea;
+    [SerializeField] Player_Health player;
 
     Animator anim;
     List<ItemSlot> itemSlots = new List<ItemSlot>();
+
+    
 
     int bookCount = 0;
     int dimensionOfPeice = 0;
@@ -127,8 +130,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    
+
     public void AddBookCount() { ++bookCount; }
     public int getHillPortionCount() { return hillPortionCount; }
     public int getDebinePortionCount() { return debinePortionCount; }
-    public int getBookCount() { return bookCount; }
+    //public int getStatus(int stateIndex) { return status[stateIndex]; }
+    //public int getBookCount() { return bookCount; }
 }

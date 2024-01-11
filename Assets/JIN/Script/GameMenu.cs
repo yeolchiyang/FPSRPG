@@ -18,7 +18,8 @@ public class GameMenu : MonoBehaviour
 
     private void Update()
     {
-        count += Time.deltaTime;
+        if(count <= teleportCoolTime)
+            count += Time.deltaTime;
     }
 
     public void ExitGame()
@@ -35,7 +36,8 @@ public class GameMenu : MonoBehaviour
         if (count >= teleportCoolTime)
         {
             player.position = startPoint.position;
-            teleportCoolTime = 0;
+            //player.rotation = startPoint.rotation;
+            count = 0;
             UIContral.MenuWindowContral();
         }
     }

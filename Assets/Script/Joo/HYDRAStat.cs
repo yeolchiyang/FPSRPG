@@ -15,13 +15,11 @@ public class HYDRAStat : MonoBehaviour
     [Tooltip("스킬 데미지")]
     [SerializeField] private float skillDamage;  // 13
     [Tooltip("기본 공격 사거리")]
-    [SerializeField] private float normalattackRange;  // 40
+    [SerializeField] private float normalattackRange;  // 25
     [Tooltip("스킬 공격 사거리 && Player 인식 최대 범위")]
-    [SerializeField] private float skillattackRange;  // 70
-    [Tooltip("기본 공격 주기")]
-    [SerializeField] private float normalattackDelay;  // 3
-    [Tooltip("스킬 공격 주기")]
-    [SerializeField] private float skillattackDelay;  // 5
+    [SerializeField] private float skillattackRange;  // 50
+    [Tooltip("공격 주기")]
+    [SerializeField] private float attackDelay;  // 3
     public float WalkSpeed { get { return walkSpeed; } set { walkSpeed = value; } }
     public float MaxHp { get { return maxHp; } set { maxHp = value; } }
     public float CurrentHp { get { return currentHp; } set { currentHp = value; } }
@@ -29,6 +27,5 @@ public class HYDRAStat : MonoBehaviour
     public float SkillDamage { get { return skillDamage; } set { skillDamage = value; } }
     public float NormalAttackRange { get { return normalattackRange; } set { normalattackRange = value; } }
     public float SkillattackRange { get { return skillattackRange; } set { skillattackRange = value; } }
-    public float NormalattackDelay { get { return normalattackDelay; } set { normalattackDelay = value; } }
-    public float SkillattackDelay { get { return skillattackDelay; } set { skillattackDelay = value; } }
+    public float AttackDelay { get { return attackDelay; } set { attackDelay = value; } }
 }

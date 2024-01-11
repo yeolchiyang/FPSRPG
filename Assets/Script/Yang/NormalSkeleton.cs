@@ -176,7 +176,7 @@ public class NormalSkeleton : Skeleton
     }
     /// <summary>
     /// Raycast를 이용한 공격 시, 상호작용 가능한 메소드 입니다.
-    /// 맞은 장소에 이펙트가 생깁니다.
+    /// 맞은 장소에 쏜 방향을 바라보는 이펙트 오브젝트가 생깁니다.
     /// </summary>
     /// <param name="hit">RaycastHit Object 넣어주세요</param>
     /// <param name="damage">가하고자 하는 데미지 넣어주세요</param>
@@ -191,9 +191,10 @@ public class NormalSkeleton : Skeleton
         {
             SetTriggerAnimation(Damaged);
             StopNavigtaion();
-            GameObject hitEffect = Instantiate(
-               skeletonHitEffect, hit.point,
-               Quaternion.LookRotation(hit.normal));
+            GameObject hitEffect = EffectPool.effectPool.GetObject(HitEffect);
+            //hit.normal로 맞은 부분의 법선 벡터를 가져올 수 있습니다.
+            hitEffect.transform.position = hit.point;
+            hitEffect.transform.rotation = Quaternion.LookRotation(hit.normal);
             rootState.TriggerEvent(Damaged);
         }
     }

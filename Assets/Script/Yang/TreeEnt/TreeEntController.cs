@@ -77,7 +77,7 @@ public class TreeEntController : Skeleton
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Walk.ToString());
                     StartNavigtaion(stat.WalkSpeed);
-                    ToggleCollider();
+                    ToggleCollider(false);
                 })
                 .Condition(() =>
                 {
@@ -113,17 +113,16 @@ public class TreeEntController : Skeleton
                     //3.공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.Attack.ToString());
                     StopNavigtaion();
-                    ToggleCollider();
+                    ToggleCollider(true);
                 })
                 .End()
             .State<State>(TreeState.Enranged.ToString())//일정 피 이하로 내려가면 발동하는 광폭화 입니다.
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.Enranged.ToString()} State");
+                    //광폭화 모션 후, Idle로 돌아갑니다.
                     SetTriggerAnimation(TreeState.Enranged.ToString());
                     StopNavigtaion();
-                    //광폭화 모션 후, Idle로 돌아갑니다.
-                    //state.Parent.ChangeState(TreeState.EnrangedIdle.ToString());
                 })
                 .End()
             .State<State>(TreeState.EnrangedIdle.ToString())//광폭화 상태의 Idle입니다.
@@ -155,7 +154,17 @@ public class TreeEntController : Skeleton
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Run.ToString());
                     StartNavigtaion(stat.RunSpeed);
-                    ToggleCollider();
+                    ToggleCollider(false);
+                })
+                .Condition(() =>
+                {
+                    //감지거리 내를 벗어났을 경우
+                    return !IsTargetDetected();
+                },
+                state =>
+                {
+                    //Idle state로 전환
+                    state.Parent.ChangeState(TreeState.EnrangedIdle.ToString());
                 })
                 .Condition(() =>
                 {
@@ -177,10 +186,9 @@ public class TreeEntController : Skeleton
                 {
                     Debug.Log($"Entering {TreeState.EnrangedAttack.ToString()} State");
                     //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
-                    //NavMesh를 중지합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.EnrangedAttack.ToString());
-                    StopNavigtaion();
+                    ToggleCollider(true);
                 })
                 .End()
             .Build();
@@ -255,11 +263,12 @@ public class TreeEntController : Skeleton
     /// Idle State 시, Collider를 비활성화 합니다. 
     /// Attack State 시, Collider를 활성화 합니다.
     /// </summary>
-    private void ToggleCollider()
+    
+    private void ToggleCollider(bool changeToggle)
     {
         foreach (Collider attackCollider in AttackColliders)
         {
-            attackCollider.enabled = !attackCollider.enabled;
+            attackCollider.enabled = changeToggle;
         }
     }
 

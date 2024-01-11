@@ -73,6 +73,7 @@ public class TreeEntController : Skeleton
                     //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
                     //2.애니메이션 bool parameter를 Walk로 변경합니다.
                     //3.플레이어를 추적합니다.(NavMesh)
+                    //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Walk.ToString());
                     StartNavigtaion(stat.WalkSpeed);
@@ -107,8 +108,9 @@ public class TreeEntController : Skeleton
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.Attack.ToString()} State");
-                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
-                    //NavMesh를 중지합니다.
+                    //1.일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
+                    //2.NavMesh를 중지합니다.
+                    //3.공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.Attack.ToString());
                     StopNavigtaion();
                     ToggleCollider();
@@ -121,14 +123,14 @@ public class TreeEntController : Skeleton
                     SetTriggerAnimation(TreeState.Enranged.ToString());
                     StopNavigtaion();
                     //광폭화 모션 후, Idle로 돌아갑니다.
-                    state.Parent.ChangeState(TreeState.EnrangedIdle.ToString());
+                    //state.Parent.ChangeState(TreeState.EnrangedIdle.ToString());
                 })
                 .End()
             .State<State>(TreeState.EnrangedIdle.ToString())//광폭화 상태의 Idle입니다.
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.EnrangedIdle.ToString()} State");
-                    SetTriggerAnimation(TreeState.EnrangedIdle.ToString());
+                    SetBoolAnimation(TreeState.EnrangedIdle.ToString());
                     StopNavigtaion();
                 })
                 .Condition(() =>
@@ -146,9 +148,14 @@ public class TreeEntController : Skeleton
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.Run.ToString()} State");
+                    //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
+                    //2.애니메이션 bool parameter를 Walk로 변경합니다.
+                    //3.플레이어를 추적합니다.(NavMesh)
+                    //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
-                    SetBoolAnimation(TreeState.Walk.ToString());
+                    SetBoolAnimation(TreeState.Run.ToString());
                     StartNavigtaion(stat.RunSpeed);
+                    ToggleCollider();
                 })
                 .Condition(() =>
                 {
@@ -162,10 +169,6 @@ public class TreeEntController : Skeleton
                     {
                         state.Parent.ChangeState(TreeState.EnrangedAttack.ToString());
                         state.AttackedTime = Time.time;
-                        foreach(Collider attackCollider in AttackColliders)
-                        {
-                            attackCollider.enabled = !attackCollider.enabled;
-                        }
                     }
                 })
                 .End()
@@ -175,6 +178,7 @@ public class TreeEntController : Skeleton
                     Debug.Log($"Entering {TreeState.EnrangedAttack.ToString()} State");
                     //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //NavMesh를 중지합니다.
+                    //공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.EnrangedAttack.ToString());
                     StopNavigtaion();
                 })
@@ -192,6 +196,7 @@ public class TreeEntController : Skeleton
     {
         if(IsInvulnerable)
         {
+            Debug.Log("무적입니다.");
             return;
         }
         Debug.Log("damage입힘");
@@ -200,7 +205,7 @@ public class TreeEntController : Skeleton
         if( stat.CurrentHp / stat.MaxHp <= 0.3f )
         {
             //광폭화될 수 있는 상태값으로 변경합니다.
-            IsInvulnerable = false;
+            IsInvulnerable = true;//무적
             rootState.ChangeState(TreeState.Enranged.ToString());
         }
 

@@ -1,21 +1,30 @@
 using RSG;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Yang;
 
+public enum TreeState
+{
+    Idle,//bool
+    Walk,//bool
+    Attack,//Trigger
+    Enranged,//Trigger
+    Run,//bool
+    Damaged,
+    Die//bool
+}
+
 public class TreeEntController : Skeleton
 {
-    private const string Idle = "Idle";//bool
-    private const string Walk = "Walk";//bool
-    private const string Attack = "Attack";//Trigger
-    private const string Enranged = "Enranged";//Trigger
-    private const string Run = "Run";//bool
-    //private const string Damaged = "Damaged";
-    private const string Die = "Die";//bool
 
-    //무적상태 여부를 체크합니다.
+    ///무적상태 여부를 체크합니다.
     public bool IsInvulnerable { get; set; } = false;
+    [Tooltip("공격 범위를 가진 Capsule Collider를 집어넣습니다. " +
+        "집어넣은 Collider의 높이는 기본공격 사거리의 2배만큼의 크기가 됩니다.")]
+    [SerializeField] CapsuleCollider[] AttackColliders;
+    public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
 
 
 
@@ -24,19 +33,22 @@ public class TreeEntController : Skeleton
         //엘리트몹 등장 시 일반 몹 리스폰 일시정지 및
         //생성되어있는 일반 몹이 소멸하는 함수를 구현하여, OnEnable에 추가해야 합니다.
         Respawn();
+        //transform.parent.SendMessage()
     }
 
     private void Start()
     {
         rootState = new StateMachineBuilder()
-            .State<State>(Idle)//기본 상태입니다. 감지할 때까지 움직이지 않습니다.
+            .State<State>(TreeState.Idle.ToString())//기본 상태입니다. 감지할 때까지 움직이지 않습니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Idle} State");
+                    Debug.Log($"Entering {TreeState.Idle.ToString()} State");
                     //1.오브젝트 풀의 유닛 생성을 시작합니다.
                     //2.애니메이션 bool parameter를 Idle로 변경합니다.
+                    //3.플레이어 추적을 중지합니다.(NavMesh)
                     ObjectSpawner.objectSpawner.StartSpawning();
-                    SetBoolAnimation(Walk);
+                    SetBoolAnimation(TreeState.Idle.ToString());
+                    StopNavigtaion();
                 })
                 .Condition(() =>
                 {
@@ -46,45 +58,69 @@ public class TreeEntController : Skeleton
                 state =>
                 {
                     //Walk state로 전환
-                    state.Parent.ChangeState(Walk);
+                    state.Parent.ChangeState(TreeState.Walk.ToString());
                 })
                 .End()
-            .State<State>(Walk)//사정거리 밖일 시 Walk로 이동합니다.
+            .State<State>(TreeState.Walk.ToString())//사정거리 밖일 시 Walk로 이동합니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Walk} State");
+                    Debug.Log($"Entering {TreeState.Walk.ToString()} State");
                     //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
                     //2.애니메이션 bool parameter를 Walk로 변경합니다.
+                    //3.플레이어를 추적합니다.(NavMesh)
                     ObjectSpawner.objectSpawner.StopSpawning();
-                    SetBoolAnimation(Walk);
+                    SetBoolAnimation(TreeState.Walk.ToString());
+                    StartNavigtaion(stat.WalkSpeed);
                 })
-                .Update((state, deltaTime) =>
+                .Condition(() =>
                 {
+                    //감지거리 내를 벗어났을 경우
+                    return !IsTargetDetected();
+                },
+                state =>
+                {
+                    //Idle state로 전환
+                    state.Parent.ChangeState(TreeState.Idle.ToString());
+                })
+                .Condition(() =>
+                {
+                    //공격 사거리 내로 들어왔을 경우
+                    //공격 딜레이 이후 가능하도록
+                    return IsTargetReached();
+                },
+                state =>
+                {
+                    //Attack state로 전환
+                    state.Parent.ChangeState(TreeState.Attack.ToString());
+                })
+                .End()
+            .State<State>(TreeState.Attack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
+                .Enter(state =>
+                {
+                    Debug.Log($"Entering {TreeState.Attack.ToString()} State");
+                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
+                    //NavMesh를 중지합니다.
+                    SetTriggerAnimation(TreeState.Attack.ToString());
+                    StopNavigtaion();
+                })
+                .End()
+            .State<State>(TreeState.Enranged.ToString())//일정 피 이하로 내려가면 발동하는 광폭화 입니다.
+                .Enter(state =>
+                {
+                    Debug.Log($"Entering {TreeState.Enranged.ToString()} State");
                     
                 })
                 .End()
-            .State<State>(Attack)//사정거리 내에 들어오면 일반 공격합니다.
+            .State<State>(TreeState.Run.ToString())//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {Attack} State");
-                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
-                })
-                .End()
-            .State<State>(Enranged)//일정 피 이하로 내려가면 발동하는 광폭화 입니다.
-                .Enter(state =>
-                {
-                    Debug.Log($"Entering {Enranged} State");
-
-                })
-                .End()
-            .State<State>(Run)//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
-                .Enter(state =>
-                {
-                    Debug.Log($"Entering {Run} State");
+                    Debug.Log($"Entering {TreeState.Run.ToString()} State");
                     
                 })
                 .End()
             .Build();
+
+        rootState.ChangeState(TreeState.Idle.ToString());//초기 상태 Idle
     }
 
     /// <summary>
@@ -119,7 +155,7 @@ public class TreeEntController : Skeleton
     /// <param name="damage">가하고자 하는 데미지 넣어주세요</param>
     public override void SetDamaged(RaycastHit hit, float damage)
     {
-        if (IsInvulnerable)//무적인가
+        if (IsInvulnerable)//무적인지
         {
             return;
         }
@@ -128,7 +164,7 @@ public class TreeEntController : Skeleton
         if (stat.CurrentHp / stat.MaxHp <= 0.3f)
         {
             //광폭화될 수 있는 상태값으로 변경합니다.
-            rootState.ChangeState(Enranged);
+            rootState.ChangeState(TreeState.Enranged.ToString());
         }
 
         if (stat.CurrentHp <= 0f)
@@ -143,10 +179,11 @@ public class TreeEntController : Skeleton
     /// </summary>
     private void IsAttacked()
     {
-        if (IsTargetReached())
-        {
-            playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
-        }
+
+        playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
+        
+        //playerObject.layer = 
+
     }
 
     /// <summary>
@@ -162,7 +199,7 @@ public class TreeEntController : Skeleton
                                         0, playerObject.transform.position.z);
         float distanceToPlayer = Vector3.Distance(
                         playerXZ, enemyXZ);
-        if (distanceToPlayer <= stat.AttackRange)
+        if (distanceToPlayer <= stat.DetectionRange)
         {
             isTargetDetected = true;
         }
@@ -194,11 +231,18 @@ public class TreeEntController : Skeleton
 
     /// <summary>
     /// 몹이 소환될 때 실행됩니다.
+    /// 공격 사거리 * 2 만큼 capsule collider 크기를 조절합니다.
+    /// Active 속성 : 살아있는지를 판별합니다.
     /// </summary>
     private void Respawn()
     {
         this.isActive = true;
         this.stat.CurrentHp = this.stat.MaxHp;
+        foreach(CapsuleCollider capsule in AttackColliders)
+        {
+            capsule.height = stat.AttackRange * 2;
+        }
+        playerMask = playerObject.layer;
     }
 
     private void SetBoolAnimation(string state)
@@ -247,4 +291,10 @@ public class TreeEntController : Skeleton
         }
         return parameterName;
     }
+
+    private void SetTriggerAnimation(string state)
+    {
+        skeletonAnimator.SetTrigger(state);
+    }
+
 }

@@ -13,7 +13,8 @@ public class UIContral : MonoBehaviour
 
     [SerializeField] GameObject GameMenuWindow;
     [SerializeField] GameObject PowerUpUI;
-    bool gameMenuVisible = false;
+    bool gameMenuEnable = false;
+    bool powerUpEnabled = false;
     
     [SerializeField] GameObject BossHPBar;
     [SerializeField] GameObject[] Aims;
@@ -87,9 +88,7 @@ public class UIContral : MonoBehaviour
 
         if (Input.GetKeyDown("p"))
         {
-            PowerUpUI.SetActive(true);
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            PowerUpUIContral();
         }
     }
 
@@ -109,20 +108,38 @@ public class UIContral : MonoBehaviour
         Arms[currentSetArmIndex ].color = new Color(0.17f, 0.17f, 0.17f);
     }
 
+    public void PowerUpUIContral()
+    {
+        powerUpEnabled = !powerUpEnabled;
+
+        if (powerUpEnabled == true)
+        {
+            PowerUpUI.SetActive(powerUpEnabled);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            PowerUpUI.SetActive(powerUpEnabled);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
     public void MenuWindowContral()
     {
-        gameMenuVisible = !gameMenuVisible;
+        gameMenuEnable = !gameMenuEnable;
 
-        if (gameMenuVisible == true)
+        if (gameMenuEnable == true)
         {
-            GameMenuWindow.SetActive(gameMenuVisible);
+            GameMenuWindow.SetActive(gameMenuEnable);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0f;
         }
         else
         {
-            GameMenuWindow.SetActive(gameMenuVisible);
+            GameMenuWindow.SetActive(gameMenuEnable);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1f;

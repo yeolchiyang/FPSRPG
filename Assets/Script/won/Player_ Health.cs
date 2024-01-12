@@ -73,7 +73,7 @@ public class Player_Health : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHp -= damage;
-        ccb.UpdateHP();
+        ccb.UpdateHP();  //Áø¼±À± Ãß°¡
         if (currentHp <= 0)
         {
             die();
@@ -91,7 +91,7 @@ public class Player_Health : MonoBehaviour
     public void ADDExp()
     {
         currentExp += 10;
-        ccb.UpdateEXP();
+        ccb.UpdateEXP(); //Áø¼±À±
     }
     public void BossKill()
     {

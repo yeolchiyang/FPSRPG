@@ -34,7 +34,7 @@ public class Launcher : MonoBehaviour
         if (Input.GetMouseButton(0) && shootspeed >= 0.15&&ok)
         {
             shootspeed = 0;
-            basicAim.ShootToAim();
+            basicAim.ShootToAim();  // Weapon3 에임 
             GameObject  ASD = Instantiate(BulletEffect, BulletStartPoint.transform.position, BulletStartPoint.transform.rotation);
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             RaycastHit hitInfo = new RaycastHit(); // hit 오브젝트

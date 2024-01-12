@@ -33,7 +33,6 @@ public class VGSGUN : MonoBehaviour
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && shootspeed >= 1 && ok)
         {
-            
             shootspeed=0;
             GameObject obj= Instantiate(BulletEffect, BulletStartPoint.transform.position, BulletStartPoint.transform.rotation);
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);

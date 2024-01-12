@@ -97,6 +97,7 @@ public class upwitch : MonoBehaviour
                 break;
             case 2:
                 npctalk("네 모험가로서의 영혼은 이미 강해졌지만, 아직은 엘리트2가 보물을 지키고 있어");
+
                 break;
             case 3:
                 npctalk("엘리트2는 강력하지만, 강해진 넌 괜찮을 거야.");

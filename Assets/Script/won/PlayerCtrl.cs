@@ -12,7 +12,7 @@ public class PlayerCtrl : MonoBehaviour
     public float turnspeed = 60f;
     public int JumpPower;
     bool IsJumping = true;
-    bool asd = false;
+    bool CrowdControl = false;
     Player_Anima anima;
 
     // Start is called before the first frame update
@@ -36,14 +36,14 @@ public class PlayerCtrl : MonoBehaviour
 
         if (CheckHitWall(moveDir))
             moveDir = Vector3.zero;
-        if (!asd)
+        if (!CrowdControl)
         {
             tr.Translate(moveDir.normalized * speed * Time.deltaTime);
             tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
         }
         else
         {
-            
+            Invoke("ccoff", 5f);
         }
         //tr.Rotate(Random.insideUnitCircle);
 
@@ -87,8 +87,13 @@ public class PlayerCtrl : MonoBehaviour
         }
         return false;
     }
-    public void sss()
+    public void ccon()
     {
-        asd = true;
+        CrowdControl = true;
     }
+    public void ccoff()
+    {
+        CrowdControl = false;
+    }
+    
 }

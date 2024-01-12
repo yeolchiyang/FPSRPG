@@ -50,6 +50,8 @@ public class Status_Inventory : MonoBehaviour
         {
             Debug.Log("ForceSoul is Empty");
             PowerUpUI.SetActive(false);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

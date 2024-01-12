@@ -90,7 +90,67 @@ namespace Yang{
             skeletonNav.updateRotation = true;
             skeletonNav.speed = speed;
         }
+        protected void SetTriggerAnimation(string state)
+        {
+            skeletonAnimator.SetTrigger(state);
+        }
 
+        protected void SetBoolAnimation(string state)
+        {
+            // 현재 애니메이터의 모든 파라미터를 가져옵니다.
+            AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
+
+            // 각 파라미터에 대해 반복합니다.
+            foreach (AnimatorControllerParameter parameter in parameters)
+            {
+                // 제외할 파라미터인지 확인하고, 제외되지 않은 경우 값을 false로 설정합니다.
+                if (parameter.type == AnimatorControllerParameterType.Bool)
+                {
+                    if (parameter.name == state)
+                    {
+                        skeletonAnimator.SetBool(parameter.name, true);
+                    }
+                    else
+                    {
+                        skeletonAnimator.SetBool(parameter.name, false);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 공격, 데미지를 입었을 때 빠르게 기존 state로 전환하기 위함입니다.
+        /// </summary>
+        /// <returns>정의한 상태값의 string 값을 반환합니다.</returns>
+        protected string GetBoolAnimationName()
+        {
+            string parameterName = "";
+            // 현재 애니메이터의 모든 파라미터를 가져옵니다.
+            AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
+            foreach (AnimatorControllerParameter parameter in parameters)
+            {
+                if (parameter.type == AnimatorControllerParameterType.Bool)
+                {
+                    //true인 파라미터면
+                    if (skeletonAnimator.GetBool(parameter.name))
+                    {
+                        parameterName = parameter.name;
+                    }
+                }
+
+            }
+            return parameterName;
+        }
+        /// <summary>
+        /// 애니메이션이 실행중이면, true를 반환합니다.
+        /// </summary>
+        /// <param name="stateName">animator에 넣은 Animation 이름을 넣어야 합니다.</param>
+        /// <returns></returns>
+        protected bool IsAnimationPlaying(string stateName)
+        {
+            AnimatorStateInfo currentState = skeletonAnimator.GetCurrentAnimatorStateInfo(0);
+            bool isAnimationPlaying = currentState.IsName(stateName);
+            return isAnimationPlaying;
+        }
 
     }
 }

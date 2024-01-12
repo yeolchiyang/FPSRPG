@@ -30,8 +30,8 @@ public class TreeEntController : Skeleton
     [SerializeField] private CapsuleCollider[] AttackColliders;
     [Tooltip("Player에게 데미지를 입힐 시 충돌이 일어난 좌표에 생성되는 이펙트입니다")]
     [SerializeField] public GameObject NormalHitEffect;
-    [Tooltip("Elite몹의 초기위치 입니다.")]
-    [SerializeField] private Vector3 ElitePostion;
+    [Tooltip("TreeEnt몹의 초기위치 입니다.")]
+    [SerializeField] private Vector3 TreeEntSpawnPostion;
 
     public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
 
@@ -81,7 +81,7 @@ public class TreeEntController : Skeleton
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Walk.ToString());
                     StartNavigtaion(stat.WalkSpeed);
-                    ToggleCollider(false);
+                    ToggleAttackCollider(false);
                 })
                 .Condition(() =>
                 {
@@ -127,7 +127,7 @@ public class TreeEntController : Skeleton
                     //3.공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.Attack.ToString());
                     StopNavigtaion();
-                    ToggleCollider(true);
+                    ToggleAttackCollider(true);
                 })
                 .End()
             .State<State>(TreeState.Enranged.ToString())//일정 피 이하로 내려가면 발동하는 광폭화 입니다.
@@ -168,7 +168,7 @@ public class TreeEntController : Skeleton
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Run.ToString());
                     StartNavigtaion(stat.RunSpeed);
-                    ToggleCollider(false);
+                    ToggleAttackCollider(false);
                 })
                 .Condition(() =>
                 {
@@ -203,7 +203,17 @@ public class TreeEntController : Skeleton
                     //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.EnrangedAttack.ToString());
-                    ToggleCollider(true);
+                    ToggleAttackCollider(true);
+                })
+                .End()
+            .State<State>(TreeState.Die.ToString())//사정거리 내에 들어오면 일반 공격합니다.
+                .Enter(state =>
+                {
+                    Debug.Log($"Entering {TreeState.Die.ToString()} State");
+                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
+                    //공격용 Collider를 활성화 합니다.
+                    SetTriggerAnimation(TreeState.Die.ToString());
+                    SetDie();
                 })
                 .End()
             .Build();
@@ -217,7 +227,7 @@ public class TreeEntController : Skeleton
     /// <param name="damage">가하고자 하는 데미지 넣어주세요</param>
     public override void SetDamaged(float damage)
     {
-        if(IsInvulnerable)
+        if(IsInvulnerable)//무적인지
         {
             Debug.Log("무적입니다.");
             return;
@@ -228,13 +238,16 @@ public class TreeEntController : Skeleton
         if( stat.CurrentHp / stat.MaxHp <= 0.3f )
         {
             //광폭화될 수 있는 상태값으로 변경합니다.
-            IsInvulnerable = true;//무적
             rootState.ChangeState(TreeState.Enranged.ToString());
         }
 
         if (stat.CurrentHp <= 0f)
         {
-            //사망 시 처리할 로직을 담은 메소드를 집어넣습니다.
+            if (isActive)//한번 죽으면 바뀌는 상태값입니다.
+            {
+                //사망 시 처리할 로직을 담은 메소드를 집어넣습니다.
+                rootState.ChangeState(TreeState.Die.ToString());
+            }
         }
 
     }
@@ -248,9 +261,10 @@ public class TreeEntController : Skeleton
     {
         if (IsInvulnerable)//무적인지
         {
+            Debug.Log("무적입니다.");
             return;
         }
-
+        Debug.Log("damage입힘");
         stat.CurrentHp -= damage;
         if (stat.CurrentHp / stat.MaxHp <= 0.3f)
         {
@@ -260,7 +274,11 @@ public class TreeEntController : Skeleton
 
         if (stat.CurrentHp <= 0f)
         {
-            //사망 시 처리할 로직을 담은 메소드를 집어넣습니다.
+            if(isActive)//한번 죽으면 바뀌는 상태값입니다.
+            {
+                //사망 시 처리할 로직을 담은 메소드를 집어넣습니다.
+                rootState.ChangeState(TreeState.Die.ToString());
+            }
         }
     }
 
@@ -273,13 +291,13 @@ public class TreeEntController : Skeleton
         playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
 
     }
+
     /// <summary>
     /// 팔에 달린 두 Collider를 활성화/비활성화 하는 메소드 입니다.
     /// Idle State 시, Collider를 비활성화 합니다. 
     /// Attack State 시, Collider를 활성화 합니다.
     /// </summary>
-    
-    private void ToggleCollider(bool changeToggle)
+    private void ToggleAttackCollider(bool changeToggle)
     {
         foreach (Collider attackCollider in AttackColliders)
         {
@@ -339,63 +357,57 @@ public class TreeEntController : Skeleton
     {
         this.isActive = true;
         this.stat.CurrentHp = this.stat.MaxHp;
-        foreach(CapsuleCollider capsule in AttackColliders)
+        GetComponent<CapsuleCollider>().enabled = true;
+        foreach (CapsuleCollider capsule in AttackColliders)
         {
             capsule.height = stat.AttackRange * 2;
         }
         playerMask = playerObject.layer;
     }
-
-    private void SetBoolAnimation(string state)
+    /// <summary>
+    /// 사망 시, 가라앉는 코루틴이 실행됩니다.
+    /// 강화 포인트도 상승합니다.
+    /// </summary>
+    public void SetDie()
     {
-        // 현재 애니메이터의 모든 파라미터를 가져옵니다.
-        AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
-
-        // 각 파라미터에 대해 반복합니다.
-        foreach (AnimatorControllerParameter parameter in parameters)
+        this.isActive = false;
+        GetComponent<CapsuleCollider>().enabled = false;
+        if (!IsAnimationPlaying(TreeState.Die.ToString()))
         {
-            // 제외할 파라미터인지 확인하고, 제외되지 않은 경우 값을 false로 설정합니다.
-            if (parameter.type == AnimatorControllerParameterType.Bool)
-            {
-                if (parameter.name == state)
-                {
-                    skeletonAnimator.SetBool(parameter.name, true);
-                }
-                else
-                {
-                    skeletonAnimator.SetBool(parameter.name, false);
-                }
-            }
+            SetBoolAnimation(TreeState.Die.ToString());
+            StopNavigtaion();
+            StartCoroutine(Sinking());
+            //playerObject.GetComponent<Player_Health>().ADDExp();
         }
     }
 
     /// <summary>
-    /// 공격, 데미지를 입었을 때 빠르게 기존 state로 전환하기 위함입니다.
+    /// 가라앉기 시작하고 3초 후
+    /// ObjectPool로 돌아가기
     /// </summary>
-    /// <returns>정의한 상태값의 string 값을 반환합니다.</returns>
-    private string GetBoolAnimationName()
+    /// <returns></returns>
+    private IEnumerator Sinking()
     {
-        string parameterName = "";
-        // 현재 애니메이터의 모든 파라미터를 가져옵니다.
-        AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
-        foreach (AnimatorControllerParameter parameter in parameters)
+        yield return new WaitForSeconds(1f);
+        float timer = 0f;
+        float sinkingStartTime = 3.4f;
+        float destroyTime = 5f;
+        while (true)
         {
-            if (parameter.type == AnimatorControllerParameterType.Bool)
+            timer += Time.deltaTime;
+            if (timer > sinkingStartTime)
             {
-                //true인 파라미터면
-                if (skeletonAnimator.GetBool(parameter.name))
-                {
-                    parameterName = parameter.name;
-                }
+                transform.position += Vector3.down * Time.fixedDeltaTime * 0.5f;
+            }
+            if (timer > destroyTime)
+            {
+                GetComponent<CapsuleCollider>().enabled = false;
+                ObjectPool.objectPool.PoolObject(gameObject);
+                break;
             }
 
+            yield return new WaitForFixedUpdate();
         }
-        return parameterName;
-    }
-
-    private void SetTriggerAnimation(string state)
-    {
-        skeletonAnimator.SetTrigger(state);
     }
 
 }

@@ -28,7 +28,11 @@ public class TreeEntController : Skeleton
     [Tooltip("공격 범위를 가진 Capsule Collider를 집어넣습니다. " +
         "집어넣은 Collider의 높이는 기본공격 사거리의 2배만큼의 크기가 됩니다.")]
     [SerializeField] private CapsuleCollider[] AttackColliders;
+    [Tooltip("Player에게 데미지를 입힐 시 충돌이 일어난 좌표에 생성되는 이펙트입니다")]
     [SerializeField] public GameObject NormalHitEffect;
+    [Tooltip("Elite몹의 초기위치 입니다.")]
+    [SerializeField] private Vector3 ElitePostion;
+
     public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
 
 
@@ -103,6 +107,16 @@ public class TreeEntController : Skeleton
                         state.AttackedTime = Time.time;
                     }
                 })
+                .Condition(() =>
+                {
+                    //영역을 벗어났을 경우
+                    return false;
+                },
+                state =>
+                {
+                    //navMesh의 destination 변경
+                    //StartNavigtaion(stat.WalkSpeed, )
+                })
                 .End()
             .State<State>(TreeState.Attack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
@@ -159,6 +173,7 @@ public class TreeEntController : Skeleton
                 .Condition(() =>
                 {
                     //감지거리 내를 벗어났을 경우
+                    //
                     return !IsTargetDetected();
                 },
                 state =>

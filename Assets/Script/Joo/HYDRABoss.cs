@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SearchService;
 
 public class HYDRABoss : MonoBehaviour
 {
@@ -8,30 +10,44 @@ public class HYDRABoss : MonoBehaviour
     HYDRAStat stat;
     [SerializeField] Transform player;
     float rotationSpeed = 5f;
-    
-    // Start is called before the first frame update
+    protected UnityEngine.AI.NavMeshAgent Nav;
+    ParticleSystem bress;
+
     void Start()
     {
+        Nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
         stat = GetComponent<HYDRAStat>();
+        hydra = GetComponent<HYDRA>();
+        StartCoroutine("NextMove");
+        stat.CurrentHp = stat.MaxHp;
 
     }
 
-    float normalTimer = 3f;
-    float skillTimer = 5f;
-    // Update is called once per frame
+    bool NextMove_is_running = false;
+
+    //stat.SkillattackDelay = 8f
+    float skillTimer = 0f;
+
     void Update()
     {
-        if(player != null)
-        {
-            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        if (!hydra.IsActivecheck())
+            return;
 
-            if(distanceToPlayer <= stat.SkillattackRange)
+        skillTimer += Time.deltaTime;
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if(distanceToPlayer <= stat.SkillattackRange)
+        {
+            StopCoroutine("NextMove");
+            NextMove_is_running = false;
+            MoveTowardsPlayer();
+        }
+        else
+        {
+            if(NextMove_is_running == false)
             {
-                MoveTowardsPlayer();
-            }
-            else
-            {
-                MoveToPoint();
+                StartCoroutine("NextMove");
             }
         }
 
@@ -39,37 +55,99 @@ public class HYDRABoss : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
-        Vector3 targetPosition = player.position;
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, stat.WalkSpeed * Time.deltaTime);
+        if (Nav.enabled == false)
+            return;
 
-        Vector3 direction = (targetPosition-transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        Vector3 targetPosition = player.position;
+        Nav.SetDestination(targetPosition);
+
+        if (skillTimer > stat.AttackDelay)
+        {
+            skillTimer = 0f;
+
+            if (Random.Range(0, 100) <= 25)
+            {
+                if(distanceToPlayer <= stat.SkillattackRange)
+                {
+                    hydra.SetRoar();
+                    StartCoroutine("Attackanim");
+
+                }
+            }
+            else if (Random.Range(0, 100) > 25 && Random.Range(0, 100) <= 50)
+            {
+                if (distanceToPlayer <= stat.NormalAttackRange)
+                {
+                    hydra.SetHeavyHit();
+                    StartCoroutine("Attackanim");
+                }
+            }
+            else if (Random.Range(0, 100) > 50 && Random.Range(0, 100) <= 75)
+            {
+                if (distanceToPlayer <= stat.NormalAttackRange)
+                {
+                    hydra.SetThreehit();
+                    StartCoroutine("Attackanim");
+                }
+            }
+            else
+            {
+                if (distanceToPlayer <= stat.NormalAttackRange)
+                {
+                    hydra.SetFivehit();
+                    StartCoroutine("Attackanim");
+                }
+            }
+        }
+
+        if (distanceToPlayer > stat.SkillattackRange)
+        {
+            StartCoroutine("NextMove");
+        }
+    }
+
+    IEnumerator Attackanim()
+    {
+        Nav.enabled = false;
+        yield return new WaitForSeconds(5f);
+        Nav.enabled = true;
     }
 
     [SerializeField] Transform[] points;
     int currentpointIndex = 0;
 
-    void MoveToPoint()
+    IEnumerator NextMove()
     {
-        if(currentpointIndex < points.Length)
+        if (Nav.enabled == false)
+            yield return null;
+
+        NextMove_is_running = true;
+        Nav.SetDestination(points[currentpointIndex].position);
+        hydra.SetWalk(true);
+        while (true)
         {
-            Vector3 targetPosition = points[currentpointIndex].position;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, stat.WalkSpeed * Time.deltaTime);
-            if(transform.position == targetPosition)
+            if(Vector3.Distance(transform.position, points[currentpointIndex].position) < 10)
             {
                 currentpointIndex++;
-                if(currentpointIndex >= points.Length)
+                if (currentpointIndex >= points.Length)
                 {
                     currentpointIndex = 0;
                 }
-            }
+                Nav.SetDestination(transform.position);
+                hydra.SetWalk(false);
+                yield return new WaitForSeconds(1f);
 
-            Vector3 direction = (targetPosition-transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+                Vector3 targetPosition = points[currentpointIndex].position;
+                Nav.SetDestination(targetPosition);
+                hydra.SetWalk(true);
+            }
+            yield return new WaitForEndOfFrame();
         }
+    
     }
+
 
 
 }
@@ -80,10 +158,25 @@ public class HYDRABoss : MonoBehaviour
 
 
 
-// 정해진 간격으로 일반공격 ..?   // HeavyHit, Grab, Fivehit, Threehit
+// 정해진 간격으로 일반공격 ..?   // HeavyHit, Fivehit, Threehit
 // 정해진 간격으로 스킬공격 ..?   // Roar
+/*
+     normalattackDelay
+     skillattackDelay
+
+     항상 저 시간이 지났는지 체크
+     둘다 돌았다 -> 우선순위 결정 -> 무언가 하나 실행중이다 (다른 하나 쿨돌아도 실행 못하게 막기, bool 변수로 제어 가능) -> 실행이 끝났다(쿨타임 돈 것 실행)
+ */
+
+
+// 보스 공격  중 Roar 활성화 시 파티클 추가
+// 파티클과 
+
+
 // 스킬 공격시 바닥에 공격하는 구간 표시 ( 공격 전 정해진 시간동안 표시 후 공격시작과 동시에 없애야 함 )
+
+
+
 // 플레이어의 공격과 보스체력의 상호작용
 // 보스의 공격과 플레이어체력의 상호작용
-// 보스 공격  중 Roar 활성화 시 파티클 추가
 // 보스의 공격이 오브젝트와 충돌시 파티클 제거

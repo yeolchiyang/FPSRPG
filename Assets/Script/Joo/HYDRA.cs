@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class HYDRA : MonoBehaviour
 {
@@ -19,114 +21,126 @@ public class HYDRA : MonoBehaviour
         HydraAnimator = GetComponent<Animator>();
     }
 
-    protected void SetWalk(int value)
+    public void SetWalk(bool value)
     {
-        if(value == 0)
-            HydraAnimator.SetBool("Walk", false);
-        else
-            HydraAnimator.SetBool("Walk", true);
+        HydraAnimator.SetBool("Walk", value);
     }
 
-    protected void SetRoar()
+    public void SetRoar()
     {
         HydraAnimator.SetTrigger("Roar");
     }
 
-    protected void SetHeavyHit()
+    public void SetHeavyHit()
     {
         HydraAnimator.SetTrigger("HeavyHit");
     }
 
-    protected void SetGrab()
-    {
-        HydraAnimator.SetTrigger("Grab");
-    }
-
-    protected void SetThreehit()
+    public void SetThreehit()
     {
         HydraAnimator.SetTrigger("Threehit");
     }
 
-    protected void SetFivehit()
+    public void SetFivehit()
     {
         HydraAnimator.SetTrigger("Fivehit");
     }
 
-    protected void IsAttacked()
-    {
-        if (IsnormalTargetReached()) // 물리공격
-        {
-            player.GetComponent<Player_Health>().TakeDamage(stat.NormalDamage);
-        }
-        
-        if(IsskillTargetReached())
-        {
-            player.GetComponent<Player_Health>().TakeDamage(stat.SkillDamage);
-        }
-    }
+    //public void IsAttacked()
+    //{
+    //    if (IsnormalTargetReached()) // 물리공격
+    //    {
+    //        player.GetComponent<Player_Health>().TakeDamage(stat.NormalDamage);
+    //    }
 
-    bool IsNTargetReached = false;
-    protected bool IsnormalTargetReached()  // 일반공격 사거리 계산
-    {
-        float distanceToPlayer = Vector3.Distance(
-            player.transform.position, transform.position);
-        if (distanceToPlayer <= stat.NormalAttackRange)
-        {
-            IsNTargetReached = true;
-        }
-        else
-        {
-            IsNTargetReached = false;
-        }
-        return IsNTargetReached;
-    }
+    //    if(IsskillTargetReached())
+    //    {
+    //        player.GetComponent<Player_Health>().TakeDamage(stat.SkillDamage);
+    //    }
+    //}
 
-    bool IsSTargetReached = false;
-    protected bool IsskillTargetReached()  // 스킬공격 사거리 계산
-    {
-        float distanceToPlayer = Vector3.Distance(
-            player.transform.position, transform.position);
-        if (distanceToPlayer <= stat.SkillattackRange && distanceToPlayer > stat.NormalAttackRange)
-        {
-            IsSTargetReached = true;
-            IsNTargetReached = false;
-        }
-        else
-        {
-            IsSTargetReached = false;
-        }
-        return IsSTargetReached;
-    }
+    //bool IsNTargetReached = false;
+    //public bool IsnormalTargetReached()  // 일반공격 사거리 계산
+    //{
+    //    float distanceToPlayer = Vector3.Distance(
+    //        player.transform.position, transform.position);
+    //    if (distanceToPlayer <= stat.NormalAttackRange)
+    //    {
+    //        IsNTargetReached = true;
+    //    }
+    //    else
+    //    {
+    //        IsNTargetReached = false;
+    //    }
+    //    return IsNTargetReached;
+    //}
 
-    public virtual void SetDamaged(float damage)  // 맞을 때 animation 없음
+    //bool IsSTargetReached = false;
+    //public bool IsskillTargetReached()  // 스킬공격 사거리 계산
+    //{
+    //    float distanceToPlayer = Vector3.Distance(
+    //        player.transform.position, transform.position);
+    //    if (distanceToPlayer <= stat.SkillattackRange && distanceToPlayer > stat.NormalAttackRange)
+    //    {
+    //        IsSTargetReached = true;
+    //        IsNTargetReached = false;
+    //    }
+    //    else
+    //    {
+    //        IsSTargetReached = false;
+    //    }
+    //    return IsSTargetReached;
+    //}
+
+    public void SetDamaged(float damage)  // 맞을 때 animation 없음
     {
         stat.CurrentHp -= damage;
         if(stat.CurrentHp <= 0f)
         {
             stat.CurrentHp = 0f;
-            HydraAnimator.SetBool("Death", true);
+            if (isActive)
+            {
+                HydraAnimator.SetTrigger("Death");
+            }
+            isActive = false;
+
             StartCoroutine(Die());
         }
     }
 
     protected IEnumerator Die()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
         float timer = 0;
         float sinkingtime = 5f;
 
         while(true)
         {
             timer += Time.deltaTime;
-            if(timer > sinkingtime)
+
+            GetComponent<SphereCollider>().enabled = false;
+            //GetComponent<Rigidbody>().isKinematic = false;
+            SphereCollider[] colist = GetComponentsInChildren<SphereCollider>();
+            for (int i = 0; i < colist.Length; ++i)
             {
-                transform.position += Vector3.down * Time.fixedDeltaTime * 0.5f;
-                GetComponent<SphereCollider>().enabled = false;
-                GetComponent<Rigidbody>().isKinematic = false;
-                break;
+                colist[i].enabled = false;
             }
+
+            //if (timer > sinkingtime)
+            //{
+            //    transform.position += Vector3.down * Time.fixedDeltaTime * 0.5f;
+            //    break;
+            //}
+
+            //yield return new WaitForSeconds(5f);
+            //GetComponent<NavMeshAgent>().enabled = false;
 
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    public bool IsActivecheck()
+    {
+        return isActive;
     }
 }

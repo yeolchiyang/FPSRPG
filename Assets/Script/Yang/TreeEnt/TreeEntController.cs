@@ -11,9 +11,13 @@ public enum TreeState
     Walk,//bool
     Attack,//Trigger
     Enranged,//Trigger
+    EnrangedIdle,//bool
     Run,//bool
     Damaged,
-    Die//bool
+    Die,//bool
+    EnrangedAttack,//Trigger
+    StompAttack,//Trigger
+    JumpSmashAttack//Trigger
 }
 
 public class TreeEntController : Skeleton
@@ -23,7 +27,8 @@ public class TreeEntController : Skeleton
     public bool IsInvulnerable { get; set; } = false;
     [Tooltip("공격 범위를 가진 Capsule Collider를 집어넣습니다. " +
         "집어넣은 Collider의 높이는 기본공격 사거리의 2배만큼의 크기가 됩니다.")]
-    [SerializeField] CapsuleCollider[] AttackColliders;
+    [SerializeField] private CapsuleCollider[] AttackColliders;
+    [SerializeField] public GameObject NormalHitEffect;
     public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
 
 
@@ -61,16 +66,18 @@ public class TreeEntController : Skeleton
                     state.Parent.ChangeState(TreeState.Walk.ToString());
                 })
                 .End()
-            .State<State>(TreeState.Walk.ToString())//사정거리 밖일 시 Walk로 이동합니다.
+            .State<TreeEntWalkState>(TreeState.Walk.ToString())//사정거리 밖일 시 Walk로 이동합니다.
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.Walk.ToString()} State");
                     //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
                     //2.애니메이션 bool parameter를 Walk로 변경합니다.
                     //3.플레이어를 추적합니다.(NavMesh)
+                    //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Walk.ToString());
                     StartNavigtaion(stat.WalkSpeed);
+                    ToggleCollider(false);
                 })
                 .Condition(() =>
                 {
@@ -85,37 +92,103 @@ public class TreeEntController : Skeleton
                 .Condition(() =>
                 {
                     //공격 사거리 내로 들어왔을 경우
-                    //공격 딜레이 이후 가능하도록
                     return IsTargetReached();
                 },
                 state =>
                 {
-                    //Attack state로 전환
-                    state.Parent.ChangeState(TreeState.Attack.ToString());
+                    //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
+                    if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
+                    {
+                        state.Parent.ChangeState(TreeState.Attack.ToString());
+                        state.AttackedTime = Time.time;
+                    }
                 })
                 .End()
             .State<State>(TreeState.Attack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.Attack.ToString()} State");
-                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
-                    //NavMesh를 중지합니다.
+                    //1.일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
+                    //2.NavMesh를 중지합니다.
+                    //3.공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.Attack.ToString());
                     StopNavigtaion();
+                    ToggleCollider(true);
                 })
                 .End()
             .State<State>(TreeState.Enranged.ToString())//일정 피 이하로 내려가면 발동하는 광폭화 입니다.
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.Enranged.ToString()} State");
-                    
+                    //광폭화 모션 후, Idle로 돌아갑니다.
+                    SetTriggerAnimation(TreeState.Enranged.ToString());
+                    StopNavigtaion();
                 })
                 .End()
-            .State<State>(TreeState.Run.ToString())//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
+            .State<State>(TreeState.EnrangedIdle.ToString())//광폭화 상태의 Idle입니다.
+                .Enter(state =>
+                {
+                    Debug.Log($"Entering {TreeState.EnrangedIdle.ToString()} State");
+                    SetBoolAnimation(TreeState.EnrangedIdle.ToString());
+                    StopNavigtaion();
+                })
+                .Condition(() =>
+                {
+                    //감지거리 내에 들어왔을 경우
+                    return IsTargetDetected();
+                },
+                state =>
+                {
+                    //Run state로 전환
+                    state.Parent.ChangeState(TreeState.Run.ToString());
+                })
+                .End()
+            .State<TreeEntWalkState>(TreeState.Run.ToString())//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {TreeState.Run.ToString()} State");
-                    
+                    //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
+                    //2.애니메이션 bool parameter를 Walk로 변경합니다.
+                    //3.플레이어를 추적합니다.(NavMesh)
+                    //4.공격용 Collider를 비활성화 합니다.
+                    ObjectSpawner.objectSpawner.StopSpawning();
+                    SetBoolAnimation(TreeState.Run.ToString());
+                    StartNavigtaion(stat.RunSpeed);
+                    ToggleCollider(false);
+                })
+                .Condition(() =>
+                {
+                    //감지거리 내를 벗어났을 경우
+                    return !IsTargetDetected();
+                },
+                state =>
+                {
+                    //Idle state로 전환
+                    state.Parent.ChangeState(TreeState.EnrangedIdle.ToString());
+                })
+                .Condition(() =>
+                {
+                    //공격 사거리 내로 들어왔을 경우
+                    return IsTargetReached();
+                },
+                state =>
+                {
+                    //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
+                    if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
+                    {
+                        state.Parent.ChangeState(TreeState.EnrangedAttack.ToString());
+                        state.AttackedTime = Time.time;
+                    }
+                })
+                .End()
+            .State<State>(TreeState.EnrangedAttack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
+                .Enter(state =>
+                {
+                    Debug.Log($"Entering {TreeState.EnrangedAttack.ToString()} State");
+                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
+                    //공격용 Collider를 활성화 합니다.
+                    SetTriggerAnimation(TreeState.EnrangedAttack.ToString());
+                    ToggleCollider(true);
                 })
                 .End()
             .Build();
@@ -131,14 +204,17 @@ public class TreeEntController : Skeleton
     {
         if(IsInvulnerable)
         {
+            Debug.Log("무적입니다.");
             return;
         }
-
+        Debug.Log("damage입힘");
         stat.CurrentHp -= damage;
 
         if( stat.CurrentHp / stat.MaxHp <= 0.3f )
         {
             //광폭화될 수 있는 상태값으로 변경합니다.
+            IsInvulnerable = true;//무적
+            rootState.ChangeState(TreeState.Enranged.ToString());
         }
 
         if (stat.CurrentHp <= 0f)
@@ -177,13 +253,23 @@ public class TreeEntController : Skeleton
     /// <summary>
     /// 일반공격 3개가 공유하는 데미지 입히는 메소드 입니다.
     /// </summary>
-    private void IsAttacked()
+    public void IsAttacked()
     {
-
         playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
-        
-        //playerObject.layer = 
 
+    }
+    /// <summary>
+    /// 팔에 달린 두 Collider를 활성화/비활성화 하는 메소드 입니다.
+    /// Idle State 시, Collider를 비활성화 합니다. 
+    /// Attack State 시, Collider를 활성화 합니다.
+    /// </summary>
+    
+    private void ToggleCollider(bool changeToggle)
+    {
+        foreach (Collider attackCollider in AttackColliders)
+        {
+            attackCollider.enabled = changeToggle;
+        }
     }
 
     /// <summary>

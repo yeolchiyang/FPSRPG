@@ -8,7 +8,9 @@ public class BasicAim : MonoBehaviour
     GameObject aim;
     Animator anim;
 
-    private void Start()
+    [SerializeField] int aimIndex;
+
+    private void Awake()
     {
         gameObject.SetActive(false);
         anim = GetComponent<Animator>();
@@ -16,13 +18,18 @@ public class BasicAim : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        switch (aimIndex)
         {
-            ShootToAim();
+            case 1:
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    ShootToAim();
+                } break;
+            default: break;
         }
     }
 
-    void ShootToAim()
+    public void ShootToAim()
     {
         anim.SetTrigger("Shoot");
     }

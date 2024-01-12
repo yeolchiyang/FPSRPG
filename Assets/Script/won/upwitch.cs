@@ -4,50 +4,84 @@ using UnityEngine;
 
 public class upwitch : MonoBehaviour
 {
-    Player_Health Player;
-    public GameObject player;
+    public GameObject uppos;
+    public GameObject bossroom;
+    public GameObject magicpos;
+    public GameObject magic;
+    Player_Health GetPlayer_Health;
+    GameObject player;
     int storyStep = 0;
     int storyStep1 = 0;
     float storyTime = 1;
+    bool setting = false;
+    FollowCamera camera;
+
     // Start is called before the first frame update
     void Start()
     {
-        Player = player.GetComponent<Player_Health>();
+        camera = Camera.main.GetComponent<FollowCamera>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (player != null)
+        {
+            GetPlayer_Health = player.GetComponent<Player_Health>();
+        }
+       
         storyTime += Time.deltaTime;
+        if (setting)
+        {
+            player.transform.position = new Vector3 (uppos.transform.position.x, player.transform.position.y, uppos.transform.position.z);
+            camera.camin();
+        }
+        
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" && storyTime > 0.5)
         {
-            if (Input.GetKeyDown(KeyCode.F) && storyTime > 0.5 && !Player.BossHunting)
+            player = other.gameObject;
+            HandleInput();
+            if(storyStep > 0&& storyStep <= 6)
+            {
+                
+                other.gameObject.transform.forward = -transform.forward;
+            }
+        }
+    }
+    void HandleInput()
+    {
+        if (!GetPlayer_Health.BossHunting)
+        {
+            if (Input.GetKeyDown(KeyCode.F) )
             {
                 storyTime = 0;
                 story1();
                 storyStep++;
             }
-            else if (Input.GetKeyDown(KeyCode.G) && storyTime > 0.5 && !Player.BossHunting && storyStep > 0)
+            else if (Input.GetKeyDown(KeyCode.G)&&storyStep>0)
             {
                 storyStep--;
-                storyTime = 0;
                 story1();
             }
-            if (Input.GetKeyDown(KeyCode.F) && storyTime > 0.5 && Player.BossHunting)
+            
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 storyTime = 0;
                 story2();
                 storyStep1++;
             }
-            else if (Input.GetKeyDown(KeyCode.G) && storyTime > 0.5 && Player.BossHunting && storyStep > 0)
+            else if (Input.GetKeyDown(KeyCode.G))
             {
                 storyStep1--;
-                storyTime = 0;
                 story2();
             }
+            
         }
     }
     void story1()
@@ -56,6 +90,7 @@ public class upwitch : MonoBehaviour
         {
             case 0:
                 npctalk("오, 모험가야! 엘리트1을 잡았다고? 멋진 일이야. 네 영혼이 강해지는 걸 느낄 수 있어.");
+                setting = true;
                 break;
             case 1:
                 npctalk("이제 강해진 네 영혼으로 네 장비를 더욱 강화해줄게. 세계는 더욱 어려워질 테니까 말이야.");
@@ -74,6 +109,9 @@ public class upwitch : MonoBehaviour
                 break;
             case 6:
                 npctalk("이번에도 엘리트2를 잡으면 비밀의 방이 열릴거야. 보물에 한 발짝 더 다가갔다는 느낌이 드네. 행운을 빌게, 모험가야!");
+                Instantiate(magic, magicpos.transform.position, magicpos.transform.rotation);
+                setting = false;
+                Invoke("onMagic", 0.25f);
                 break;
             case 12:
                 npctalk("강해진 너의 영혼은 정말 황홀해. 그 광채는 이미 눈에 띄고 있어.");
@@ -97,6 +135,7 @@ public class upwitch : MonoBehaviour
         {
             case 0:
                 npctalk("드디어 엘리트2를 처치했군! 네 영혼은 찬란하게 빛나고 있어.");
+                setting = true;
                 break;
             case 1:
                 npctalk("우선 너의 강화된 영혼으로 장비를 한번 더 강화해줄게.");
@@ -112,6 +151,8 @@ public class upwitch : MonoBehaviour
                 break;
             case 5:
                 npctalk("하지만 주의해, 그곳에서 기다리는 것이 보물뿐만이 아닐 거야.");
+                Instantiate(bossroom, magicpos.transform.position, magicpos.transform.rotation);
+                setting = false;
                 break;
             default:
                 break;
@@ -121,4 +162,5 @@ public class upwitch : MonoBehaviour
     {
         Debug.Log(npcText);
     }
+    
 }

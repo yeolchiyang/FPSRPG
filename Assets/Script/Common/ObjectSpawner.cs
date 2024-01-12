@@ -82,9 +82,13 @@ public class ObjectSpawner : MonoBehaviour
         GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
         foreach(GameObject enemy in enemys)
         {
-            if (enemy.GetComponent<NormalSkeleton>().isActive)
+            NormalSkeleton comp = enemy.GetComponent<NormalSkeleton>();
+            if (comp != null)
             {
-                enemy.GetComponent<NormalSkeleton>().SetDie();
+                if (comp.isActive)
+                {
+                    comp.SetDie();
+                }
             }
         }
     }

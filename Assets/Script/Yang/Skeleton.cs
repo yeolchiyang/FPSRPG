@@ -59,7 +59,9 @@ namespace Yang{
             }
         }
         /// <summary>
-        /// NavMesh를 시작 또는 재시작합니다. 모든 오브젝트에 적용 가능합니다.
+        /// NavMesh를 시작 또는 재시작합니다. 
+        /// 목적지는 Player 위치 입니다.
+        /// 모든 오브젝트에 적용 가능합니다.
         /// </summary>
         /// <param name="speed">1초마다 speed만큼의 거리를 이동합니다.</param>
         protected void StartNavigtaion(float speed)
@@ -71,6 +73,24 @@ namespace Yang{
             skeletonNav.updateRotation = true;
             skeletonNav.speed = speed;
         }
+
+        /// <summary>
+        /// NavMesh를 시작 또는 재시작합니다. 
+        /// 목적지를 새로 설정 가능합니다. 
+        /// 모든 오브젝트에 적용 가능합니다.
+        /// </summary>
+        /// <param name="speed">1초마다 speed만큼의 거리를 이동합니다.</param>
+        /// <param name="targetPosition"></param>
+        protected void StartNavigtaion(float speed, Vector3 targetPosition)
+        {
+            skeletonNav.isStopped = false;
+            skeletonNav.ResetPath();//ResetPath -> SetDestination 해야 재작동 합니다.
+            skeletonNav.SetDestination(targetPosition);
+            skeletonNav.updatePosition = true;
+            skeletonNav.updateRotation = true;
+            skeletonNav.speed = speed;
+        }
+
 
     }
 }

@@ -30,6 +30,9 @@ public class HYDRABoss : MonoBehaviour
 
     void Update()
     {
+        if (!hydra.IsActivecheck())
+            return;
+
         skillTimer += Time.deltaTime;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -70,6 +73,7 @@ public class HYDRABoss : MonoBehaviour
                 {
                     hydra.SetRoar();
                     StartCoroutine("Attackanim");
+
                 }
             }
             else if (Random.Range(0, 100) > 25 && Random.Range(0, 100) <= 50)

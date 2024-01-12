@@ -44,8 +44,7 @@ public class Player_Health : MonoBehaviour
     {
         if (collision.collider.tag == "Enemy" && currentHp>0)
         {
-            anima.Player_Hit();
-            TakeDamage(10f);
+            
             
         }
     }
@@ -53,7 +52,7 @@ public class Player_Health : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHp -= damage;
-
+        anima.Player_Hit();
         if (currentHp <= 0)
         {
             die();

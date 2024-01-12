@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class HYDRA : MonoBehaviour
 {
@@ -96,27 +98,42 @@ public class HYDRA : MonoBehaviour
         if(stat.CurrentHp <= 0f)
         {
             stat.CurrentHp = 0f;
-            HydraAnimator.SetBool("Death", true);
+            if (isActive)
+            {
+                HydraAnimator.SetTrigger("Death");
+            }
+            isActive = false;
+
             StartCoroutine(Die());
         }
     }
 
     protected IEnumerator Die()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
         float timer = 0;
         float sinkingtime = 5f;
 
         while(true)
         {
             timer += Time.deltaTime;
-            if(timer > sinkingtime)
+
+            GetComponent<SphereCollider>().enabled = false;
+            //GetComponent<Rigidbody>().isKinematic = false;
+            SphereCollider[] colist = GetComponentsInChildren<SphereCollider>();
+            for (int i = 0; i < colist.Length; ++i)
             {
-                transform.position += Vector3.down * Time.fixedDeltaTime * 0.5f;
-                GetComponent<SphereCollider>().enabled = false;
-                GetComponent<Rigidbody>().isKinematic = false;
-                break;
+                colist[i].enabled = false;
             }
+
+            //if (timer > sinkingtime)
+            //{
+            //    transform.position += Vector3.down * Time.fixedDeltaTime * 0.5f;
+            //    break;
+            //}
+
+            //yield return new WaitForSeconds(5f);
+            //GetComponent<NavMeshAgent>().enabled = false;
 
             yield return new WaitForFixedUpdate();
         }

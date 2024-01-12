@@ -21,10 +21,15 @@ public class shoothit : MonoBehaviour
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)
     {
-        if (((1 << collision.gameObject.layer) & EnemyLayer.value) != 0)
+        HYDRA hYDRA = collision.gameObject.GetComponent<HYDRA>();
+        if (hYDRA != null)
+        {
+            hYDRA.SetDamaged(weaponDamage);
+        }
+        else if (((1 << collision.gameObject.layer) & EnemyLayer.value) != 0)
         {
             //맞았던 시간 + 중복데미지 방지 시간 <= 현재시간
-            if ( (HittedTime  + NextHitable) <= Time.time)
+            if ((HittedTime + NextHitable) <= Time.time)
             {
 
                 skeleton = collision.gameObject.GetComponent<Skeleton>();
@@ -34,5 +39,6 @@ public class shoothit : MonoBehaviour
             
         }
         
+        Debug.Log(collision.collider.name);
     }
 }

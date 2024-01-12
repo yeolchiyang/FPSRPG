@@ -7,10 +7,13 @@ public class PortionContral : MonoBehaviour
     Animator anim;
     [SerializeField] GameObject[] Portions;
     List<PortionCount> PortionList = new List<PortionCount>();
+
     
     [SerializeField] GameObject DebineEff;
     [SerializeField] GameObject HillEff;
     float hillPower = 20f;
+
+    [SerializeField] ContralConditionBar ccb;
 
     [SerializeField] GameObject Player;
     Player_Health player;
@@ -42,9 +45,16 @@ public class PortionContral : MonoBehaviour
             HillEff.SetActive(!PortionList[0].isEmpty());
             PortionList[0].ReducePotion(1);
             if (player.currentHp + hillPower > 100)
+            {
                 player.currentHp = 100;
+                ccb.UpdateHP();
+            }
             else
+            {
                 player.currentHp += hillPower;
+                ccb.UpdateHP();
+            }
+
             countTime = portionDilay;
         }
         if (Input.GetKeyDown("7"))
@@ -57,10 +67,5 @@ public class PortionContral : MonoBehaviour
         }
 
         countTime -= Time.deltaTime;
-    }
-
-    void DebineEffect()
-    {
-        DebineEff.SetActive(true);
     }
 }

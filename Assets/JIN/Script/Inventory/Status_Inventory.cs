@@ -5,16 +5,13 @@ using UnityEngine.UI;
 
 public class Status_Inventory : MonoBehaviour
 {
+    [SerializeField] GameObject PowerUpUI;
     [SerializeField] Slider[] statusSliders;
-    [SerializeField] GameObject Player;
-    Player_Health player;
+    [SerializeField] UnityEngine.UI.Text[] powerUpUITexts;
+    [SerializeField] Player_Health player;
 
+    int[] status = new int[5];   //index 1:W1, 2:W2, 3:W3, 4:Vitality 5:Armor
     int statusMaxValue = 8;
-
-    private void Awake()
-    {
-        //player = Player.GetComponent<Player_Health>();
-    }
 
     private void Start()
     {
@@ -23,29 +20,42 @@ public class Status_Inventory : MonoBehaviour
             statusSliders[i].maxValue = statusMaxValue;
             statusSliders[i].value = 0;
         }
+        player.forceSoul = 12;  //시각 확인후 삭제        
 
-        ChangeStatus(0);
-        ChangeStatus(1);
-        ChangeStatus(2);
-        ChangeStatus(3);
-        ChangeStatus(4);
+        for(int i = 0;i < powerUpUITexts.Length; ++i) 
+        {
+            powerUpUITexts[i].text = "" + status[i];
+            if (status[i] == 0)
+                powerUpUITexts[i].text = null;
+        }
+    }
+
+    public void AddStatPoint(int stateIndex)
+    {
+        if (player.forceSoul > 0)
+        {
+            if (status[stateIndex] < 8)
+            {
+                ++status[stateIndex];
+                UpdateStatus(stateIndex);
+                powerUpUITexts[stateIndex].text = status[stateIndex].ToString();
+                player.forceSoul--;
+
+
+            }
+            else
+                Debug.Log("Already this state is maxim ");
+        }
+        else
+        {
+            Debug.Log("ForceSoul is Empty");
+            PowerUpUI.SetActive(false);
+        }
     }
 
 
-    void ChangeStatus(int stateIndex)
+    void UpdateStatus(int stateIndex)
     {
-        switch (stateIndex)
-        {
-            case 0:
-                statusSliders[stateIndex].value = 3/*player.W1_ATK*/; break; //getATK()
-            case 1:
-                statusSliders[stateIndex].value = 1/*player.W2_ATK*/; break; //getATK()
-            case 2:
-                statusSliders[stateIndex].value = 0/*player.W3_ATK*/; break; //getATK()
-            case 3:
-                statusSliders[stateIndex].value = 2/*player.Vitality*/; break; //getATK()
-            case 4:
-                statusSliders[stateIndex].value = 2/*player.Armor*/; break; //getATK()
-        }
+        statusSliders[stateIndex].value = status[stateIndex];
     }
 }

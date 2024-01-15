@@ -47,5 +47,6 @@ public class ContralBossHPBar : MonoBehaviour
         this.currentHP = currentHP;
         this.maxHP = maxHP;
         this.bossName = bossName;
+        BossName.text = bossName;
     }
 }

@@ -45,6 +45,8 @@ namespace Yang{
         {
             
         }
+
+
         /// <summary>
         /// NavMesh를 중지합니다. 모든 오브젝트에 적용 가능합니다.
         /// </summary>
@@ -81,7 +83,7 @@ namespace Yang{
         /// </summary>
         /// <param name="speed">1초마다 speed만큼의 거리를 이동합니다.</param>
         /// <param name="targetPosition"></param>
-        protected void StartNavigtaion(float speed, Vector3 targetPosition)
+        protected void StartNavigation(float speed, Vector3 targetPosition)
         {
             skeletonNav.isStopped = false;
             skeletonNav.ResetPath();//ResetPath -> SetDestination 해야 재작동 합니다.

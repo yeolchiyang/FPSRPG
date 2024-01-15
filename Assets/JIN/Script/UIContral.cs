@@ -8,19 +8,19 @@ public class UIContral : MonoBehaviour
 
     //GameObject Boss;
     public GameObject Player;
+    
 
     Player_Health player;
 
+    [SerializeField] upwitch witch;
     [SerializeField] GameObject GameMenuWindow;
     [SerializeField] GameObject PowerUpUI;
     bool gameMenuEnable = false;
     bool powerUpEnabled = false;
     
-    [SerializeField] GameObject BossHPBar;
     [SerializeField] GameObject[] Aims;
 
     [SerializeField] UnityEngine.UI.Image[] Arms;
-    
     [SerializeField] UnityEngine.UI.Text PlayerLv;
     [SerializeField] UnityEngine.UI.Text ForceSoulCount;
 
@@ -69,26 +69,9 @@ public class UIContral : MonoBehaviour
             setAim(2);
         }
 
-        if (Input.GetKeyDown("0"))  //보스체력바 활성화
-        {
-            if (!BossHPBar.activeSelf)
-            {
-                BossHPBar.SetActive(true);
-                ContralBossHPBar bossHPBarSample =
-                    BossHPBar.GetComponent<ContralBossHPBar>();
-                bossHPBarSample.setBossInfo(
-                    /*boss.currentHP*/100, /*boss.maxHP*/100, /*boss.name*/"DemonKing Diablo");
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             MenuWindowContral();
-        }
-
-        if (Input.GetKeyDown("p"))
-        {
-            PowerUpUIContral();
         }
     }
 
@@ -123,6 +106,7 @@ public class UIContral : MonoBehaviour
             PowerUpUI.SetActive(powerUpEnabled);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            witch.AddStoryStep();
         }
     }
 

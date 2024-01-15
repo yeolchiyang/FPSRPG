@@ -22,23 +22,25 @@ public class CheckObject : MonoBehaviour
 
     void CheckObj()
     {
+        fieldItemSlot.SetActive(false);
+        fieldItemText.text = string.Empty;
+
         Ray ray = new Ray(Camera.main.transform.position,
             Camera.main.transform.forward);
         RaycastHit hitInfo = new RaycastHit();
 
-        if(Physics.Raycast(ray, out hitInfo, range))
+        if (Physics.Raycast(ray, out hitInfo, range))
         {
             InteractionObject interationObj = hitInfo.collider.gameObject.
                 GetComponent<InteractionObject>();
-            if (interationObj.GetComponent<InteractionObject>() != null)
+            if (interationObj != null)
             {
+                print(hitInfo.collider.gameObject.name);
                 fieldItemSlot.SetActive(true);
                 fieldItemText.text = "" + interationObj.getItemName();
-            }   
-            else
-                fieldItemSlot.SetActive(false);
-                fieldItemText.text = string.Empty;
+            }
+
         }
-        
+     
     }
 }

@@ -216,14 +216,7 @@ public class NormalSkeleton : Skeleton
             SetTriggerAnimation(Die);
             StopNavigtaion();
             StartCoroutine(Sinking());
-<<<<<<< HEAD
             playerObject.GetComponent<Player_Health>().AddExp(10);
-=======
-            if(stat.CurrentHp <= 0f)
-            {
-                playerObject.GetComponent<Player_Health>().ADDExp();
-            }
->>>>>>> main
         }
     }
     /// <summary>

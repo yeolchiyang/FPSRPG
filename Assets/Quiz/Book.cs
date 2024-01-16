@@ -36,7 +36,14 @@ public class Book : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        FollowCamera.camout();
+        if (other.gameObject.tag == "Player")
+        {
+            FollowCamera.camout();
+        }
+    }
+    void collisionout()
+    {
+        gameObject.SetActive(false);
     }
 
 }

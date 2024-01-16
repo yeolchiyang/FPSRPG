@@ -40,7 +40,7 @@ public class PortionContral : MonoBehaviour
     {
         if (Input.GetKeyDown("5"))
             PortionList[0].AddPotion(1);
-        if (Input.GetKeyDown("6") && countTime <= 0)
+        if (Input.GetKeyDown("e") && countTime <= 0)
         {
             HillEff.SetActive(!PortionList[0].isEmpty());
             PortionList[0].ReducePotion(1);
@@ -59,7 +59,7 @@ public class PortionContral : MonoBehaviour
         }
         if (Input.GetKeyDown("7"))
             PortionList[1].AddPotion(1);
-        if (Input.GetKeyDown("8") && countTime <= 0)
+        if (Input.GetKeyDown("r") && countTime <= 0)
         {
             DebineEff.SetActive(!PortionList[1].isEmpty());
             PortionList[1].ReducePotion(1);

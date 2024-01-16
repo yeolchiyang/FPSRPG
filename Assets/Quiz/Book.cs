@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Book : MonoBehaviour
 {
-    public GameObject book;
+    //public GameObject book;
     private Animator anim;
     public GameObject cam;
     FollowCamera FollowCamera;
@@ -12,7 +12,7 @@ public class Book : MonoBehaviour
     void Start()
     {
         FollowCamera = cam.GetComponent<FollowCamera>();
-        bookTr = book.GetComponent<Transform>();
+        //bookTr = book.GetComponent<Transform>();//
         anim = GetComponent<Animator>();
     }
 

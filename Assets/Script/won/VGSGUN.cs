@@ -38,7 +38,17 @@ public class VGSGUN : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        player_Health= player.GetComponent<Player_Health>();
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player");
+            
+        }
+        if (invenObj == null)
+        {
+            invenObj = GameObject.Find("StatusArea");
+            inventory = invenObj.GetComponent<Status_Inventory>();
+        }
+        player_Health = player.GetComponent<Player_Health>();
         curretMp = player_Health.currentMp; 
         
         BulletEndPoint = GameObject.Find("BulletEnd");

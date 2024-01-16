@@ -28,8 +28,9 @@ public class VGSGUN : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        BulletEndPoint = GameObject.Find("BulletEndPoint");
         bullet = GameObject.FindWithTag("Bullet");
-        GetShoothit = bullet.GetComponent<shoothit>();
+        GetShoothit = BulletEffect.GetComponent<shoothit>();
         shootspeed = 0;
         player_Health = player.GetComponent<Player_Health>();
     }
@@ -38,10 +39,20 @@ public class VGSGUN : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        player_Health= player.GetComponent<Player_Health>();
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player");
+            
+        }
+        if (invenObj == null)
+        {
+            invenObj = GameObject.Find("StatusArea");
+            inventory = invenObj.GetComponent<Status_Inventory>();
+        }
+        player_Health = player.GetComponent<Player_Health>();
         curretMp = player_Health.currentMp; 
         
-        BulletEndPoint = GameObject.Find("BulletEnd");
+        BulletEndPoint = GameObject.Find("BulletEndPoint");
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && shootspeed >= 1 && player_Health.lief && curretMp > costMp)
         {

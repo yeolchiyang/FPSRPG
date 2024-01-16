@@ -34,7 +34,7 @@ public class shoothit : MonoBehaviour
         {
             weaponDamage = 2 + (inventory.status[2] * 0.75f);
         }
-        
+        Debug.Log(weaponDamage);
     }
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)
@@ -50,7 +50,7 @@ public class shoothit : MonoBehaviour
             //맞았던 시간 + 중복데미지 방지 시간 <= 현재시간
             if ((HittedTime + NextHitable) <= Time.time)
             {
-
+                Debug.Log("aaa");
                 skeleton = collision.gameObject.GetComponent<Skeleton>();
                 skeleton.SetDamaged(weaponDamage);
                 HittedTime = Time.time;//맞은 시간 기록용

@@ -16,6 +16,9 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private int regenLimitedCount = 30;
     [Tooltip("현재 소환된 일반 몬스터 수 입니다.")]
     [SerializeField] private int currentSpawnedCount = 0;
+    [Tooltip("TreeEnt가 나가면 안되는 영역을 지정한 BoxCollider 입니다." +
+        "Spawn지역을 나타내는 오브젝트를 넣어주세요")]
+    [SerializeField] private BoxCollider treeEntBoxCollider;
     private bool isSpawning = true;
 
 
@@ -29,6 +32,12 @@ public class ObjectSpawner : MonoBehaviour
         get { return currentSpawnedCount; } 
         set { currentSpawnedCount = value; }
     }
+    public BoxCollider TreeEntBoxCollider
+    {
+        get { return treeEntBoxCollider; }
+    }
+
+
 
     private void Awake()
     {

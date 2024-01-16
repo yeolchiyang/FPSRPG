@@ -6,7 +6,7 @@ using Yang;
 
 public class Launcher : MonoBehaviour
 {
-    public GameObject asd;
+    public GameObject AIM;
     Player_Health player_Health;
     BasicAim basicAim;
     public GameObject player;
@@ -15,7 +15,7 @@ public class Launcher : MonoBehaviour
     public float weaponDamage;
     public GameObject BulletEffect;
     public GameObject BulletStartPoint;
-    GameObject BulletEndPoint;
+    public GameObject BulletEndPoint;
     private Camera Cam;
     private Ray RayMouse;
     private Vector3 direction;
@@ -29,14 +29,14 @@ public class Launcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        BulletEndPoint = GameObject.Find("BulletEndPoint");
         bullet = GameObject.FindWithTag("Bullet");
-        GetShoothit = bullet.GetComponent<shoothit>();
+        GetShoothit = BulletEffect.GetComponent<shoothit>();
         invenObj = GameObject.Find("StatusArea");
         inventory = invenObj.GetComponent<Status_Inventory>();
         player = GameObject.FindWithTag("Player");
         player_Health = player.GetComponent<Player_Health>();
-        basicAim = asd.GetComponent<BasicAim>();
-        Debug.Log(0.3-(inventory.status[3] * 0.025f));
+        basicAim = AIM.GetComponent<BasicAim>();
     }
     float shootspeed = 0;
     // Update is called once per frame
@@ -53,40 +53,53 @@ public class Launcher : MonoBehaviour
             invenObj = GameObject.Find("StatusArea");
             inventory = invenObj.GetComponent<Status_Inventory>();
         }
-        if (inventory.status[2] > 4)
-        {
-            costMp = 1;
-        }
-        BulletEndPoint = GameObject.Find("BulletEnd");
+        player_Health = player.GetComponent<Player_Health>();
+        inventory = invenObj.GetComponent<Status_Inventory>();
+        
+        BulletEndPoint = GameObject.Find("BulletEndPoint");
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButton(0) && shootspeed >= 0.3 - (inventory.status[2]* 0.025f)&& player_Health.lief && player_Health.currentMp > costMp)
         {
             player_Health.CostMp(costMp);
             shootspeed = 0;
-            //basicAim.ShootToAim();  // Weapon3 에임 
+            basicAim.ShootToAim();  // Weapon3 에임 
             GameObject  ASD = Instantiate(BulletEffect, BulletStartPoint.transform.position, BulletStartPoint.transform.rotation);
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-            RaycastHit hitInfo = new RaycastHit(); // hit 오브젝트
+            RaycastHit hitInfo = new RaycastHit();
             int layerMask = ~(1 << LayerMask.NameToLayer("Player"));
 
             if (Physics.Raycast(ray, out hitInfo, Range, layerMask))
             {
-                ASD.transform.LookAt(hitInfo.point);
+                
+                    ASD.transform.LookAt(hitInfo.point);
+
                 
             }
             else
             {
                 ASD.transform.LookAt(BulletEndPoint.transform.position);
+                
             }
+            if (Cam != null)
+            {
+                RaycastHit hit;
+                var mousePos = Input.mousePosition;
+                RayMouse = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+                if (Physics.Raycast(RayMouse.origin, RayMouse.direction, out hit, MaxLength))
+                {
+                    RotateToMouseDirection(gameObject, hit.point);
+                }
+            }
+
         }
         
     }
-/*
+
     void RotateToMouseDirection(GameObject obj, Vector3 destination)
     {
         direction = destination - obj.transform.position;
         rotation = Quaternion.LookRotation(direction);
         obj.transform.localRotation = Quaternion.Lerp(obj.transform.rotation, rotation, 1);
-    }*/
+    }
     
 }

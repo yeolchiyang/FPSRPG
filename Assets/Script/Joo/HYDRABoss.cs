@@ -9,8 +9,11 @@ public class HYDRABoss : MonoBehaviour
     HYDRA hydra;
     HYDRAStat stat;
     [SerializeField] Transform player;
+    [SerializeField] GameObject BossBar; // 진선윤 BossHPBar 조인 추가
+    ContralBossHPBar cbb;                // 진선윤 BossHPBar 조인 추가
     float rotationSpeed = 5f;
     protected UnityEngine.AI.NavMeshAgent Nav;
+
     ParticleSystem bress;
 
     void Start()
@@ -20,7 +23,7 @@ public class HYDRABoss : MonoBehaviour
         hydra = GetComponent<HYDRA>();
         StartCoroutine("NextMove");
         stat.CurrentHp = stat.MaxHp;
-
+        cbb = BossBar.GetComponent<ContralBossHPBar>();  // 진선윤 BossHPBar 조인 추가
     }
 
     bool NextMove_is_running = false;
@@ -41,6 +44,8 @@ public class HYDRABoss : MonoBehaviour
         {
             StopCoroutine("NextMove");
             NextMove_is_running = false;
+            BossBar.SetActive(true);  // 진선윤 BossHPBar 조인 추가
+            cbb.setBossInfo(stat.CurrentHp, stat.MaxHp, stat.name);  // 진선윤 BossHPBar 조인 추가
             MoveTowardsPlayer();
         }
         else
@@ -135,6 +140,7 @@ public class HYDRABoss : MonoBehaviour
                 {
                     currentpointIndex = 0;
                 }
+
                 Nav.SetDestination(transform.position);
                 hydra.SetWalk(false);
                 yield return new WaitForSeconds(1f);

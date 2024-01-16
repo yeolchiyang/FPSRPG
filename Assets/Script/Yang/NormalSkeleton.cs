@@ -165,7 +165,10 @@ public class NormalSkeleton : Skeleton
         stat.CurrentHp -= damage;
         if (stat.CurrentHp <= 0f)
         {
-            rootState.ChangeState(Die);
+            if (isActive)
+            {
+                rootState.ChangeState(Die);
+            }
         }
         else
         {
@@ -185,7 +188,10 @@ public class NormalSkeleton : Skeleton
         stat.CurrentHp -= damage;
         if (stat.CurrentHp <= 0f)
         {
-            rootState.ChangeState(Die);
+            if (isActive)
+            {
+                rootState.ChangeState(Die);
+            }
         }
         else
         {
@@ -199,12 +205,7 @@ public class NormalSkeleton : Skeleton
         }
     }
 
-    private bool IsAnimationPlaying(string stateName)
-    {
-        AnimatorStateInfo currentState = skeletonAnimator.GetCurrentAnimatorStateInfo(0);
-        bool isAnimationPlaying = currentState.IsName(stateName);
-        return isAnimationPlaying;
-    }
+
 
     //사망 시, 다른 상태전환이 되지 않도록 처리해야 합니다.
     public void SetDie()
@@ -215,7 +216,14 @@ public class NormalSkeleton : Skeleton
             SetTriggerAnimation(Die);
             StopNavigtaion();
             StartCoroutine(Sinking());
+<<<<<<< HEAD
             playerObject.GetComponent<Player_Health>().AddExp(10);
+=======
+            if(stat.CurrentHp <= 0f)
+            {
+                playerObject.GetComponent<Player_Health>().ADDExp();
+            }
+>>>>>>> main
         }
     }
     /// <summary>
@@ -239,7 +247,6 @@ public class NormalSkeleton : Skeleton
             if (timer > destroyTime)
             {
                 GetComponent<CapsuleCollider>().enabled = false;
-                GetComponent<Rigidbody>().isKinematic = false;
                 ObjectSpawner.objectSpawner.CurrentSpawnedCount--;
                 ObjectPool.objectPool.PoolObject(gameObject);
                 break;
@@ -254,8 +261,7 @@ public class NormalSkeleton : Skeleton
         this.isActive = true;
         this.stat.CurrentHp = this.stat.MaxHp;
         GetComponent<CapsuleCollider>().enabled = true;
-        GetComponent<Rigidbody>().isKinematic = true;
-
+        
     }
 
     //현재 미사용
@@ -266,51 +272,7 @@ public class NormalSkeleton : Skeleton
     }
 
 
-    private void SetBoolAnimation(string state)
-    {
-        // 현재 애니메이터의 모든 파라미터를 가져옵니다.
-        AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
 
-        // 각 파라미터에 대해 반복합니다.
-        foreach (AnimatorControllerParameter parameter in parameters)
-        {
-            // 제외할 파라미터인지 확인하고, 제외되지 않은 경우 값을 false로 설정합니다.
-            if (parameter.type == AnimatorControllerParameterType.Bool)
-            {
-                if (parameter.name == state)
-                {
-                    skeletonAnimator.SetBool(parameter.name, true);
-                }
-                else
-                {
-                    skeletonAnimator.SetBool(parameter.name, false);
-                }
-            }
-        }
-    }
-    /// <summary>
-    /// 공격, 데미지를 입었을 때 빠르게 기존 state로 전환하기 위함입니다.
-    /// </summary>
-    /// <returns>정의한 상태값의 string 값을 반환합니다.</returns>
-    private string GetBoolAnimationName()
-    {
-        string parameterName = "";
-        // 현재 애니메이터의 모든 파라미터를 가져옵니다.
-        AnimatorControllerParameter[] parameters = skeletonAnimator.parameters;
-        foreach (AnimatorControllerParameter parameter in parameters)
-        {
-            if (parameter.type == AnimatorControllerParameterType.Bool)
-            {
-                //true인 파라미터면
-                if (skeletonAnimator.GetBool(parameter.name))
-                {
-                    parameterName = parameter.name;
-                }
-            }
-
-        }
-        return parameterName;
-    }
     /// <summary>
     /// 사정거리 내에 들어온지를 감지합니다.
     /// </summary>
@@ -331,10 +293,6 @@ public class NormalSkeleton : Skeleton
         return isTargetReached;
     }
 
-    private void SetTriggerAnimation(string state)
-    {
-        skeletonAnimator.SetTrigger(state);
-    }
 
 
 

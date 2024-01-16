@@ -20,6 +20,8 @@ public class HYDRAStat : MonoBehaviour
     [SerializeField] private float skillattackRange;  // 50
     [Tooltip("공격 주기")]
     [SerializeField] private float attackDelay;  // 3
+    [Tooltip("이름")]
+    [SerializeField] private string name;  // 진선윤 히드라 네임 추가
     public float WalkSpeed { get { return walkSpeed; } set { walkSpeed = value; } }
     public float MaxHp { get { return maxHp; } set { maxHp = value; } }
     public float CurrentHp { get { return currentHp; } set { currentHp = value; } }
@@ -28,4 +30,5 @@ public class HYDRAStat : MonoBehaviour
     public float NormalAttackRange { get { return normalattackRange; } set { normalattackRange = value; } }
     public float SkillattackRange { get { return skillattackRange; } set { skillattackRange = value; } }
     public float AttackDelay { get { return attackDelay; } set { attackDelay = value; } }
+    public string Name { get { return name; } set { name = value; } }
 }

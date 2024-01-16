@@ -28,6 +28,9 @@ public class EnemyStat : MonoBehaviour
     [SerializeField] private float attackRange;
     [Tooltip("기본 공격 주기")]
     [SerializeField] private float attackDelay;
+    [Tooltip("목적지 갱신 주기(주기가 짧을 수록 Player를 추적 좌표 갱신이 빨라집니다.)")]
+    [SerializeField] private float resetDestinationDelay;
+
     public float MaxHp { get { return maxHp; } set { maxHp = value; } }
     public float CurrentHp { get { return currentHp; } set { currentHp = value; } }
     public float PhysicalDamage { get { return physicalDamage; } set { physicalDamage = value; } }
@@ -36,4 +39,5 @@ public class EnemyStat : MonoBehaviour
     public float DetectionRange { get { return detectionRange; } set { detectionRange = value; } }
     public float AttackRange { get { return attackRange; } set { attackRange = value; } }
     public float AttackDelay { get { return attackDelay; } set { attackDelay = value; } }
+    public float ResetDestinationDelay { get { return resetDestinationDelay; } set { resetDestinationDelay = value; } }
 }

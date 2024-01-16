@@ -27,12 +27,12 @@ public class ContralConditionBar : MonoBehaviour
         Fillindex(2, player.currentExp, player.maxExp);
     }
 
-    //private void Update()
-    //{
-    //    Fillindex(0, player.currentHp, player.maxHp);
-    //    Fillindex(1, player.currentMp, player.maxMp);
-    //    Fillindex(2, player.currentExp, player.maxExp);
-    //}
+    private void Update()
+    {
+        Fillindex(0, player.currentHp, player.maxHp);
+        Fillindex(1, player.currentMp, player.maxMp);
+        Fillindex(2, player.currentExp, player.maxExp);
+    }
 
     void Fillindex(int index, float current, float max)
     {

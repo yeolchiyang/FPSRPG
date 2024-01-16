@@ -9,12 +9,15 @@ public class upwitch : MonoBehaviour
     public GameObject magicpos;
     public GameObject magic;
     Player_Health GetPlayer_Health;
-    GameObject player;
+    public GameObject player;
     int storyStep = 0;
     int storyStep1 = 0;
     float storyTime = 1;
     bool setting = false;
     FollowCamera camera;
+
+    [SerializeField] UIContral uiContral;
+    [SerializeField] GameObject powerUPWindow;
 
     // Start is called before the first frame update
     void Start()
@@ -29,14 +32,14 @@ public class upwitch : MonoBehaviour
         {
             GetPlayer_Health = player.GetComponent<Player_Health>();
         }
-       
+
         storyTime += Time.deltaTime;
         if (setting)
         {
-            player.transform.position = new Vector3 (uppos.transform.position.x, player.transform.position.y, uppos.transform.position.z);
+            player.transform.position = new Vector3(uppos.transform.position.x, player.transform.position.y, uppos.transform.position.z);
             camera.camin();
         }
-        
+
     }
     private void OnTriggerStay(Collider other)
     {
@@ -44,9 +47,9 @@ public class upwitch : MonoBehaviour
         {
             player = other.gameObject;
             HandleInput();
-            if(storyStep > 0&& storyStep <= 6)
+            if (storyStep > 0 && storyStep <= 6)
             {
-                
+
                 other.gameObject.transform.forward = -transform.forward;
             }
         }
@@ -55,33 +58,53 @@ public class upwitch : MonoBehaviour
     {
         if (!GetPlayer_Health.BossHunting)
         {
-            if (Input.GetKeyDown(KeyCode.F) )
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                storyTime = 0;
-                story1();
-                storyStep++;
-            }
-            else if (Input.GetKeyDown(KeyCode.G)&&storyStep>0)
-            {
-                storyStep--;
-                story1();
+                if (storyStep == 2)
+                {
+                    powerUPWindow.SetActive(true);
+                    uiContral.PowerUpUIContral();
+                }
+
+                else
+                {
+                    storyTime = 0;
+                    story1();
+                    storyStep++;
+                }
             }
             
+            //else if (Input.GetKeyDown(KeyCode.G) && storyStep > 0)
+            //{
+            //    storyStep--;
+            //    story1();
+            //}
+
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                storyTime = 0;
-                story2();
-                storyStep1++;
-            }
-            else if (Input.GetKeyDown(KeyCode.G))
-            {
-                storyStep1--;
-                story2();
+                if (storyStep == 2)
+                {
+                    powerUPWindow.SetActive(true);
+                    uiContral.PowerUpUIContral();
+                }
+
+                else
+                {
+                    storyTime = 0;
+                    story2();
+                    storyStep1++;
+                }
             }
             
+            //else if (Input.GetKeyDown(KeyCode.G))
+            //{
+            //    storyStep1--;
+            //    story2();
+            //}
+
         }
     }
     void story1()
@@ -110,6 +133,9 @@ public class upwitch : MonoBehaviour
                 break;
             case 6:
                 npctalk("이번에도 엘리트2를 잡으면 비밀의 방이 열릴거야. 보물에 한 발짝 더 다가갔다는 느낌이 드네. 행운을 빌게, 모험가야!");
+                break;
+            case 7:
+                uiContral.ConversationRemove();
                 Instantiate(magic, magicpos.transform.position, magicpos.transform.rotation);
                 setting = false;
                 Invoke("onMagic", 0.25f);
@@ -152,6 +178,9 @@ public class upwitch : MonoBehaviour
                 break;
             case 5:
                 npctalk("하지만 주의해, 그곳에서 기다리는 것이 보물뿐만이 아닐 거야.");
+                break;
+            case 6:
+                uiContral.ConversationRemove();
                 Instantiate(bossroom, magicpos.transform.position, magicpos.transform.rotation);
                 setting = false;
                 break;
@@ -161,7 +190,18 @@ public class upwitch : MonoBehaviour
     }
     void npctalk(string npcText)
     {
-        Debug.Log(npcText);
+        uiContral.Conversation(npcText);
     }
-    
+
+    public void AddStoryStep()
+    {
+        if (!GetPlayer_Health.BossHunting)
+        {
+            ++storyStep;
+            
+        }
+
+        else
+            ++storyStep1;
+    }
 }

@@ -15,6 +15,8 @@ public class UIContral : MonoBehaviour
     [SerializeField] upwitch witch;
     [SerializeField] GameObject GameMenuWindow;
     [SerializeField] GameObject PowerUpUI;
+    [SerializeField] GameObject conversation;
+
     bool gameMenuEnable = false;
     bool powerUpEnabled = false;
     
@@ -23,6 +25,7 @@ public class UIContral : MonoBehaviour
     [SerializeField] UnityEngine.UI.Image[] Arms;
     [SerializeField] UnityEngine.UI.Text PlayerLv;
     [SerializeField] UnityEngine.UI.Text ForceSoulCount;
+    [SerializeField] UnityEngine.UI.Text conversationText;
 
     List<GameObject> aims = new List<GameObject>();
 
@@ -36,6 +39,7 @@ public class UIContral : MonoBehaviour
 
         GameMenuWindow.SetActive(false);
         PowerUpUI.SetActive(false);
+        //conversation.SetActive(false);
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -128,5 +132,20 @@ public class UIContral : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1f;
         }
+    }
+
+    public void Conversation(string str)
+    {
+        if (!conversation.activeSelf)
+        {
+            conversation.SetActive(true);
+        }
+
+        conversationText.text = str;
+    }
+
+    public void ConversationRemove()
+    {
+        conversation.SetActive(false);
     }
 }

@@ -22,12 +22,12 @@ public class goup : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             other.transform.position = startup.transform.position;
-            Invoke("OnDestroy", 1f);
+            Invoke("DisableEnhancePotal", 1f);
         }
     }
-    public void OnDestroy()
+    public void DisableEnhancePotal()
     {
         backpos.transform.position = transform.position;
-        Destroy(gameObject);
+        ObjectPool.objectPool.PoolObject(gameObject);
     }
 }

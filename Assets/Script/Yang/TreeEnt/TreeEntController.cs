@@ -39,16 +39,15 @@ public class TreeEntController : Skeleton
     /// TreeEnt가 벗어나면 안되는 영역을 Trigger로 표시한 object 입니다.
     /// </summary>
     private BoxCollider TreeEntBoxCollider;
-
     public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
-    
+    [Tooltip("Elite몹이 죽은 뒤 소환될 강화존 입니다.")]
+    [SerializeField] private GameObject EnhancementZone;
 
 
     private void OnEnable()
     {
         //엘리트몹 등장 시 일반 몹 리스폰 일시정지 및
         //생성되어있는 일반 몹이 소멸하는 함수를 구현하여, OnEnable에 추가해야 합니다.
-        Debug.Log("hp늘어났다");
         Respawn();
        
     }
@@ -61,7 +60,7 @@ public class TreeEntController : Skeleton
             .State<State>(TreeState.Idle.ToString())//기본 상태입니다. 감지할 때까지 움직이지 않습니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.Idle.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.Idle.ToString()} State");
                     //1.오브젝트 풀의 유닛 생성을 시작합니다.
                     //2.애니메이션 bool parameter를 Idle로 변경합니다.
                     //3.플레이어 추적을 중지합니다.(NavMesh)
@@ -83,7 +82,7 @@ public class TreeEntController : Skeleton
             .State<TreeEntWalkState>(TreeState.Walk.ToString())//사정거리 밖일 시 Walk로 이동합니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.Walk.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.Walk.ToString()} State");
                     //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
                     //2.애니메이션 bool parameter를 Walk로 변경합니다.
                     //3.플레이어를 추적합니다.(NavMesh)
@@ -156,7 +155,7 @@ public class TreeEntController : Skeleton
             .State<State>(TreeState.Attack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.Attack.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.Attack.ToString()} State");
                     //1.일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //2.NavMesh를 중지합니다.
                     //3.공격용 Collider를 활성화 합니다.
@@ -168,7 +167,7 @@ public class TreeEntController : Skeleton
             .State<State>(TreeState.Enranged.ToString())//일정 피 이하로 내려가면 발동하는 광폭화 입니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.Enranged.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.Enranged.ToString()} State");
                     //광폭화 모션 후, Idle로 돌아갑니다.
                     SetTriggerAnimation(TreeState.Enranged.ToString());
                     StopNavigtaion();
@@ -177,7 +176,7 @@ public class TreeEntController : Skeleton
             .State<State>(TreeState.EnrangedIdle.ToString())//광폭화 상태의 Idle입니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.EnrangedIdle.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.EnrangedIdle.ToString()} State");
                     SetBoolAnimation(TreeState.EnrangedIdle.ToString());
                     StopNavigtaion();
                 })
@@ -195,7 +194,7 @@ public class TreeEntController : Skeleton
             .State<TreeEntWalkState>(TreeState.Run.ToString())//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.Run.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.Run.ToString()} State");
                     //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
                     //2.애니메이션 bool parameter를 Walk로 변경합니다.
                     //3.플레이어를 추적합니다.(NavMesh)
@@ -208,13 +207,11 @@ public class TreeEntController : Skeleton
                 .Condition(() =>
                 {
                     //감지거리 내이며, Trigger에 감지되지 않았을 시 true
-                    Debug.Log("감지중 입니다.");
                     return IsTargetDetected();
                 },
                 state =>
                 {
                     //갱신 주기마다, 목적지가 초기화 됩니다.
-                    Debug.Log("감지거리 내입니다.");
                     if ((state.LastResetDestinationTime + stat.ResetDestinationDelay) <= Time.time)
                     {
                         StartNavigtaion(stat.RunSpeed);
@@ -249,7 +246,7 @@ public class TreeEntController : Skeleton
             .State<State>(TreeState.EnrangedAttack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.EnrangedAttack.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.EnrangedAttack.ToString()} State");
                     //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.EnrangedAttack.ToString());
@@ -259,7 +256,7 @@ public class TreeEntController : Skeleton
             .State<State>(TreeState.Die.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
                 {
-                    Debug.Log($"Entering {TreeState.Die.ToString()} State");
+                    //Debug.Log($"Entering {TreeState.Die.ToString()} State");
                     //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetDie();
@@ -278,10 +275,8 @@ public class TreeEntController : Skeleton
     {
         if(IsInvulnerable)//무적인지
         {
-            Debug.Log("무적입니다.");
             return;
         }
-        Debug.Log("damage입힘");
         stat.CurrentHp -= damage;
 
         if( stat.CurrentHp / stat.MaxHp <= 0.3f )
@@ -315,10 +310,8 @@ public class TreeEntController : Skeleton
     {
         if (IsInvulnerable)//무적인지
         {
-            Debug.Log("무적입니다.");
             return;
         }
-        Debug.Log("damage입힘");
         stat.CurrentHp -= damage;
         if (stat.CurrentHp / stat.MaxHp <= 0.3f)
         {
@@ -461,6 +454,7 @@ public class TreeEntController : Skeleton
     /// <summary>
     /// 사망 시, 가라앉는 코루틴이 실행됩니다.
     /// 강화 포인트도 상승합니다.
+    /// 강화 포탈이 열립니다.
     /// </summary>
     public void SetDie()
     {
@@ -469,8 +463,10 @@ public class TreeEntController : Skeleton
         {
             SetTriggerAnimation(TreeState.Die.ToString());
             StopNavigtaion();
+            EnhancementZone = ObjectPool.objectPool.GetObject(EnhancementZone);//강화 포탈 소환
+            EnhancementZone.transform.position = transform.position;
             StartCoroutine(Sinking());
-            //playerObject.GetComponent<Player_Health>().ADDExp();
+            
         }
     }
 

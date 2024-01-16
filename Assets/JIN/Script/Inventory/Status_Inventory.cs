@@ -10,18 +10,18 @@ public class Status_Inventory : MonoBehaviour
     [SerializeField] UnityEngine.UI.Text[] powerUpUITexts;
     [SerializeField] Player_Health player;
 
-    public int[] status = new int[5];   //index 1:W1, 2:W2, 3:W3, 4:Vitality 5:Armor
+    public int[] status = new int[5];   //index 0:W1, 1:W2, 2:W3, 3:Vitality 4:Armor
     int statusMaxValue = 8;
 
     private void Start()
     {
         if (SceneManager.GetActiveScene().name == "Scene2")
         {
-            status[1] = PlayerPrefs.GetInt("player_W1");
-            status[2] = PlayerPrefs.GetInt("player_W2");
-            status[3] = PlayerPrefs.GetInt("player_W3");
-            status[4] = PlayerPrefs.GetInt("player_Vitality");
-            status[5] = PlayerPrefs.GetInt("player_Armor");
+            status[0] = PlayerPrefs.GetInt("player_W1");
+            status[1] = PlayerPrefs.GetInt("player_W2");
+            status[2] = PlayerPrefs.GetInt("player_W3");
+            status[3] = PlayerPrefs.GetInt("player_Vitality");
+            status[4] = PlayerPrefs.GetInt("player_Armor");
         }
         for (int i = 0; i < statusSliders.Length; ++i)
         {

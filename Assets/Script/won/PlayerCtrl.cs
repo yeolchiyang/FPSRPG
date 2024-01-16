@@ -14,10 +14,13 @@ public class PlayerCtrl : MonoBehaviour
     bool IsJumping = true;
     bool CrowdControl = false;
     Player_Anima anima;
+    GameObject player;
+    Player_Health player_Health;
 
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         anima = GetComponent<Player_Anima>();
         IsJumping = false;
         tr = GetComponent<Transform>();
@@ -28,6 +31,7 @@ public class PlayerCtrl : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        player_Health = player.GetComponent<Player_Health>();
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis ("Vertical");
         float r = Input.GetAxis("Mouse X");
@@ -36,15 +40,12 @@ public class PlayerCtrl : MonoBehaviour
 
         if (CheckHitWall(moveDir))
             moveDir = Vector3.zero;
-        if (!CrowdControl)
+        if (!CrowdControl&&player_Health.lief)
         {
             tr.Translate(moveDir.normalized * speed * Time.deltaTime);
             tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
         }
-        else
-        {
-            Invoke("ccoff", 5f);
-        }
+        
         //tr.Rotate(Random.insideUnitCircle);
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -95,5 +96,9 @@ public class PlayerCtrl : MonoBehaviour
     {
         CrowdControl = false;
     }
-    
+    public void bosscc()
+    {
+        CrowdControl = true;
+        Invoke("ccoff", 0.5f);
+    }
 }

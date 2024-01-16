@@ -106,6 +106,38 @@ public class FollowCamera : MonoBehaviour
 
         }
 
+    public void CrowdControlcam()
+    {
+        StartCoroutine(RotateCoroutine());
 
-    } 
+    }
+    IEnumerator RotateCoroutine()
+    {
+        // 오브젝트의 forward를 up으로 변경
+        transform.forward = Vector3.up;
+
+        // 0.5초 동안 회전
+        float elapsedTime = 0f;
+        float rotationDuration = 0.5f;
+
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+
+        while (elapsedTime < rotationDuration)
+        {
+            // 회전
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / rotationDuration);
+
+            // 경과 시간 업데이트
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        // 회전이 끝나면 다시 원래의 forward로 변경
+        transform.forward = Vector3.forward;
+
+        // 추가 작업이 필요하다면 여기에 작성
+    }
+} 
 

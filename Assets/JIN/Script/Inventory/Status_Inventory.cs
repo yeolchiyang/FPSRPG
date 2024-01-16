@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Status_Inventory : MonoBehaviour
 {
     [SerializeField] GameObject PowerUpUI;
@@ -10,11 +10,19 @@ public class Status_Inventory : MonoBehaviour
     [SerializeField] UnityEngine.UI.Text[] powerUpUITexts;
     [SerializeField] Player_Health player;
 
-    int[] status = new int[5];   //index 1:W1, 2:W2, 3:W3, 4:Vitality 5:Armor
+    public int[] status = new int[5];   //index 1:W1, 2:W2, 3:W3, 4:Vitality 5:Armor
     int statusMaxValue = 8;
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name == "Scene2")
+        {
+            status[1] = PlayerPrefs.GetInt("player_W1");
+            status[2] = PlayerPrefs.GetInt("player_W2");
+            status[3] = PlayerPrefs.GetInt("player_W3");
+            status[4] = PlayerPrefs.GetInt("player_Vitality");
+            status[5] = PlayerPrefs.GetInt("player_Armor");
+        }
         for (int i = 0; i < statusSliders.Length; ++i)
         {
             statusSliders[i].maxValue = statusMaxValue;
@@ -60,4 +68,6 @@ public class Status_Inventory : MonoBehaviour
     {
         statusSliders[stateIndex].value = status[stateIndex];
     }
+
+    
 }

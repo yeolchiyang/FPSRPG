@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Inventory : MonoBehaviour
 {
     public static Inventory inventory;
     bool activeWindow = false;
 
-    [SerializeField] int hillPortionCount = 0;
-    [SerializeField] int debinePortionCount = 0;
+    [SerializeField] public int hillPortionCount = 0;
+    [SerializeField] public int debinePortionCount = 0;
 
     [SerializeField] GameObject ItemSlotPrefap;
     [SerializeField] GameObject SlotArea;
@@ -33,6 +33,11 @@ public class Inventory : MonoBehaviour
     {
         anim = GetComponent<Animator>();
 
+        if (SceneManager.GetActiveScene().name == "Scene2")
+        {
+            hillPortionCount = PlayerPrefs.GetInt("player_hillPortion");
+            debinePortionCount = PlayerPrefs.GetInt("player_debinePortion");
+        }
         for(int i = 0; i < 4; ++i)
         {
             GameObject obj = Instantiate(ItemSlotPrefap, SlotArea.transform);

@@ -5,7 +5,10 @@ using Yang;
 
 public class shoothit : MonoBehaviour
 {
+    GameObject invenObj;
+    Status_Inventory inventory;
     Skeleton skeleton;
+    public GameObject bullet;
     public float weaponDamage;
     [SerializeField] private LayerMask EnemyLayer;
     private float NextHitable = 0.1f;//중복데미지 방지 시간
@@ -13,10 +16,25 @@ public class shoothit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        invenObj = GameObject.Find("StatusArea");
+        inventory = invenObj.GetComponent<Status_Inventory>();
     }
     private void Update()
     {
+        if (inventory != null) 
+        {
+            invenObj = GameObject.Find("StatusArea");
+            inventory = invenObj.GetComponent<Status_Inventory>();
+        }
+        if (gameObject.name == bullet.name)
+        {
+            weaponDamage = 40 + (inventory.status[1] * 8.75f);
+        }
+        else if (gameObject.name != bullet.name)
+        {
+            weaponDamage = 2 + (inventory.status[2] * 0.75f);
+        }
+        
     }
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)
@@ -24,6 +42,7 @@ public class shoothit : MonoBehaviour
         HYDRA hYDRA = collision.gameObject.GetComponent<HYDRA>();
         if (hYDRA != null)
         {
+            
             hYDRA.SetDamaged(weaponDamage);
         }
         else if (((1 << collision.gameObject.layer) & EnemyLayer.value) != 0)
@@ -39,6 +58,10 @@ public class shoothit : MonoBehaviour
             
         }
         
-        Debug.Log(collision.collider.name);
+        
+    }
+    public void dam(float dam)
+    {
+        weaponDamage = dam;
     }
 }

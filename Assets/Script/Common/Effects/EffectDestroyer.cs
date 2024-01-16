@@ -13,6 +13,6 @@ public class EffectDestroyer : MonoBehaviour
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(lifeTime);
-        EffectPool.effectPool.PoolObject(gameObject);
+        Destroy(gameObject);
     }
 }

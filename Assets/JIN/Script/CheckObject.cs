@@ -33,14 +33,18 @@ public class CheckObject : MonoBehaviour
         {
             InteractionObject interationObj = hitInfo.collider.gameObject.
                 GetComponent<InteractionObject>();
-            if (interationObj != null)
+            if (interationObj != null && interationObj.GetItemCount() > 0)
             {
                 print(hitInfo.collider.gameObject.name);
                 fieldItemSlot.SetActive(true);
-                fieldItemText.text = "" + interationObj.getItemName();
-            }
+                fieldItemText.text = "" + interationObj.GetItemName();
 
+                if (Input.GetKeyDown("f"))
+                {
+                    interationObj.GetItem();
+                }
+
+            }
         }
-     
     }
 }

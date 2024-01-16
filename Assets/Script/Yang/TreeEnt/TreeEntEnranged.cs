@@ -19,6 +19,7 @@ public class TreeEntEnranged : StateMachineBehaviour
         rootState = animator.GetComponent<TreeEntController>().rootState;
         rootState.ChangeState(TreeState.EnrangedIdle.ToString());
         animator.GetComponent<TreeEntController>().IsInvulnerable = false;
+        Debug.Log("TreeEntEnranged 상태를 벗어남");
     }
 
 

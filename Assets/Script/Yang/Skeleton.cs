@@ -13,6 +13,7 @@ namespace Yang{
         public IState rootState;//상태를 관리하는 클래스입니다.
         protected UnityEngine.AI.NavMeshAgent skeletonNav;
         [SerializeField] protected Animator skeletonAnimator;
+        [Tooltip("Enemy가 곳에 생기는 탄흔 이펙트 입니다.")]
         [SerializeField] protected GameObject HitEffect;
 
         //Player를 singleton으로 저장하고 있는 객체가 있을 경우 대체할 것

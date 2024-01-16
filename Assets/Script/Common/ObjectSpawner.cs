@@ -19,6 +19,9 @@ public class ObjectSpawner : MonoBehaviour
     [Tooltip("TreeEnt가 나가면 안되는 영역을 지정한 BoxCollider 입니다." +
         "Spawn지역을 나타내는 오브젝트를 넣어주세요")]
     [SerializeField] private BoxCollider treeEntBoxCollider;
+    [Tooltip("Lich가 나가면 안되는 영역을 지정한 BoxCollider 입니다." +
+    "Spawn지역을 나타내는 오브젝트를 넣어주세요")]
+    [SerializeField] private BoxCollider lichBoxCollider;
     private bool isSpawning = true;
 
 
@@ -36,7 +39,10 @@ public class ObjectSpawner : MonoBehaviour
     {
         get { return treeEntBoxCollider; }
     }
-
+    public BoxCollider LichBoxCollider
+    {
+        get { return lichBoxCollider; }
+    }
 
 
     private void Awake()

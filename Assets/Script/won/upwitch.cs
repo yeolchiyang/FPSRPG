@@ -163,8 +163,7 @@ public class upwitch : MonoBehaviour
     {
         Debug.Log(npcText);
     }
-    public void AddStoryStep()
-    {
-        storyStep++;
-    }
+    public void AddStoryStep() { }
+
+
 }

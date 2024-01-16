@@ -9,7 +9,6 @@ public class WeaponChange : MonoBehaviour
     Transform tr;
     public GameObject[] Weapon;
     int currentWeaponNumber = 0;
-    public float WeaponDamage = 10;
     Skeleton skeleton;
     // Start is called before the first frame update
     void Start()
@@ -25,19 +24,19 @@ public class WeaponChange : MonoBehaviour
         {
             currentWeaponNumber = 0;
             WeaponON();
-            WeaponDamage = 50;
+           
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             currentWeaponNumber = 1;
             WeaponON();
-            WeaponDamage = 10;
+         
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentWeaponNumber = 2;
             WeaponON();
-            WeaponDamage = 2;
+     
         }
     }
     void WeaponON()
@@ -51,6 +50,6 @@ public class WeaponChange : MonoBehaviour
     public void hit()
     {
         skeleton=GetComponent<Skeleton>();
-        skeleton.SetDamaged(WeaponDamage);
+ 
     }
 }

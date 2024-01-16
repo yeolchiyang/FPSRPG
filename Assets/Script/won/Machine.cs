@@ -5,16 +5,22 @@ using Yang;
 
 public class Machine : MonoBehaviour
 {
+    GameObject invenObj;
+    Status_Inventory inventory;
+    GameObject player;
+    Player_Health player_Health;
     public GameObject BulletEffect;
     public GameObject BulletStartEffect;
     public GameObject BulletStartPoint;
     Transform BulletSatEffect;
-    public float ShootDamage;
+    float ShootDamage;
     bool ok = true;
 
     private void Start()
     {
-       
+        invenObj = GameObject.Find("StatusArea");
+        inventory = invenObj.GetComponent<Status_Inventory>();
+        player = GameObject.FindWithTag("Player");
         BulletSatEffect = BulletStartPoint.GetComponent<Transform>();
     }
 
@@ -22,7 +28,9 @@ public class Machine : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0)&&ok)
+        ShootDamage = 8 + (inventory.status[0] * 0.5f);
+        player_Health = player.GetComponent<Player_Health>();
+        if (Input.GetMouseButtonDown(0)&&player_Health.lief)
         {
             Vector3 startShootPosition = BulletStartPoint.transform.position;
 
@@ -54,8 +62,5 @@ public class Machine : MonoBehaviour
             }
         }
     }
-    public void zxc()
-    {
-        ok = false;
-    }
+   
 }

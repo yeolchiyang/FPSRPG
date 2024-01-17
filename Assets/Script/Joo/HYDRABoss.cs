@@ -13,6 +13,7 @@ public class HYDRABoss : MonoBehaviour
     ContralBossHPBar cbb;                // 진선윤 BossHPBar 조인 추가
     float rotationSpeed = 5f;
     protected UnityEngine.AI.NavMeshAgent Nav;
+    Player_Health Playercc;
 
     ParticleSystem bress;
 
@@ -24,6 +25,7 @@ public class HYDRABoss : MonoBehaviour
         StartCoroutine("NextMove");
         stat.CurrentHp = stat.MaxHp;
         cbb = BossBar.GetComponent<ContralBossHPBar>();  // 진선윤 BossHPBar 조인 추가
+        Playercc = player.GetComponent<Player_Health>();
     }
 
     bool NextMove_is_running = false;
@@ -77,8 +79,8 @@ public class HYDRABoss : MonoBehaviour
                 if(distanceToPlayer <= stat.SkillattackRange)
                 {
                     hydra.SetRoar();
-                    StartCoroutine("Attackanim");
-
+                    StartCoroutine("Playerburn");
+                    //StartCoroutine("Attackanim");
                 }
             }
             else if (Random.Range(0, 100) > 25 && Random.Range(0, 100) <= 50)
@@ -86,7 +88,8 @@ public class HYDRABoss : MonoBehaviour
                 if (distanceToPlayer <= stat.NormalAttackRange)
                 {
                     hydra.SetHeavyHit();
-                    StartCoroutine("Attackanim");
+                    StartCoroutine("Playerbosscc");
+                    //StartCoroutine("Attackanim");
                 }
             }
             else if (Random.Range(0, 100) > 50 && Random.Range(0, 100) <= 75)
@@ -117,6 +120,23 @@ public class HYDRABoss : MonoBehaviour
     {
         Nav.enabled = false;
         yield return new WaitForSeconds(5f);
+        Nav.enabled = true;
+    }
+
+    IEnumerator Playerburn()
+    {
+        Nav.enabled = false;
+        Playercc.PlayerCcon(0);
+        yield return new WaitForSeconds(3f);
+        Nav.enabled = true;
+    }
+
+    IEnumerator Playerbosscc()
+    {
+        Nav.enabled = false;
+        yield return new WaitForSeconds(2f);
+        Playercc.PlayerCcon(3);
+        yield return new WaitForSeconds(3f);
         Nav.enabled = true;
     }
 

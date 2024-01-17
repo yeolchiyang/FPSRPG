@@ -7,13 +7,13 @@ public class Scene1BM : MonoBehaviour
     AudioSource Background;
     [SerializeField]
     AudioClip[] sounds;
-    AudioClip Back;
+    AudioClip origin;
     // Start is called before the first frame update
     void Start()
     {
         Background = GetComponent<AudioSource>();
         Background.Play();
-        Back = Background.clip;
+        origin = Background.clip;
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class Scene1BM : MonoBehaviour
         else if(Input.GetKey(KeyCode.B))
         {
             Background.Stop();
-            Background.clip = Back;
+            Background.clip = origin;
             Background.Play();
         }
     }

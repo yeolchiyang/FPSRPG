@@ -8,7 +8,8 @@ using UnityEditor.SearchService;
 using UnityEngine.SceneManagement;
 public class Player_Health : MonoBehaviour
 {
-    
+    GameObject invenObj;
+    Status_Inventory inventory;
     Launcher launcher;
     Machine machine;
     VGSGUN VGSGUN;
@@ -33,7 +34,8 @@ public class Player_Health : MonoBehaviour
     float dam =0f;
     void Awake()
     {
-
+        invenObj = GameObject.Find("StatusArea");
+        inventory = invenObj.GetComponent<Status_Inventory>();
         Debug.Log("초기화");
         collider = GetComponent<Collider>();
         followCamera = Camera.main.GetComponent<FollowCamera>();
@@ -91,7 +93,7 @@ public class Player_Health : MonoBehaviour
         {
 
             anima.Player_Hit();
-            currentHp -= damage;
+            currentHp -= damage-inventory.status[4];
             ccb.UpdateHP();
         }
         else if ((currentHp - damage) < 0)
@@ -213,7 +215,7 @@ public class Player_Health : MonoBehaviour
         if (restraint && cctime[2] >= 0)
         {
             cctime[2]--;
-            PlayerCtrl.speed = maxspeet/2;
+            PlayerCtrl.speed = (maxspeet + inventory.status[3])/2;
             Debug.Log("이속감소" + PlayerCtrl.speed);
         }
         

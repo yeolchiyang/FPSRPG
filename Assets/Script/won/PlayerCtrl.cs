@@ -5,6 +5,8 @@ using Player_animation;
 
 public class PlayerCtrl : MonoBehaviour
 {
+    GameObject invenObj;
+    Status_Inventory inventory;
     private Rigidbody rb;
     private Transform tr;
     private BoxCollider bc;
@@ -20,6 +22,8 @@ public class PlayerCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        invenObj = GameObject.Find("StatusArea");
+        inventory = invenObj.GetComponent<Status_Inventory>();
         player = GameObject.FindWithTag("Player");
         anima = GetComponent<Player_Anima>();
         IsJumping = false;
@@ -42,7 +46,7 @@ public class PlayerCtrl : MonoBehaviour
             moveDir = Vector3.zero;
         if (!CrowdControl&&player_Health.lief)
         {
-            tr.Translate(moveDir.normalized * speed * Time.deltaTime);
+            tr.Translate(moveDir.normalized * (speed + inventory.status[3]) * Time.deltaTime);
             tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
         }
         

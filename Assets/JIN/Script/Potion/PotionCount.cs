@@ -6,6 +6,8 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class PortionCount : MonoBehaviour
 {
+    [SerializeField] Transform playerTransform;
+    [SerializeField] AudioClip useSound;
     [SerializeField] int portionIndex;
     int portionCount;
     public UnityEngine.UI.Text CountText;
@@ -50,6 +52,7 @@ public class PortionCount : MonoBehaviour
         {
             portionCount -= data;
             Inventory.inventory.setPortionInfo(portionIndex, portionCount); ;
+            AudioSource.PlayClipAtPoint(useSound, playerTransform.position);
             CountPortion();
             //포션 사용 사운드 첨부가능
         }

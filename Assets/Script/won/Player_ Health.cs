@@ -48,7 +48,9 @@ public class Player_Health : MonoBehaviour
     }
     private void Start()
     {
-        
+        PlayerPrefs.SetFloat("player_CurretHp", 100);   
+        //신2 임시 체력
+
         StartCoroutine(Playermp());
         StartCoroutine(PlayerCrowdControl());
         if (SceneManager.GetActiveScene().name == "Scene2")
@@ -60,6 +62,8 @@ public class Player_Health : MonoBehaviour
             forceSoul = PlayerPrefs.GetInt("player_forceSoul");
         }
         Debug.Log(SceneManager.GetActiveScene().name+PlayerPrefs.GetFloat("player_CurretHp"));
+
+        
     }
 
 

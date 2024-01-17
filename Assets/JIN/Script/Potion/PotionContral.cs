@@ -44,15 +44,18 @@ public class PortionContral : MonoBehaviour
         {
             HillEff.SetActive(!PortionList[0].isEmpty());
             PortionList[0].ReducePotion(1);
-            if (player.currentHp + hillPower > 100)
+            if (!PortionList[0].isEmpty())
             {
-                player.currentHp = 100;
-                ccb.UpdateHP();
-            }
-            else
-            {
-                player.currentHp += hillPower;
-                ccb.UpdateHP();
+                if (player.currentHp + hillPower > 100)
+                {
+                    player.currentHp = 100;
+                    ccb.UpdateHP();
+                }
+                else
+                {
+                    player.currentHp += hillPower;
+                    ccb.UpdateHP();
+                }
             }
 
             countTime = portionDilay;

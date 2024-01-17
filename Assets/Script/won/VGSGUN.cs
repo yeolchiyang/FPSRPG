@@ -24,6 +24,7 @@ public class VGSGUN : MonoBehaviour
     float costMp = 40;
     GameObject bullet;
     shoothit GetShoothit;
+    public AudioClip bulletsound;
     
     // Start is called before the first frame update
     void Start()
@@ -56,6 +57,7 @@ public class VGSGUN : MonoBehaviour
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && shootspeed >= 1 && player_Health.lief && curretMp > costMp)
         {
+            AudioSource.PlayClipAtPoint(bulletsound, transform.position);
             player_Health.CostMp(costMp);
             shootspeed=0;
             GameObject obj= Instantiate(BulletEffect, BulletStartPoint.transform.position, BulletStartPoint.transform.rotation);

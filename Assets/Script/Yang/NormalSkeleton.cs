@@ -35,6 +35,15 @@ public class NormalSkeleton : Skeleton
                     //Debug.Log($"Entering {Walk} State");
                     SetWalk();
                 })
+                .Update((state, deltaTime) => 
+                {
+                    //갱신 주기마다, 목적지가 초기화 됩니다.
+                    if ((state.LastResetDestinationTime + stat.ResetDestinationDelay) <= Time.time)
+                    {
+                        StartNavigation(stat.WalkSpeed);
+                        state.LastResetDestinationTime = Time.time;
+                    }
+                })
                 .Condition(() =>
                 {
                     //사거리 내에 들어올 경우

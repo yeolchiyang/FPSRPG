@@ -113,7 +113,7 @@ public class ObjectPool : MonoBehaviour
     {
         
         EliminatedEliteCount++;
-        Debug.Log("¿‚æ“¥Ÿ.!" + EliminatedEliteCount);
+        ObjectSpawner.objectSpawner.StartSpawning();
         if (EliminatedEliteCount == 2)
         {
             skeleton.PlayerObject.GetComponent<Player_Health>().BossHunting = true;

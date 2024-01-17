@@ -11,6 +11,7 @@ public class HYDRA : MonoBehaviour
     protected UnityEngine.AI.NavMeshAgent Hydra;
     protected GameObject player;
     [SerializeField] protected Animator HydraAnimator;
+    [SerializeField] ContralBossHPBar contralBossHPBar;
 
     // Start is called before the first frame update
     void Awake()
@@ -99,6 +100,7 @@ public class HYDRA : MonoBehaviour
         if(distanceToPlayer < stat.SkillattackRange)
         {
             stat.CurrentHp -= damage;
+            contralBossHPBar.TakeDamage(damage);
             if (stat.CurrentHp <= 0f)
             {
                 stat.CurrentHp = 0f;

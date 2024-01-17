@@ -8,12 +8,14 @@ public class upwitch : MonoBehaviour
     public GameObject bossroom;
     public GameObject magicpos;
     public GameObject magic;
-    Player_Health GetPlayer_Health;
     public GameObject player;
+    
     int storyStep = 0;
     int storyStep1 = 0;
     float storyTime = 1;
     bool setting = false;
+    bool stayState = false;
+    Player_Health GetPlayer_Health;
     FollowCamera camera;
 
     [SerializeField] UIContral uiContral;
@@ -40,20 +42,34 @@ public class upwitch : MonoBehaviour
             camera.camin();
         }
 
+        if(stayState)       //충돌 영역 내에 있다면
+            HandleInput();
+
     }
+
+    
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "Player" && storyTime > 0.5)
         {
             player = other.gameObject;
-            HandleInput();
+            //HandleInput();
+            stayState = true;   //인식 범위내에 있는 상태를 나타내는 변순 -> 진선윤
             if (storyStep > 0 && storyStep <= 6)
             {
-
+                
                 other.gameObject.transform.forward = -transform.forward;
             }
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player" && storyTime > 0.5)
+        {
+                stayState = false;
+        }
+    }
+    float a = 0;
     void HandleInput()
     {
         if (!GetPlayer_Health.BossHunting)
@@ -62,8 +78,8 @@ public class upwitch : MonoBehaviour
             {
                 if (storyStep == 2)
                 {
-                    powerUPWindow.SetActive(true);
                     uiContral.PowerUpUIContral();
+                    uiContral.ConversationRemove();
                 }
 
                 else
@@ -87,8 +103,8 @@ public class upwitch : MonoBehaviour
             {
                 if (storyStep == 2)
                 {
-                    powerUPWindow.SetActive(true);
                     uiContral.PowerUpUIContral();
+                    uiContral.ConversationRemove();
                 }
 
                 else
@@ -107,32 +123,31 @@ public class upwitch : MonoBehaviour
 
         }
     }
-    void story1()
+    public void story1()
     {
         switch (storyStep)
         {
             case 0:
-                npctalk("오, 모험가야! 엘리트1을 잡았다고? 멋진 일이야. 네 영혼이 강해지는 걸 느낄 수 있어.");
+                npctalk("오, 모험가야! 고대의 분노를 해치웠구나? 너의 영혼이 강해지는 걸 느낄 수 있어.");
                 setting = true;
                 break;
             case 1:
-                npctalk("이제 강해진 네 영혼으로 네 장비를 더욱 강화해줄게. 세계는 더욱 어려워질 테니까 말이야.");
+                npctalk("이제 강해진 네 영혼으로 네 힘를 더욱 강화해줄게. 세계는 더욱 혹독해질 테니까 말이야.");
                 break;
             case 2:
-                npctalk("네 모험가로서의 영혼은 이미 강해졌지만, 아직은 엘리트2가 보물을 지키고 있어");
-
+                npctalk("네 모험가로서의 영혼은 이미 강해졌지만, 아직은 저주받은 리치가 보물을 지키고 있어");
                 break;
             case 3:
-                npctalk("엘리트2는 강력하지만, 강해진 넌 괜찮을 거야.");
+                npctalk("그 녀석은 강력하지만, 강해진 넌 괜찮을 거야.");
                 break;
             case 4:
-                npctalk("엘리트2는 던전에 있는 고대의 봉인책으로 봉인되어 있어. 책들을 찾아 모아 책장에서 봉인을 해제해야 해.");
+                npctalk("리치는 던전에 있는 마법의 고서로 봉인되어 있어. 고서를 모두 모아 봉인을 해제해야 해.");
                 break;
             case 5:
-                npctalk("책들을 모아 책장에서 봉인을 해제한 후, 엘리트2를 사냥하면 단련된 비밀의 방에서 네 영혼으로 장비를 강화해줄게.");
+                npctalk("4개의 고서를 모아 책장의 봉인을 해제한 후, 리치를 해치우면 네 영혼으로 네 힘를 더욱 더 강화시켜줄게.");
                 break;
             case 6:
-                npctalk("이번에도 엘리트2를 잡으면 비밀의 방이 열릴거야. 보물에 한 발짝 더 다가갔다는 느낌이 드네. 행운을 빌게, 모험가야!");
+                npctalk("이번에도 녀석을 해치면 비밀의 방이 열릴거야. 보물에 한 발짝 더 다가갔다는 느낌이 드네. 행운을 빌게, 모험가야!");
                 break;
             case 7:
                 uiContral.ConversationRemove();
@@ -161,23 +176,23 @@ public class upwitch : MonoBehaviour
         switch (storyStep1)
         {
             case 0:
-                npctalk("드디어 엘리트2를 처치했군! 네 영혼은 찬란하게 빛나고 있어.");
+                npctalk("드디어 리치를 처치했군! 네 영혼은 찬란하게 빛나고 있어.");
                 setting = true;
                 break;
             case 1:
-                npctalk("우선 너의 강화된 영혼으로 장비를 한번 더 강화해줄게.");
+                npctalk("이제 너의 영혼으로 한번 더 강화해줄게.");
                 break;
             case 2:
-                npctalk("엘리트1, 엘리트2를 모두 처치했어. 나는 너무 행복해! 네 영웅의 길에 함께할 수 있어 기뻐.");
+                npctalk("고르, 리치를 모두 처치했어. 솔직히 이렇게까지 해낼줄 몰랐어. 네 모험에 함께할 수 있어 기뻐.");
                 break;
             case 3:
                 npctalk("그 찬란한 영혼을 가진 모험가로서 너를 믿고 따라가겠어.");
                 break;
             case 4:
-                npctalk("이제 보물의 방으로 가자, 모험가야! 거기에는 찬란한 보물과 함께 너를 기다리고 있어.");
+                npctalk("이제 보물의 방으로 가자, 모험가야! 거기에는 찬란한 보물이 너를 기다리고 있을거야.");
                 break;
             case 5:
-                npctalk("하지만 주의해, 그곳에서 기다리는 것이 보물뿐만이 아닐 거야.");
+                npctalk("하지만 조심해, 그곳에서 기다리는 것이 보물뿐만이 아닐 거야.");
                 break;
             case 6:
                 uiContral.ConversationRemove();
@@ -197,11 +212,13 @@ public class upwitch : MonoBehaviour
     {
         if (!GetPlayer_Health.BossHunting)
         {
+            story1();
             ++storyStep;
-            
         }
-
         else
+        {
+            story2();
             ++storyStep1;
+        }
     }
 }

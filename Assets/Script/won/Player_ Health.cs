@@ -33,6 +33,7 @@ public class Player_Health : MonoBehaviour
     float dam =0f;
     void Awake()
     {
+
         Debug.Log("√ ±‚»≠");
         collider = GetComponent<Collider>();
         followCamera = Camera.main.GetComponent<FollowCamera>();
@@ -45,6 +46,7 @@ public class Player_Health : MonoBehaviour
     }
     private void Start()
     {
+        
         StartCoroutine(Playermp());
         StartCoroutine(PlayerCrowdControl());
         if (SceneManager.GetActiveScene().name == "Scene2")

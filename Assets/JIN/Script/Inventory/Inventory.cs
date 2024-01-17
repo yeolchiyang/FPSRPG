@@ -20,7 +20,7 @@ public class Inventory : MonoBehaviour
 
     
 
-    int bookCount = 0;
+    public int bookCount = 0;
     int dimensionOfPeice = 0;
 
 

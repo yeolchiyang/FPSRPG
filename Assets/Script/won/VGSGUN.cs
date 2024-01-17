@@ -28,6 +28,7 @@ public class VGSGUN : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         BulletEndPoint = GameObject.Find("BulletEndPoint");
         bullet = GameObject.FindWithTag("Bullet");
         GetShoothit = BulletEffect.GetComponent<shoothit>();

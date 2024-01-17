@@ -9,8 +9,11 @@ public class Book : MonoBehaviour
     public GameObject cam;
     FollowCamera FollowCamera;
     Transform bookTr;
+    Inventory inventory;
+    public GameObject invenObj;
     void Start()
     {
+        inventory = invenObj.GetComponent<Inventory>(); 
         FollowCamera = cam.GetComponent<FollowCamera>();
         //bookTr = book.GetComponent<Transform>();//
         anim = GetComponent<Animator>();
@@ -43,7 +46,10 @@ public class Book : MonoBehaviour
     }
     void collisionout()
     {
+
+        inventory.AddBookCount();
         gameObject.SetActive(false);
+       
     }
 
 }

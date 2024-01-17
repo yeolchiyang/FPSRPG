@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class HYDRA : MonoBehaviour
 {
+    ending GetEnding;
     protected bool isActive = true;
     protected HYDRAStat stat;
     protected UnityEngine.AI.NavMeshAgent Hydra;
@@ -16,6 +17,7 @@ public class HYDRA : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        GetEnding = GetComponent<ending>();
         Hydra = GetComponent<UnityEngine.AI.NavMeshAgent>();
         player = GameObject.FindWithTag("Player");
         stat = GetComponent<HYDRAStat>();
@@ -109,7 +111,7 @@ public class HYDRA : MonoBehaviour
                     HydraAnimator.SetTrigger("Death");
                 }
                 isActive = false;
-
+                GetEnding.endingtextstart = true;
                 StartCoroutine(Die());
             }
         }

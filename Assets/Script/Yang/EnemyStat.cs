@@ -30,6 +30,8 @@ public class EnemyStat : MonoBehaviour
     [SerializeField] private float attackDelay;
     [Tooltip("목적지 갱신 주기(주기가 짧을 수록 Player를 추적 좌표 갱신이 빨라집니다.)")]
     [SerializeField] private float resetDestinationDelay;
+    [Tooltip("이름")]
+    [SerializeField] private string name;  // 진선윤 히드라 네임 추가
 
     public float MaxHp { get { return maxHp; } set { maxHp = value; } }
     public float CurrentHp { get { return currentHp; } set { currentHp = value; } }
@@ -40,4 +42,5 @@ public class EnemyStat : MonoBehaviour
     public float AttackRange { get { return attackRange; } set { attackRange = value; } }
     public float AttackDelay { get { return attackDelay; } set { attackDelay = value; } }
     public float ResetDestinationDelay { get { return resetDestinationDelay; } set { resetDestinationDelay = value; } }
+    public string Name { get { return name; } set { name = value; } }
 }

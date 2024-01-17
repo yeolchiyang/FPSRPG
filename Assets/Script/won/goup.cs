@@ -10,6 +10,7 @@ public class goup : MonoBehaviour
     void Start()
     {
         startup = GameObject.FindWithTag("startup");
+        backpos = GameObject.Find("backpos");
     }
 
     // Update is called once per frame

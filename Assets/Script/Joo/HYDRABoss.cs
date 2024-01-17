@@ -47,7 +47,7 @@ public class HYDRABoss : MonoBehaviour
             StopCoroutine("NextMove");
             NextMove_is_running = false;
             BossBar.SetActive(true);  // 진선윤 BossHPBar 조인 추가
-            cbb.setBossInfo(stat.CurrentHp, stat.MaxHp, stat.name);  // 진선윤 BossHPBar 조인 추가
+            cbb.setBossInfo(stat.CurrentHp, stat.MaxHp, stat.Name);  // 진선윤 BossHPBar 조인 추가
             MoveTowardsPlayer();
         }
         else

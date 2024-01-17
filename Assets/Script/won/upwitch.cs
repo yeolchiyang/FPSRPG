@@ -157,16 +157,20 @@ public class upwitch : MonoBehaviour
                 break;
             case 12:
                 npctalk("강해진 너의 영혼은 정말 황홀해. 그 광채는 이미 눈에 띄고 있어.");
+                Invoke("ASD", 2F);
                 break;
             case 13:
                 npctalk("더 강해진 네 영혼은 얼마나 달콤한 맛일까? 나에게서 느껴지는 에너지가 상상이상이야.");
+                Invoke("ASD", 2F);
                 break;
             case 14:
                 npctalk("혹시 방금 내 혼잣말을 들었니? 아니라면 괜찮아. 어쨌든, 나에게 뭔가 이야기하고 싶은 게 있으면 말해봐.");
+                Invoke("ASD", 2F);
                 break;
 
             default:
                 npctalk("아직 나에게 하고 싶은 말이있어?");
+                Invoke("ASD", 2F);
                 break;
 
         }
@@ -220,5 +224,9 @@ public class upwitch : MonoBehaviour
             story2();
             ++storyStep1;
         }
+    }
+    void ASD()
+    {
+        uiContral.ConversationRemove();   
     }
 }

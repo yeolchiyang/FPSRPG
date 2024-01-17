@@ -468,6 +468,7 @@ public class TreeEntController : Skeleton
                 new Vector3(transform.position.x, playerObject.transform.position.y, transform.position.z);
             StartCoroutine(Sinking());
             ObjectPool.objectPool.IncrementBossRoomCount(this);//강화존 열림과 동시에, 보스방 입장 조건 1개 충족
+            
         }
     }
 

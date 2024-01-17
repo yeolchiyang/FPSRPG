@@ -12,5 +12,6 @@ public class LichAttack : StateMachineBehaviour
     {
         rootState = animator.GetComponent<LichController>().rootState;
         rootState.ChangeState(TreeState.Walk.ToString());
+        animator.GetComponent<LichController>().ExecuteMagicAttack();
     }
 }

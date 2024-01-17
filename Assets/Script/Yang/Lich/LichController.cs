@@ -38,6 +38,8 @@ public class LichController : Skeleton
     public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
     [Tooltip("Elite몹이 죽은 뒤 소환될 강화존 입니다.")]
     [SerializeField] private GameObject EnhancementZone;
+    [Tooltip("Lich가 발동하는 FireMagicObject 입니다.")]
+    [SerializeField] private GameObject LichFireMagic;
 
 
     private void OnEnable()
@@ -86,7 +88,6 @@ public class LichController : Skeleton
                     SetBoolAnimation(LichState.Walk.ToString());
                     StartNavigation(stat.WalkSpeed);
                     ToggleAttackCollider(false);
-                    Debug.Log(skeletonNav.destination);
                 })
                 .Condition(() =>
                 {
@@ -105,7 +106,6 @@ public class LichController : Skeleton
                 .Condition(() =>
                 {
                     //Trigger에 감지되었으면 일단 true를 반환
-                    Debug.Log("리치 목표 좌표 : " + skeletonNav.destination);
                     return IsOutsideBounds();
                 },
                 state =>
@@ -116,7 +116,6 @@ public class LichController : Skeleton
                      * 2. Trigger에 감지되고, 플레이어가 감지거리 내인 경우 -> 
                      * 계속 Walk, StopNavigation
                      */
-                    Debug.Log("멈춤");
                     if (!IsTargetDetected()) //플레이어가 감지거리 밖인 경우
                     {
                         StartNavigation(stat.WalkSpeed, LichBoxCollider.transform.position);
@@ -338,6 +337,16 @@ public class LichController : Skeleton
     public void IsAttacked()
     {
         playerObject.GetComponent<Player_Health>().TakeDamage(stat.PhysicalDamage);
+    }
+    /// <summary>
+    /// 리치가 발동하는 불마법 입니다.
+    /// </summary>
+    public void ExecuteMagicAttack()
+    {
+        Debug.Log("소환됨");
+        GameObject LichFireObject = EffectPool.effectPool.GetObject(LichFireMagic);
+        LichFireMagic.transform.rotation = transform.rotation;
+        LichFireMagic.GetComponent<LichFireMagic>().SetFireDamage(stat.PhysicalDamage * 2);
     }
 
     /// <summary>

@@ -55,13 +55,13 @@ public class LichController : Skeleton
             .State<State>(LichState.Idle.ToString())//기본 상태입니다. 감지할 때까지 움직이지 않습니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.Idle.ToString()} State");
+                    Debug.Log($"Entering {LichState.Idle.ToString()} State");
                     //1.오브젝트 풀의 유닛 생성을 시작합니다.
                     //2.애니메이션 bool parameter를 Idle로 변경합니다.
                     //3.플레이어 추적을 중지합니다.(NavMesh)
                     ObjectSpawner.objectSpawner.StartSpawning();
                     SetBoolAnimation(LichState.Idle.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                 })
                 .Condition(() =>
                 {
@@ -77,15 +77,16 @@ public class LichController : Skeleton
             .State<TreeEntWalkState>(LichState.Walk.ToString())//사정거리 밖일 시 Walk로 이동합니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.Walk.ToString()} State");
+                    Debug.Log($"Entering {LichState.Walk.ToString()} State");
                     //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
                     //2.애니메이션 bool parameter를 Walk로 변경합니다.
                     //3.플레이어를 추적합니다.(NavMesh)
                     //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(LichState.Walk.ToString());
-                    StartNavigtaion(stat.WalkSpeed);
+                    StartNavigation(stat.WalkSpeed);
                     ToggleAttackCollider(false);
+                    Debug.Log(skeletonNav.destination);
                 })
                 .Condition(() =>
                 {
@@ -97,13 +98,14 @@ public class LichController : Skeleton
                     //갱신 주기마다, 목적지가 초기화 됩니다.
                     if ((state.LastResetDestinationTime + stat.ResetDestinationDelay) <= Time.time)
                     {
-                        StartNavigtaion(stat.WalkSpeed);
+                        StartNavigation(stat.WalkSpeed);
                         state.LastResetDestinationTime = Time.time;
                     }
                 })
                 .Condition(() =>
                 {
-                    //Trigger에 감지되었으면 일단 true를 반환 
+                    //Trigger에 감지되었으면 일단 true를 반환
+                    Debug.Log("리치 목표 좌표 : " + skeletonNav.destination);
                     return IsOutsideBounds();
                 },
                 state =>
@@ -114,13 +116,14 @@ public class LichController : Skeleton
                      * 2. Trigger에 감지되고, 플레이어가 감지거리 내인 경우 -> 
                      * 계속 Walk, StopNavigation
                      */
+                    Debug.Log("멈춤");
                     if (!IsTargetDetected()) //플레이어가 감지거리 밖인 경우
                     {
                         StartNavigation(stat.WalkSpeed, LichBoxCollider.transform.position);
                     }
                     else
                     {
-                        StopNavigtaion();
+                        StopNavigation();
                     }
                 })
                 .Condition(() =>
@@ -150,30 +153,30 @@ public class LichController : Skeleton
             .State<State>(LichState.Attack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.Attack.ToString()} State");
+                    Debug.Log($"Entering {LichState.Attack.ToString()} State");
                     //1.일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //2.NavMesh를 중지합니다.
                     //3.공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(LichState.Attack.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                     ToggleAttackCollider(true);
                 })
                 .End()
             .State<State>(LichState.Enranged.ToString())//일정 피 이하로 내려가면 발동하는 광폭화 입니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.Enranged.ToString()} State");
+                    Debug.Log($"Entering {LichState.Enranged.ToString()} State");
                     //광폭화 모션 후, Idle로 돌아갑니다.
                     SetTriggerAnimation(LichState.Enranged.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                 })
                 .End()
             .State<State>(LichState.EnrangedIdle.ToString())//광폭화 상태의 Idle입니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.EnrangedIdle.ToString()} State");
+                    Debug.Log($"Entering {LichState.EnrangedIdle.ToString()} State");
                     SetBoolAnimation(LichState.EnrangedIdle.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                 })
                 .Condition(() =>
                 {
@@ -189,14 +192,14 @@ public class LichController : Skeleton
             .State<TreeEntWalkState>(LichState.Run.ToString())//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.Run.ToString()} State");
+                    Debug.Log($"Entering {LichState.Run.ToString()} State");
                     //1.오브젝트 풀의 재생성을 중지하는 함수를 실행합니다.
                     //2.애니메이션 bool parameter를 Walk로 변경합니다.
                     //3.플레이어를 추적합니다.(NavMesh)
                     //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(LichState.Run.ToString());
-                    StartNavigtaion(stat.RunSpeed);
+                    StartNavigation(stat.RunSpeed);
                     ToggleAttackCollider(false);
                 })
                 .Condition(() =>
@@ -209,7 +212,7 @@ public class LichController : Skeleton
                     //갱신 주기마다, 목적지가 초기화 됩니다.
                     if ((state.LastResetDestinationTime + stat.ResetDestinationDelay) <= Time.time)
                     {
-                        StartNavigtaion(stat.RunSpeed);
+                        StartNavigation(stat.RunSpeed);
                         state.LastResetDestinationTime = Time.time;
                     }
                 })
@@ -241,7 +244,7 @@ public class LichController : Skeleton
             .State<State>(LichState.EnrangedAttack.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.EnrangedAttack.ToString()} State");
+                    Debug.Log($"Entering {LichState.EnrangedAttack.ToString()} State");
                     //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(LichState.EnrangedAttack.ToString());
@@ -251,7 +254,7 @@ public class LichController : Skeleton
             .State<State>(LichState.Die.ToString())//사정거리 내에 들어오면 일반 공격합니다.
                 .Enter(state =>
                 {
-                    //Debug.Log($"Entering {LichState.Die.ToString()} State");
+                    Debug.Log($"Entering {LichState.Die.ToString()} State");
                     //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetDie();
@@ -356,8 +359,8 @@ public class LichController : Skeleton
     private bool IsEntInCenter()
     {
         bool isEntInCenter = false;
-        Vector3 navEndPosition = new Vector3(skeletonNav.pathEndPosition.x,
-                                            0, skeletonNav.pathEndPosition.z);
+        Vector3 navEndPosition = new Vector3(skeletonNav.destination.x,
+                                            0, skeletonNav.destination.z);
         Vector3 TreeEntSpawnPosition = new Vector3(LichBoxCollider.transform.position.x,
                                     0, LichBoxCollider.transform.position.z);
         if (Vector3.Distance(navEndPosition, TreeEntSpawnPosition) < 2f)
@@ -456,11 +459,11 @@ public class LichController : Skeleton
         if (!IsAnimationPlaying(LichState.Die.ToString()))
         {
             SetTriggerAnimation(LichState.Die.ToString());
-            StopNavigtaion();
+            StopNavigation();
             EnhancementZone = ObjectPool.objectPool.GetObject(EnhancementZone);//강화 포탈 소환
-            EnhancementZone.transform.position = transform.position;
+            EnhancementZone.transform.position = new Vector3(transform.position.x, playerObject.transform.position.y, transform.position.z);
             StartCoroutine(Sinking());
-
+            ObjectPool.objectPool.IncrementBossRoomCount(this);//강화존 열림과 동시에, 보스방 입장 조건 1개 충족
         }
     }
 

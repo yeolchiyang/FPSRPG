@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using Yang;
 
 public class ObjectPool : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private GameObject[] prefabs;
     //생성한 Object들을 담는 List들을 담을 배열
     private List<GameObject>[] pooledObjects;
+    private int EliminatedEliteCount = 0;
 
 
     private void Awake()
@@ -101,6 +103,20 @@ public class ObjectPool : MonoBehaviour
                 pooledObjects[i].Add(obj);
                 return;
             }
+        }
+    }
+    /// <summary>
+    /// 매개변수명을 이렇게 짜면 안되지만.. 보스방 카운트를 증가시키기 위한 매개변수 입니다.
+    /// </summary>
+    /// <param name="skeleton">Skeleton이 기본적으로 Player 오브젝트를 지니고 있습니다.</param>
+    public void IncrementBossRoomCount(Skeleton skeleton)
+    {
+        
+        EliminatedEliteCount++;
+        Debug.Log("잡았다.!" + EliminatedEliteCount);
+        if (EliminatedEliteCount == 2)
+        {
+            skeleton.PlayerObject.GetComponent<Player_Health>().BossHunting = true;
         }
     }
 

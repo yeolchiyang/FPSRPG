@@ -124,25 +124,25 @@ public class NormalSkeleton : Skeleton
     private void SetIdle()
     {
         SetBoolAnimation(Idle);
-        StopNavigtaion();
+        StopNavigation();
     }
 
     private void SetWalk()
     {
         SetBoolAnimation(Walk);
-        StartNavigtaion(stat.WalkSpeed);
+        StartNavigation(stat.WalkSpeed);
     }
 
     private void SetRun()
     {
         SetBoolAnimation(Run);
-        StartNavigtaion(stat.RunSpeed);
+        StartNavigation(stat.RunSpeed);
     }
 
     private void SetAttack()
     {
         SetTriggerAnimation(Attack);
-        StopNavigtaion();
+        StopNavigation();
     }
     /// <summary>
     /// 애니메이션 중간에 가해지는 데미지, 애니메이션 클립에 해당 함수 존재
@@ -174,7 +174,7 @@ public class NormalSkeleton : Skeleton
         {
             rootState.TriggerEvent(Damaged);
             SetTriggerAnimation(Damaged);
-            StopNavigtaion();
+            StopNavigation();
         }
     }
     /// <summary>
@@ -196,7 +196,7 @@ public class NormalSkeleton : Skeleton
         else
         {
             SetTriggerAnimation(Damaged);
-            StopNavigtaion();
+            StopNavigation();
             GameObject hitEffect = EffectPool.effectPool.GetObject(HitEffect);
             //hit.normal로 맞은 부분의 법선 벡터를 가져올 수 있습니다.
             hitEffect.transform.position = hit.point;
@@ -214,7 +214,7 @@ public class NormalSkeleton : Skeleton
         if (!IsAnimationPlaying(Die))
         {
             SetTriggerAnimation(Die);
-            StopNavigtaion();
+            StopNavigation();
             StartCoroutine(Sinking());
             if(stat.CurrentHp <= 0f)
             {
@@ -264,7 +264,7 @@ public class NormalSkeleton : Skeleton
     private void SetStun()
     {
         SetIdle();//Idle 재활용
-        StopNavigtaion();
+        StopNavigation();
     }
 
 

@@ -10,7 +10,7 @@ public class FollowCamera : MonoBehaviour
     public Transform targetTr;
     Transform camTr;
     public bool changepos = false;
-    float First_MaxY = 45f;
+    float First_MaxY = 60f;
     float third_MaxY = 30f;
     [Range(-1f, 2f)]
     public float distance = 2.0f;
@@ -38,7 +38,7 @@ public class FollowCamera : MonoBehaviour
         camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
         float rotationY = Input.GetAxis("Mouse Y");
         FirstView += turnspeed * Time.deltaTime * rotationY;
-        FirstView = Mathf.Clamp(FirstView, -10, First_MaxY);
+        FirstView = Mathf.Clamp(FirstView, -20, First_MaxY);
         thirdView += turnspeed * Time.deltaTime * rotationY;
         thirdView = Mathf.Clamp(thirdView, -10, third_MaxY);
 

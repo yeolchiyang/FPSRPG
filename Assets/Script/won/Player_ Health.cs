@@ -55,9 +55,9 @@ public class Player_Health : MonoBehaviour
         {
             currentHp = PlayerPrefs.GetFloat("player_CurretHp");
             currentMp = PlayerPrefs.GetFloat("player_CurretMp");
-            currentExp = PlayerPrefs.GetFloat("Player_currentExp");
-            lv = PlayerPrefs.GetInt("Player_Lv");
-            forceSoul = PlayerPrefs.GetInt("Player_forceSoul");
+            currentExp = PlayerPrefs.GetFloat("player_currentExp");
+            lv = PlayerPrefs.GetInt("player_Lv");
+            forceSoul = PlayerPrefs.GetInt("player_forceSoul");
         }
         Debug.Log(SceneManager.GetActiveScene().name+PlayerPrefs.GetFloat("player_CurretHp"));
     }

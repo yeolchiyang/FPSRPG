@@ -29,7 +29,7 @@ public class VGSGUN : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player");
-        BulletEndPoint = GameObject.Find("BulletEndPoint");
+        BulletEndPoint = GameObject.Find("BulletEnd");
         bullet = GameObject.FindWithTag("Bullet");
         GetShoothit = BulletEffect.GetComponent<shoothit>();
         shootspeed = 0;
@@ -53,7 +53,6 @@ public class VGSGUN : MonoBehaviour
         player_Health = player.GetComponent<Player_Health>();
         curretMp = player_Health.currentMp; 
         
-        BulletEndPoint = GameObject.Find("BulletEndPoint");
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && shootspeed >= 1 && player_Health.lief && curretMp > costMp)
         {

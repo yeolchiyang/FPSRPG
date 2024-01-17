@@ -16,10 +16,12 @@ public class UIContral : MonoBehaviour
     [SerializeField] GameObject GameMenuWindow;
     [SerializeField] GameObject PowerUpUI;
     [SerializeField] GameObject conversation;
+    [SerializeField] GameObject miniMap;
 
     bool gameMenuEnable = false;
     bool powerUpEnabled = false;
-    
+    bool miniMapEnabled = false;
+
     [SerializeField] GameObject[] Aims;
 
     [SerializeField] UnityEngine.UI.Image[] Arms;
@@ -39,7 +41,8 @@ public class UIContral : MonoBehaviour
 
         GameMenuWindow.SetActive(false);
         PowerUpUI.SetActive(false);
-        //conversation.SetActive(false);
+        conversation.SetActive(false);
+        miniMap.SetActive(false);
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -76,6 +79,10 @@ public class UIContral : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             MenuWindowContral();
+        }
+        if (Input.GetKeyDown("m"))
+        {
+            MiniMapContral();
         }
     }
 
@@ -130,6 +137,22 @@ public class UIContral : MonoBehaviour
             GameMenuWindow.SetActive(gameMenuEnable);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void MiniMapContral()
+    {
+        miniMapEnabled = !miniMapEnabled;
+
+        if (miniMapEnabled == true)
+        {
+            miniMap.SetActive(miniMapEnabled);
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            miniMap.SetActive(miniMapEnabled);
             Time.timeScale = 1f;
         }
     }

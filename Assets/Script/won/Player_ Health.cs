@@ -73,7 +73,10 @@ public class Player_Health : MonoBehaviour
         }
 
         dam += Time.deltaTime;
-        
+        if (currentHp <= 0)
+        {
+            Die();
+        }
     }
 
 
@@ -89,22 +92,20 @@ public class Player_Health : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if ((currentHp - damage) > 0)
+        if ((currentHp - (damage - inventory.status[4])) > 0)
         {
 
             anima.Player_Hit();
-            currentHp -= damage-inventory.status[4];
+            currentHp -= (damage-inventory.status[4]);
             ccb.UpdateHP();
         }
-        else if ((currentHp - damage) < 0)
-        {
-            anima.Player_Die();
-            collider.gameObject.SetActive(false);
-        }
+        currentHp -= (damage - inventory.status[4]);
+        ccb.UpdateHP();
     }
 
     public void Die()
     {
+        collider.gameObject.SetActive(false);
         anima.Player_Die();
         Debug.Log("플레이어 사망");
         PlayerCtrl.ccon();

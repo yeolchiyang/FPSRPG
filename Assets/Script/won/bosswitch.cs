@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class bosswitch : MonoBehaviour
 {
+    [SerializeField] UIContral uiContral;
+    GameObject canvas;
     public int storyStep = 0;
     float TextTime = 1;
 
     void Start()
     {
-
+        canvas = GameObject.Find("Canvas");
+        uiContral = canvas.GetComponent<UIContral>();
     }
 
     void Update()
@@ -34,6 +37,7 @@ public class bosswitch : MonoBehaviour
                 storyStep++;
                 if (storyStep > 5)
                 {
+                    ASD();
                     Destroy(gameObject);
                 }
             }
@@ -72,6 +76,10 @@ public class bosswitch : MonoBehaviour
 
     void DisplayDialog(string dialogText)
     {
-        Debug.Log(dialogText);
+        uiContral.Conversation(dialogText);
+    }
+    void ASD()
+    {
+        uiContral.ConversationRemove();
     }
 }

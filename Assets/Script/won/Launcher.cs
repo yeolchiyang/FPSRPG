@@ -29,6 +29,7 @@ public class Launcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        AIM = GameObject.Find("BImAIm");
         BulletEndPoint = GameObject.Find("BulletEnd");
         bullet = GameObject.FindWithTag("Bullet");
         GetShoothit = BulletEffect.GetComponent<shoothit>();

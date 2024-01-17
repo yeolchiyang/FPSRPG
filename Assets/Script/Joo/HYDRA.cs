@@ -11,6 +11,7 @@ public class HYDRA : MonoBehaviour
     protected UnityEngine.AI.NavMeshAgent Hydra;
     protected GameObject player;
     [SerializeField] protected Animator HydraAnimator;
+    [SerializeField] ContralBossHPBar contralBossHPBar;
 
     // Start is called before the first frame update
     void Awake()
@@ -94,17 +95,23 @@ public class HYDRA : MonoBehaviour
 
     public void SetDamaged(float damage)  // 맞을 때 animation 없음
     {
-        stat.CurrentHp -= damage;
-        if(stat.CurrentHp <= 0f)
-        {
-            stat.CurrentHp = 0f;
-            if (isActive)
-            {
-                HydraAnimator.SetTrigger("Death");
-            }
-            isActive = false;
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-            StartCoroutine(Die());
+        if(distanceToPlayer < stat.SkillattackRange)
+        {
+            stat.CurrentHp -= damage;
+            contralBossHPBar.TakeDamage(damage);
+            if (stat.CurrentHp <= 0f)
+            {
+                stat.CurrentHp = 0f;
+                if (isActive)
+                {
+                    HydraAnimator.SetTrigger("Death");
+                }
+                isActive = false;
+
+                StartCoroutine(Die());
+            }
         }
     }
 

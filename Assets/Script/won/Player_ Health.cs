@@ -100,8 +100,6 @@ public class Player_Health : MonoBehaviour
         {
 
             anima.Player_Hit();
-            currentHp -= (damage-inventory.status[4]);
-            ccb.UpdateHP();
         }
         currentHp -= (damage - inventory.status[4]);
         ccb.UpdateHP();

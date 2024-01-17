@@ -26,6 +26,7 @@ public class Launcher : MonoBehaviour
     public float test = 0;
     GameObject bullet;
     shoothit GetShoothit;
+    public AudioClip bulletsound;
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +60,7 @@ public class Launcher : MonoBehaviour
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButton(0) && shootspeed >= 0.3 - (inventory.status[2]* 0.025f)&& player_Health.lief && player_Health.currentMp > costMp)
         {
+            AudioSource.PlayClipAtPoint(bulletsound, transform.position);
             player_Health.CostMp(costMp);
             shootspeed = 0;
             basicAim.ShootToAim();  // Weapon3 ø°¿” 

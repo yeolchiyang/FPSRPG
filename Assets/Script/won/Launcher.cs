@@ -29,7 +29,7 @@ public class Launcher : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BulletEndPoint = GameObject.Find("BulletEndPoint");
+        BulletEndPoint = GameObject.Find("BulletEnd");
         bullet = GameObject.FindWithTag("Bullet");
         GetShoothit = BulletEffect.GetComponent<shoothit>();
         invenObj = GameObject.Find("StatusArea");
@@ -55,8 +55,6 @@ public class Launcher : MonoBehaviour
         }
         player_Health = player.GetComponent<Player_Health>();
         inventory = invenObj.GetComponent<Status_Inventory>();
-        
-        BulletEndPoint = GameObject.Find("BulletEndPoint");
         shootspeed = shootspeed+Time.deltaTime;
         if (Input.GetMouseButton(0) && shootspeed >= 0.3 - (inventory.status[2]* 0.025f)&& player_Health.lief && player_Health.currentMp > costMp)
         {
@@ -71,9 +69,9 @@ public class Launcher : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo, Range, layerMask))
             {
                 
-                    ASD.transform.LookAt(hitInfo.point);
+                ASD.transform.LookAt(hitInfo.point);
 
-                
+
             }
             else
             {

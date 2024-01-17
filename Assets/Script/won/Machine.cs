@@ -15,6 +15,7 @@ public class Machine : MonoBehaviour
     Transform BulletSatEffect;
     float ShootDamage;
     bool ok = true;
+    public AudioClip bulletsound;
 
     private void Start()
     {
@@ -33,7 +34,7 @@ public class Machine : MonoBehaviour
         if (Input.GetMouseButtonDown(0)&&player_Health.lief)
         {
             Vector3 startShootPosition = BulletStartPoint.transform.position;
-
+            AudioSource.PlayClipAtPoint(bulletsound, startShootPosition);
             GameObject ShootEffect = Instantiate(BulletStartEffect, startShootPosition, Quaternion.identity, BulletStartPoint.transform);
 
             ParticleSystem psshoot = ShootEffect.GetComponent<ParticleSystem>();

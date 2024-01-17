@@ -18,10 +18,12 @@ public class PlayerCtrl : MonoBehaviour
     Player_Anima anima;
     GameObject player;
     Player_Health player_Health;
+    GameObject walk;
 
     // Start is called before the first frame update
     void Start()
     {
+        walk = GameObject.Find("Walk");
         invenObj = GameObject.Find("StatusArea");
         inventory = invenObj.GetComponent<Status_Inventory>();
         player = GameObject.FindWithTag("Player");
@@ -30,6 +32,7 @@ public class PlayerCtrl : MonoBehaviour
         tr = GetComponent<Transform>();
         rb = GetComponent<Rigidbody>();
         bc = GetComponent<BoxCollider>();
+        walk.SetActive(false);
     }
 
     // Update is called once per frame
@@ -105,4 +108,15 @@ public class PlayerCtrl : MonoBehaviour
         CrowdControl = true;
         Invoke("ccoff", 0.5f);
     }
+
+    void walkon()
+    {
+        walk.SetActive(true);
+    }
+    void walkoff()
+    {
+        walk.SetActive(false);
+    }
+
+       
 }

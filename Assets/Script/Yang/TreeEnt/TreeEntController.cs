@@ -286,6 +286,7 @@ public class TreeEntController : Skeleton
             return;
         }
         stat.CurrentHp -= damage;
+        cbb.TakeDamage(damage);
 
         if( stat.CurrentHp / stat.MaxHp <= 0.3f )
         {

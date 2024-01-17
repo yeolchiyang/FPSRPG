@@ -44,6 +44,9 @@ public class TreeEntController : Skeleton
     [SerializeField] private GameObject EnhancementZone;
 
 
+    ContralBossHPBar cbb;                // 진선윤 BossHPBar 조인 추가
+    [SerializeField] GameObject BossBar; // 진선윤 BossHPBar 조인 추가
+
     private void OnEnable()
     {
         //엘리트몹 등장 시 일반 몹 리스폰 일시정지 및
@@ -55,6 +58,7 @@ public class TreeEntController : Skeleton
     private void Start()
     {
         TreeEntBoxCollider = ObjectSpawner.objectSpawner.TreeEntBoxCollider;
+        cbb = BossBar.GetComponent<ContralBossHPBar>();  // 진선윤 BossHPBar 조인 추가
 
         rootState = new StateMachineBuilder()
             .State<State>(TreeState.Idle.ToString())//기본 상태입니다. 감지할 때까지 움직이지 않습니다.
@@ -89,6 +93,10 @@ public class TreeEntController : Skeleton
                     //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Walk.ToString());
+
+                    BossBar.SetActive(true);  // 진선윤 BossHPBar 조인 추가
+                    cbb.setBossInfo(stat.CurrentHp, stat.MaxHp, stat.Name);  // 진선윤 BossHPBar 조인 추가
+
                     StartNavigation(stat.WalkSpeed);
                     ToggleAttackCollider(false);
                 })

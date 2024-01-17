@@ -39,6 +39,9 @@ public class LichController : Skeleton
     [Tooltip("Elite몹이 죽은 뒤 소환될 강화존 입니다.")]
     [SerializeField] private GameObject EnhancementZone;
 
+    ContralBossHPBar cbb;                // 진선윤 BossHPBar 조인 추가
+    [SerializeField] GameObject BossBar; // 진선윤 BossHPBar 조인 추가
+
 
     private void OnEnable()
     {
@@ -50,6 +53,7 @@ public class LichController : Skeleton
     private void Start()
     {
         LichBoxCollider = ObjectSpawner.objectSpawner.LichBoxCollider;
+        cbb = BossBar.GetComponent<ContralBossHPBar>();  // 진선윤 BossHPBar 조인 추가
 
         rootState = new StateMachineBuilder()
             .State<State>(LichState.Idle.ToString())//기본 상태입니다. 감지할 때까지 움직이지 않습니다.
@@ -84,6 +88,10 @@ public class LichController : Skeleton
                     //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(LichState.Walk.ToString());
+
+                    BossBar.SetActive(true);  // 진선윤 BossHPBar 조인 추가
+                    cbb.setBossInfo(stat.CurrentHp, stat.MaxHp, stat.Name);  // 진선윤 BossHPBar 조인 추가
+
                     StartNavigation(stat.WalkSpeed);
                     ToggleAttackCollider(false);
                     Debug.Log(skeletonNav.destination);

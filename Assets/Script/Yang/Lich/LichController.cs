@@ -282,6 +282,7 @@ public class LichController : Skeleton
         {
             return;
         }
+        cbb.TakeDamage(damage);
         stat.CurrentHp -= damage;
 
         if (stat.CurrentHp / stat.MaxHp <= 0.3f)

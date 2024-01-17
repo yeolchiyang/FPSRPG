@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LichEnrangedAttack : StateMachineBehaviour
+public class LichIceMagicAttack : StateMachineBehaviour
 {
     private IState rootState;
 
@@ -12,6 +12,6 @@ public class LichEnrangedAttack : StateMachineBehaviour
     {
         rootState = animator.GetComponent<LichController>().rootState;
         rootState.ChangeState(LichState.Run.ToString());
-        animator.GetComponent<LichController>().ExecuteFireMagicAttack();
+        animator.GetComponent<LichController>().ExecuteIceMagicAttack();
     }
 }

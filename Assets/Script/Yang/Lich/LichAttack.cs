@@ -11,7 +11,7 @@ public class LichAttack : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         rootState = animator.GetComponent<LichController>().rootState;
-        rootState.ChangeState(TreeState.Walk.ToString());
-        animator.GetComponent<LichController>().ExecuteMagicAttack();
+        rootState.ChangeState(LichState.Walk.ToString());
+        animator.GetComponent<LichController>().ExecuteFireMagicAttack();
     }
 }

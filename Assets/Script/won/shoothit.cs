@@ -34,7 +34,7 @@ public class shoothit : MonoBehaviour
         {
             weaponDamage = 2 + (inventory.status[2] * 0.75f);
         }
-        Debug.Log(weaponDamage);
+        //Debug.Log(weaponDamage);
     }
     // Update is called once per frame
     private void OnCollisionEnter(Collision collision)

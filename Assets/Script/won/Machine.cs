@@ -59,6 +59,11 @@ public class Machine : MonoBehaviour
                 Skeleton enemy = hitInfo.collider.GetComponent<Skeleton>();
                 if (enemy != null)
                     enemy.SetDamaged(ShootDamage);
+                HYDRA hYDRA = hitInfo.collider.GetComponent<HYDRA>();
+                if(hYDRA != null)
+                {
+                    hYDRA.SetDamaged(ShootDamage);
+                }
             }
         }
     }

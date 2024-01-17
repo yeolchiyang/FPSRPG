@@ -1,32 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class ending : MonoBehaviour
 {
     public int storyStep = 0;
     float TextTime = 0;
+    [SerializeField] UIContral uiContral;
+    GameObject canvas;
+    public bool endingtextstart = false;
     // Start is called before the first frame update
     void Start()
     {
-
+        canvas = GameObject.Find("Canvas");
+        uiContral = canvas.GetComponent<UIContral>();
     }
 
     // Update is called once per frame
     void Update()
     {
         TextTime += Time.deltaTime;
-        if (TextTime > 2f)
+        if (TextTime > 2f && endingtextstart)
         {
            
-            if (storyStep > 0 && Input.GetKeyDown(KeyCode.F)) 
+            if (storyStep == 0 && Input.GetKeyDown(KeyCode.F)) 
             {
                 HandleStory(storyStep);
                 storyStep++;
                 TextTime = 0;
             }
-            else
+            else if (storyStep == 3 && Input.GetKeyDown(KeyCode.F))
             {
+                storyStep++;
+                HandleStory(storyStep);
+                TextTime = 0;
+                
+            }
+            else if (storyStep > 0 && storyStep <3)
+            {
+
+                TextTime = 0;
                 HandleStory(storyStep);
                 storyStep++;
 
@@ -56,7 +69,9 @@ public class ending : MonoBehaviour
                 DisplayDialog("넌 나의 원한을 피해 떠날지언정, 내가 너를 계속 저주하리라!");
 
                 break;
-
+            case 4:
+                SceneManager.LoadScene("Scene3_empty");
+                break;
 
             default:
                 break;
@@ -65,6 +80,6 @@ public class ending : MonoBehaviour
     }
     void DisplayDialog(string dialogText)
     {
-        Debug.Log(dialogText);
+        uiContral.Conversation(dialogText);
     }
 }

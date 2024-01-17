@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class HYDRA : MonoBehaviour
 {
-    ending GetEnding;
     protected bool isActive = true;
     protected HYDRAStat stat;
     protected UnityEngine.AI.NavMeshAgent Hydra;
@@ -16,7 +15,6 @@ public class HYDRA : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        GetEnding = GetComponent<ending>();
         Hydra = GetComponent<UnityEngine.AI.NavMeshAgent>();
         player = GameObject.FindWithTag("Player");
         stat = GetComponent<HYDRAStat>();
@@ -96,18 +94,22 @@ public class HYDRA : MonoBehaviour
 
     public void SetDamaged(float damage)  // 맞을 때 animation 없음
     {
-        stat.CurrentHp -= damage;
-        if(stat.CurrentHp <= 0f)
-        {
-            stat.CurrentHp = 0f;
-            if (isActive)
-            {
-                HydraAnimator.SetTrigger("Death");
-            }
-            isActive = false;
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-            StartCoroutine(Die());
-            GetEnding.endingtextstart = true;
+        if(distanceToPlayer < stat.SkillattackRange)
+        {
+            stat.CurrentHp -= damage;
+            if (stat.CurrentHp <= 0f)
+            {
+                stat.CurrentHp = 0f;
+                if (isActive)
+                {
+                    HydraAnimator.SetTrigger("Death");
+                }
+                isActive = false;
+
+                StartCoroutine(Die());
+            }
         }
     }
 

@@ -5,8 +5,17 @@ using UnityEngine;
 public class LichFireMagic : MonoBehaviour
 {
     private float fireDamage;
-    private float EffectCountTime;
+    private float EffectCountTime = 0f;
     [SerializeField] private float EffectDestroyDelay = 2f;
+    private ParticleSystem FireMagicParticle;
+    /// <summary>
+    /// 맞은 판정을 판단하는 collider
+    /// </summary>
+    private BoxCollider hitDetectionBox;
+    /// <summary>
+    /// 위의 판정용 Collider Box의 이동 속도
+    /// </summary>
+    private const float HIT_DETECTION_SPEED = 12f;
 
     public void SetFireDamage(float damage)
     {
@@ -16,6 +25,9 @@ public class LichFireMagic : MonoBehaviour
 
     private void OnEnable()
     {
+        FireMagicParticle = GetComponent<ParticleSystem>();
+        hitDetectionBox = GetComponent<BoxCollider>();
+        FireMagicParticle.Play();
         EffectCountTime = Time.time;
         StartCoroutine(MoveFire());
     }
@@ -24,10 +36,11 @@ public class LichFireMagic : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("Fire실행중");
-            transform.Translate(transform.forward * Time.deltaTime);
-            if(EffectCountTime + EffectDestroyDelay >= Time.time)
+            hitDetectionBox.transform.Translate(transform.forward * Time.deltaTime * HIT_DETECTION_SPEED);
+            if (EffectCountTime + EffectDestroyDelay <= Time.time)
             {
+                FireMagicParticle.Stop();
+                hitDetectionBox.transform.position = transform.position;
                 EffectPool.effectPool.PoolObject(gameObject);
                 StopAllCoroutines();
             }

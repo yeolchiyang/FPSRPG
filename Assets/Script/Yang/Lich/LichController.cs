@@ -152,6 +152,7 @@ public class LichController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
+                        StartNavigation(stat.WalkSpeed);
                         state.Parent.ChangeState(LichState.Attack.ToString());
                         state.AttackedTime = Time.time;
                     }
@@ -243,6 +244,7 @@ public class LichController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
+                        StartNavigation(stat.WalkSpeed);
                         state.Parent.ChangeState(LichState.EnrangedAttack.ToString());
                         state.AttackedTime = Time.time;
                     }
@@ -252,18 +254,15 @@ public class LichController : Skeleton
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {LichState.EnrangedAttack.ToString()} State");
-                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(LichState.EnrangedAttack.ToString());
                     ToggleAttackCollider(true);
                 })
                 .End()
-            .State<State>(LichState.Die.ToString())//사정거리 내에 들어오면 일반 공격합니다.
+            .State<State>(LichState.Die.ToString())
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {LichState.Die.ToString()} State");
-                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
-                    //공격용 Collider를 활성화 합니다.
                     SetDie();
                 })
                 .End()
@@ -352,10 +351,11 @@ public class LichController : Skeleton
     /// </summary>
     public void ExecuteMagicAttack()
     {
-        Debug.Log("소환됨");
         GameObject LichFireObject = EffectPool.effectPool.GetObject(LichFireMagic);
-        LichFireMagic.transform.rotation = transform.rotation;
-        LichFireMagic.GetComponent<LichFireMagic>().SetFireDamage(stat.PhysicalDamage * 2);
+        LichFireObject.transform.rotation = transform.rotation;
+        LichFireObject.transform.position = new Vector3(
+                        transform.position.x, PlayerObject.transform.position.y + 1f, transform.position.z);
+        LichFireObject.GetComponent<LichFireMagic>().SetFireDamage(stat.PhysicalDamage * 2);
     }
 
     /// <summary>

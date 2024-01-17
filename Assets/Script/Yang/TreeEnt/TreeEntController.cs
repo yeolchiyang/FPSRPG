@@ -66,7 +66,7 @@ public class TreeEntController : Skeleton
                     //3.플레이어 추적을 중지합니다.(NavMesh)
                     ObjectSpawner.objectSpawner.StartSpawning();
                     SetBoolAnimation(TreeState.Idle.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                 })
                 .Condition(() =>
                 {
@@ -79,7 +79,7 @@ public class TreeEntController : Skeleton
                     state.Parent.ChangeState(TreeState.Walk.ToString());
                 })
                 .End()
-            .State<TreeEntWalkState>(TreeState.Walk.ToString())//사정거리 밖일 시 Walk로 이동합니다.
+            .State<LichWalkState>(TreeState.Walk.ToString())//사정거리 밖일 시 Walk로 이동합니다.
                 .Enter(state =>
                 {
                     //Debug.Log($"Entering {TreeState.Walk.ToString()} State");
@@ -89,7 +89,7 @@ public class TreeEntController : Skeleton
                     //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Walk.ToString());
-                    StartNavigtaion(stat.WalkSpeed);
+                    StartNavigation(stat.WalkSpeed);
                     ToggleAttackCollider(false);
                 })
                 .Condition(() =>
@@ -102,7 +102,7 @@ public class TreeEntController : Skeleton
                     //갱신 주기마다, 목적지가 초기화 됩니다.
                     if ((state.LastResetDestinationTime + stat.ResetDestinationDelay) <= Time.time)
                     {
-                        StartNavigtaion(stat.WalkSpeed);
+                        StartNavigation(stat.WalkSpeed);
                         state.LastResetDestinationTime = Time.time;
                     }
                 })
@@ -125,7 +125,7 @@ public class TreeEntController : Skeleton
                     }
                     else
                     {
-                        StopNavigtaion();
+                        StopNavigation();
                     }
                 })
                 .Condition(() =>
@@ -160,7 +160,7 @@ public class TreeEntController : Skeleton
                     //2.NavMesh를 중지합니다.
                     //3.공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(TreeState.Attack.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                     ToggleAttackCollider(true);
                 })
                 .End()
@@ -170,7 +170,7 @@ public class TreeEntController : Skeleton
                     //Debug.Log($"Entering {TreeState.Enranged.ToString()} State");
                     //광폭화 모션 후, Idle로 돌아갑니다.
                     SetTriggerAnimation(TreeState.Enranged.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                 })
                 .End()
             .State<State>(TreeState.EnrangedIdle.ToString())//광폭화 상태의 Idle입니다.
@@ -178,7 +178,7 @@ public class TreeEntController : Skeleton
                 {
                     //Debug.Log($"Entering {TreeState.EnrangedIdle.ToString()} State");
                     SetBoolAnimation(TreeState.EnrangedIdle.ToString());
-                    StopNavigtaion();
+                    StopNavigation();
                 })
                 .Condition(() =>
                 {
@@ -191,7 +191,7 @@ public class TreeEntController : Skeleton
                     state.Parent.ChangeState(TreeState.Run.ToString());
                 })
                 .End()
-            .State<TreeEntWalkState>(TreeState.Run.ToString())//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
+            .State<LichWalkState>(TreeState.Run.ToString())//광폭화 상태에만 사정거리 밖일 시 Run으로 이동합니다.
                 .Enter(state =>
                 {
                     //Debug.Log($"Entering {TreeState.Run.ToString()} State");
@@ -201,7 +201,7 @@ public class TreeEntController : Skeleton
                     //4.공격용 Collider를 비활성화 합니다.
                     ObjectSpawner.objectSpawner.StopSpawning();
                     SetBoolAnimation(TreeState.Run.ToString());
-                    StartNavigtaion(stat.RunSpeed);
+                    StartNavigation(stat.RunSpeed);
                     ToggleAttackCollider(false);
                 })
                 .Condition(() =>
@@ -214,7 +214,7 @@ public class TreeEntController : Skeleton
                     //갱신 주기마다, 목적지가 초기화 됩니다.
                     if ((state.LastResetDestinationTime + stat.ResetDestinationDelay) <= Time.time)
                     {
-                        StartNavigtaion(stat.RunSpeed);
+                        StartNavigation(stat.RunSpeed);
                         state.LastResetDestinationTime = Time.time;
                     }
                 })
@@ -362,8 +362,8 @@ public class TreeEntController : Skeleton
     private bool IsEntInCenter()
     {
         bool isEntInCenter = false;
-        Vector3 navEndPosition = new Vector3(skeletonNav.pathEndPosition.x, 
-                                            0, skeletonNav.pathEndPosition.z);
+        Vector3 navEndPosition = new Vector3(skeletonNav.destination.x, 
+                                            0, skeletonNav.destination.z);
         Vector3 TreeEntSpawnPosition = new Vector3(TreeEntBoxCollider.transform.position.x,
                                     0, TreeEntBoxCollider.transform.position.z);
         if(Vector3.Distance(navEndPosition, TreeEntSpawnPosition) < 2f)
@@ -462,11 +462,12 @@ public class TreeEntController : Skeleton
         if (!IsAnimationPlaying(TreeState.Die.ToString()))
         {
             SetTriggerAnimation(TreeState.Die.ToString());
-            StopNavigtaion();
+            StopNavigation();
             EnhancementZone = ObjectPool.objectPool.GetObject(EnhancementZone);//강화 포탈 소환
-            EnhancementZone.transform.position = transform.position;
+            EnhancementZone.transform.position =
+                new Vector3(transform.position.x, playerObject.transform.position.y, transform.position.z);
             StartCoroutine(Sinking());
-            
+            ObjectPool.objectPool.IncrementBossRoomCount(this);//강화존 열림과 동시에, 보스방 입장 조건 1개 충족
         }
     }
 

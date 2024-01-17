@@ -18,6 +18,10 @@ namespace Yang{
 
         //Player를 singleton으로 저장하고 있는 객체가 있을 경우 대체할 것
         protected GameObject playerObject;
+        public GameObject PlayerObject 
+        {
+            get { return playerObject; }
+        }
 
         private void Awake()
         {
@@ -51,7 +55,7 @@ namespace Yang{
         /// <summary>
         /// NavMesh를 중지합니다. 모든 오브젝트에 적용 가능합니다.
         /// </summary>
-        protected void StopNavigtaion()
+        protected void StopNavigation()
         {
             if (!skeletonNav.isStopped)
             {
@@ -67,7 +71,7 @@ namespace Yang{
         /// 모든 오브젝트에 적용 가능합니다.
         /// </summary>
         /// <param name="speed">1초마다 speed만큼의 거리를 이동합니다.</param>
-        protected void StartNavigtaion(float speed)
+        protected void StartNavigation(float speed)
         {
             skeletonNav.isStopped = false;
             skeletonNav.ResetPath();//ResetPath -> SetDestination 해야 재작동 합니다.

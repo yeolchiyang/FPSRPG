@@ -66,6 +66,12 @@ public class PortionContral : MonoBehaviour
         {
             DebineEff.SetActive(!PortionList[1].isEmpty());
             PortionList[1].ReducePotion(1);
+
+            if (!PortionList[1].isEmpty())
+            {
+                player.PlayerCcoff();
+            }
+
             countTime = portionDilay;
         }
 

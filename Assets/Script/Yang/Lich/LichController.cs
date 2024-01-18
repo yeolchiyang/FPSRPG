@@ -35,6 +35,7 @@ public class LichController : Skeleton
     /// Lich가 벗어나면 안되는 영역을 Trigger로 표시한 object 입니다.
     /// </summary>
     private BoxCollider LichBoxCollider;
+    private Vector3 LichBoxColliderCenterPoint;
     public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
     [Tooltip("Elite몹이 죽은 뒤 소환될 강화존 입니다.")]
     [SerializeField] private GameObject EnhancementZone;
@@ -58,6 +59,7 @@ public class LichController : Skeleton
     private void Start()
     {
         LichBoxCollider = ObjectSpawner.objectSpawner.LichBoxCollider;
+        LichBoxColliderCenterPoint = LichBoxCollider.transform.TransformPoint(Vector3.zero);
         cbb = BossBar.GetComponent<ContralBossHPBar>();  // 진선윤 BossHPBar 조인 추가
 
         rootState = new StateMachineBuilder()
@@ -80,6 +82,7 @@ public class LichController : Skeleton
                 state =>
                 {
                     //Walk state로 전환
+                    Scene1BM.sceneBgm.SetCurrentBackGroundSounds(BGMEnum.Lich);
                     state.Parent.ChangeState(LichState.Walk.ToString());
                 })
                 .End()
@@ -143,6 +146,7 @@ public class LichController : Skeleton
                 },
                 state =>
                 {
+                    Scene1BM.sceneBgm.SetCurrentBackGroundSounds(BGMEnum.Normal);
                     state.Parent.ChangeState(LichState.Idle.ToString());
                 })
                 .Condition(() =>
@@ -155,7 +159,6 @@ public class LichController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
-                        StartNavigation(stat.WalkSpeed);
                         state.Parent.ChangeState(LichState.Attack.ToString());
                         state.AttackedTime = Time.time;
                     }
@@ -412,9 +415,8 @@ public class LichController : Skeleton
         bool isEntInCenter = false;
         Vector3 navEndPosition = new Vector3(skeletonNav.destination.x,
                                             0, skeletonNav.destination.z);
-        Vector3 TreeEntSpawnPosition = new Vector3(LichBoxCollider.transform.position.x,
-                                    0, LichBoxCollider.transform.position.z);
-        if (Vector3.Distance(navEndPosition, TreeEntSpawnPosition) < 2f)
+        Vector3 LichSpawnPosition = LichBoxColliderCenterPoint;
+        if (Vector3.Distance(navEndPosition, LichSpawnPosition) < 2f)
         {
             if (skeletonNav.remainingDistance <= 1f)
             {
@@ -475,8 +477,8 @@ public class LichController : Skeleton
         bool isOutsideBounds = false;
         Vector3 minPosition = LichBoxCollider.bounds.min;//최소 좌표
         Vector3 maxPosition = LichBoxCollider.bounds.max;//최대 좌표
-        if (transform.position.x <= minPosition.x || transform.position.x >= maxPosition.x
-        || transform.position.z <= minPosition.z || transform.position.z >= maxPosition.z)
+        if (transform.position.x <= minPosition.x + 1|| transform.position.x >= maxPosition.x -1
+        || transform.position.z <= minPosition.z + 1 || transform.position.z >= maxPosition.z - 1)
         {
             isOutsideBounds = true;
         }
@@ -516,6 +518,7 @@ public class LichController : Skeleton
             EnhancementZone.transform.position = new Vector3(transform.position.x, playerObject.transform.position.y, transform.position.z);
             StartCoroutine(Sinking());
             ObjectPool.objectPool.IncrementBossRoomCount(this);//강화존 열림과 동시에, 보스방 입장 조건 1개 충족
+            Scene1BM.sceneBgm.SetCurrentBackGroundSounds(BGMEnum.Normal);
         }
     }
 

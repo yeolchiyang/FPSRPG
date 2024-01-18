@@ -38,6 +38,7 @@ public class TreeEntController : Skeleton
     /// <summary>
     /// TreeEnt가 벗어나면 안되는 영역을 Trigger로 표시한 object 입니다.
     /// </summary>
+    private Vector3 TreeEntBoxColliderCenterPoint;
     private BoxCollider TreeEntBoxCollider;
     public LayerMask playerMask;//플레이어 layer를 담은 변수입니다.
     [Tooltip("Elite몹이 죽은 뒤 소환될 강화존 입니다.")]
@@ -58,6 +59,8 @@ public class TreeEntController : Skeleton
     private void Start()
     {
         TreeEntBoxCollider = ObjectSpawner.objectSpawner.TreeEntBoxCollider;
+        TreeEntBoxColliderCenterPoint = TreeEntBoxCollider.transform.TransformPoint(Vector3.zero);
+        //참조와 값
         cbb = BossBar.GetComponent<ContralBossHPBar>();  // 진선윤 BossHPBar 조인 추가
 
         rootState = new StateMachineBuilder()
@@ -80,6 +83,7 @@ public class TreeEntController : Skeleton
                 state =>
                 {
                     //Walk state로 전환
+                    Scene1BM.sceneBgm.SetCurrentBackGroundSounds(BGMEnum.Tree);
                     state.Parent.ChangeState(TreeState.Walk.ToString());
                 })
                 .End()
@@ -129,7 +133,7 @@ public class TreeEntController : Skeleton
                      */
                     if (!IsTargetDetected()) //플레이어가 감지거리 밖인 경우
                     {
-                        StartNavigation(stat.WalkSpeed, TreeEntBoxCollider.transform.position);
+                        StartNavigation(stat.WalkSpeed, TreeEntBoxColliderCenterPoint);
                     }
                     else
                     {
@@ -143,6 +147,7 @@ public class TreeEntController : Skeleton
                 },
                 state =>
                 {
+                    Scene1BM.sceneBgm.SetCurrentBackGroundSounds(BGMEnum.Normal);
                     state.Parent.ChangeState(TreeState.Idle.ToString());
                 })
                 .Condition(() =>
@@ -155,7 +160,6 @@ public class TreeEntController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
-                        StartNavigation(stat.WalkSpeed);
                         state.Parent.ChangeState(TreeState.Attack.ToString());
                         state.AttackedTime = Time.time;
                     }
@@ -375,9 +379,8 @@ public class TreeEntController : Skeleton
         bool isEntInCenter = false;
         Vector3 navEndPosition = new Vector3(skeletonNav.destination.x, 
                                             0, skeletonNav.destination.z);
-        Vector3 TreeEntSpawnPosition = new Vector3(TreeEntBoxCollider.transform.position.x,
-                                    0, TreeEntBoxCollider.transform.position.z);
-        if(Vector3.Distance(navEndPosition, TreeEntSpawnPosition) < 2f)
+        Vector3 TreeEntSpawnPosition = TreeEntBoxColliderCenterPoint;
+        if (Vector3.Distance(navEndPosition, TreeEntSpawnPosition) < 2f)
         {
             if (skeletonNav.remainingDistance <= 1f)
             {
@@ -438,8 +441,8 @@ public class TreeEntController : Skeleton
         bool isOutsideBounds = false;
         Vector3 minPosition = TreeEntBoxCollider.bounds.min;//최소 좌표
         Vector3 maxPosition = TreeEntBoxCollider.bounds.max;//최대 좌표
-        if (transform.position.x <= minPosition.x || transform.position.x >= maxPosition.x
-        || transform.position.z <= minPosition.z || transform.position.z >= maxPosition.z)
+        if (transform.position.x <= minPosition.x + 1 || transform.position.x >= maxPosition.x -1
+        || transform.position.z <= minPosition.z + 1 || transform.position.z >= maxPosition.z - 1)
         {
             isOutsideBounds = true;
         }
@@ -479,7 +482,7 @@ public class TreeEntController : Skeleton
                 new Vector3(transform.position.x, playerObject.transform.position.y, transform.position.z);
             StartCoroutine(Sinking());
             ObjectPool.objectPool.IncrementBossRoomCount(this);//강화존 열림과 동시에, 보스방 입장 조건 1개 충족
-            
+            Scene1BM.sceneBgm.SetCurrentBackGroundSounds(BGMEnum.Normal);
         }
     }
 

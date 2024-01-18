@@ -227,7 +227,7 @@ public class NormalSkeleton : Skeleton
             StartCoroutine(Sinking());
             if(stat.CurrentHp <= 0f)
             {
-                playerObject.GetComponent<Player_Health>().AddExp(100);
+                playerObject.GetComponent<Player_Health>().AddExp(20);
             }
         }
     }

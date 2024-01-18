@@ -2,6 +2,7 @@ using RSG;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Yang;
 
 public enum LichState
@@ -15,8 +16,7 @@ public enum LichState
     Damaged,
     Die,//Trigger
     EnrangedAttack,//Trigger
-    StompAttack,//Trigger
-    JumpSmashAttack//Trigger
+    IceMagic//Trigger
 }
 public class LichController : Skeleton
 {
@@ -40,10 +40,13 @@ public class LichController : Skeleton
     [SerializeField] private GameObject EnhancementZone;
     [Tooltip("Lich가 발동하는 FireMagicObject 입니다.")]
     [SerializeField] private GameObject LichFireMagic;
+    [Tooltip("Lich가 발동하는 IceCircleObject 입니다.")]
+    [SerializeField] private GameObject LichIceCircle;
+    private const int FIREMAGICINDEX = 0;
+    private const int ICEMAGICINDEX = 1;
 
     ContralBossHPBar cbb;                // 진선윤 BossHPBar 조인 추가
     [SerializeField] GameObject BossBar; // 진선윤 BossHPBar 조인 추가
-
 
     private void OnEnable()
     {
@@ -152,6 +155,7 @@ public class LichController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
+                        StartNavigation(stat.WalkSpeed);
                         state.Parent.ChangeState(LichState.Attack.ToString());
                         state.AttackedTime = Time.time;
                     }
@@ -243,7 +247,17 @@ public class LichController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
-                        state.Parent.ChangeState(LichState.EnrangedAttack.ToString());
+                        StartNavigation(stat.WalkSpeed);
+                        int randomSkillIndex = Random.Range(0, 2);
+                        switch(randomSkillIndex)
+                        {
+                            case FIREMAGICINDEX:
+                                state.Parent.ChangeState(LichState.EnrangedAttack.ToString());
+                                break;
+                            case ICEMAGICINDEX:
+                                state.Parent.ChangeState(LichState.IceMagic.ToString());
+                                break;
+                        }
                         state.AttackedTime = Time.time;
                     }
                 })
@@ -252,18 +266,23 @@ public class LichController : Skeleton
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {LichState.EnrangedAttack.ToString()} State");
-                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
                     //공격용 Collider를 활성화 합니다.
                     SetTriggerAnimation(LichState.EnrangedAttack.ToString());
                     ToggleAttackCollider(true);
                 })
                 .End()
-            .State<State>(LichState.Die.ToString())//사정거리 내에 들어오면 일반 공격합니다.
+            .State<State>(LichState.IceMagic.ToString())//사정거리 내에 들어오면 일반 공격합니다.
+                .Enter(state =>
+                {
+                    Debug.Log($"Entering {LichState.IceMagic.ToString()} State");
+                    //공격용 Collider를 활성화 합니다.
+                    SetTriggerAnimation(LichState.IceMagic.ToString());
+                })
+                .End()
+            .State<State>(LichState.Die.ToString())
                 .Enter(state =>
                 {
                     Debug.Log($"Entering {LichState.Die.ToString()} State");
-                    //일반공격 애니메이션 3번이 반드시 일어나도록 구현합니다.
-                    //공격용 Collider를 활성화 합니다.
                     SetDie();
                 })
                 .End()
@@ -350,13 +369,27 @@ public class LichController : Skeleton
     /// <summary>
     /// 리치가 발동하는 불마법 입니다.
     /// </summary>
-    public void ExecuteMagicAttack()
+    public void ExecuteFireMagicAttack()
     {
-        Debug.Log("소환됨");
         GameObject LichFireObject = EffectPool.effectPool.GetObject(LichFireMagic);
-        LichFireMagic.transform.rotation = transform.rotation;
-        LichFireMagic.GetComponent<LichFireMagic>().SetFireDamage(stat.PhysicalDamage * 2);
+        Transform LichNavTransform = skeletonNav.gameObject.transform;
+        LichFireObject.transform.rotation = LichNavTransform.rotation;
+        LichFireObject.transform.position = new Vector3(
+                        LichNavTransform.position.x, PlayerObject.transform.position.y + 1f, LichNavTransform.position.z);
+        LichFireObject.GetComponent<LichFireMagic>().SetFireDamage(stat.PhysicalDamage * 2);
     }
+
+    /// <summary>
+    /// 리치가 발동하는 얼음 마법 입니다.
+    /// </summary>
+    public void ExecuteIceMagicAttack()
+    {
+        GameObject LichFireObject = EffectPool.effectPool.GetObject(LichIceCircle);
+        LichFireObject.transform.position = new Vector3(
+                        PlayerObject.transform.position.x, PlayerObject.transform.position.y + 1f, PlayerObject.transform.position.z);
+        LichFireObject.GetComponent<LichIceCircle>().SetIceDamage(stat.PhysicalDamage * 2);
+    }
+
 
     /// <summary>
     /// 팔에 달린 두 Collider를 활성화/비활성화 하는 메소드 입니다.
@@ -460,6 +493,7 @@ public class LichController : Skeleton
         this.isActive = true;
         this.stat.CurrentHp = this.stat.MaxHp;
         GetComponent<CapsuleCollider>().enabled = true;
+        skeletonNav = GetComponentInParent<NavMeshAgent>();
         foreach (CapsuleCollider capsule in AttackColliders)
         {
             capsule.height = stat.AttackRange * 2;

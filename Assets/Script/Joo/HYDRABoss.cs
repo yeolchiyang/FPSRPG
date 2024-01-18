@@ -16,6 +16,7 @@ public class HYDRABoss : MonoBehaviour
     Player_Health Playercc;
 
     ParticleSystem bress;
+    protected bool isBattle = false;
 
     void Start()
     {
@@ -44,6 +45,7 @@ public class HYDRABoss : MonoBehaviour
 
         if(distanceToPlayer <= stat.SkillattackRange)
         {
+            isBattle = true;
             StopCoroutine("NextMove");
             NextMove_is_running = false;
             BossBar.SetActive(true);  // 진선윤 BossHPBar 조인 추가
@@ -52,7 +54,8 @@ public class HYDRABoss : MonoBehaviour
         }
         else
         {
-            if(NextMove_is_running == false)
+            isBattle = false;
+            if (NextMove_is_running == false)
             {
                 StartCoroutine("NextMove");
             }
@@ -114,6 +117,11 @@ public class HYDRABoss : MonoBehaviour
         {
             StartCoroutine("NextMove");
         }
+    }
+
+    public bool IsBattlecheck()
+    {
+        return isBattle;
     }
 
     IEnumerator Attackanim()

@@ -155,6 +155,7 @@ public class TreeEntController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
+                        StartNavigation(stat.WalkSpeed);
                         state.Parent.ChangeState(TreeState.Attack.ToString());
                         state.AttackedTime = Time.time;
                     }
@@ -246,6 +247,7 @@ public class TreeEntController : Skeleton
                     //공격 쿨타임이 돌았을 경우에만 Attack state로 전환합니다.
                     if ((state.AttackedTime + stat.AttackDelay) <= Time.time)
                     {
+                        StartNavigation(stat.RunSpeed);
                         state.Parent.ChangeState(TreeState.EnrangedAttack.ToString());
                         state.AttackedTime = Time.time;
                     }

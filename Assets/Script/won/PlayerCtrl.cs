@@ -19,6 +19,7 @@ public class PlayerCtrl : MonoBehaviour
     GameObject player;
     Player_Health player_Health;
     GameObject walk;
+    public AudioClip jump;
 
     // Start is called before the first frame update
     void Start()
@@ -59,6 +60,7 @@ public class PlayerCtrl : MonoBehaviour
         {
             if (IsJumping)
             {
+                AudioSource.PlayClipAtPoint(jump, transform.position);
                 rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
                 IsJumping=false;
                 anima.Player_jump();

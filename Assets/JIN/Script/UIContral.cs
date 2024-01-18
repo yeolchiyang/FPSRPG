@@ -17,6 +17,7 @@ public class UIContral : MonoBehaviour
     [SerializeField] GameObject PowerUpUI;
     [SerializeField] GameObject conversation;
     [SerializeField] GameObject miniMap;
+    [SerializeField] AudioClip[] soundEffects;   //0:open&close map, 1:set gun, 2:Debine
 
     bool gameMenuEnable = false;
     bool powerUpEnabled = false;
@@ -59,6 +60,8 @@ public class UIContral : MonoBehaviour
         {
             if (aims[currentSetArmIndex] != null)
                 resetAim();
+            if (currentSetArmIndex != 0)
+                AudioSource.PlayClipAtPoint(soundEffects[1], player.transform.position);
             setAim(0);
         }
 
@@ -66,6 +69,8 @@ public class UIContral : MonoBehaviour
         {
             if (aims[currentSetArmIndex] != null)
                 resetAim();
+            if (currentSetArmIndex != 1)
+                AudioSource.PlayClipAtPoint(soundEffects[1], player.transform.position);
             setAim(1);
         }
 
@@ -73,6 +78,8 @@ public class UIContral : MonoBehaviour
         {
             if (aims[currentSetArmIndex] != null)
                 resetAim();
+            if (currentSetArmIndex != 2)
+                AudioSource.PlayClipAtPoint(soundEffects[1], player.transform.position);
             setAim(2);
         }
 
@@ -80,9 +87,10 @@ public class UIContral : MonoBehaviour
         {
             MenuWindowContral();
         }
-        if (Input.GetKeyDown("m"))
+        if (Input.GetKeyDown("m") && GameObject.Find("HYDRA") == null)
         {
             MiniMapContral();
+            AudioSource.PlayClipAtPoint(soundEffects[0], player.transform.position);
         }
     }
 

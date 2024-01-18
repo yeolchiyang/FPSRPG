@@ -30,7 +30,6 @@ public class Book : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             PlayerCtrl aa = other.gameObject.GetComponent<PlayerCtrl>();
-            Debug.Log("AAA");
             anim.SetTrigger("Get");
             other.transform.forward = -gameObject.transform.forward;
             FollowCamera.camin();

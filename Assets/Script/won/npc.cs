@@ -49,7 +49,7 @@ public class npc : MonoBehaviour
         //    HandleStory();
         //}
 
-        if (Input.GetKeyDown(KeyCode.F) && TextTime >= 1f)
+        if (Input.GetKeyDown(KeyCode.F) && TextTime >= 0.5f)
         {
             TextTime = 0;
             storyStep++;

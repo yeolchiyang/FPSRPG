@@ -32,11 +32,11 @@ public class Player_Health : MonoBehaviour
     public GameObject[] cc = new GameObject[3];
     public bool lief = true;
     float dam =0f;
+    public AudioClip hit;
     void Awake()
     {
         invenObj = GameObject.Find("StatusArea");
         inventory = invenObj.GetComponent<Status_Inventory>();
-        Debug.Log("초기화");
         collider = GetComponent<Collider>();
         followCamera = Camera.main.GetComponent<FollowCamera>();
         BossHunting = false;
@@ -96,6 +96,7 @@ public class Player_Health : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        AudioSource.PlayClipAtPoint(hit, transform.position);
         if ((currentHp - (damage - inventory.status[4])) > 0)
         {
 
@@ -219,7 +220,6 @@ public class Player_Health : MonoBehaviour
         {
             cctime[2]--;
             PlayerCtrl.speed = (maxspeet + inventory.status[3])/2;
-            Debug.Log("이속감소" + PlayerCtrl.speed);
         }
         
         else if (!restraint || cctime[2] <0)
@@ -227,7 +227,6 @@ public class Player_Health : MonoBehaviour
             if (PlayerCtrl.speed > maxspeet)
             {
                 maxspeet = PlayerCtrl.speed;
-                Debug.Log("이속저장" + maxspeet);
             }
             PlayerCtrl.speed = maxspeet;
             restraint = false;

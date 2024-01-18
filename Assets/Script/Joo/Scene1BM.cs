@@ -21,9 +21,9 @@ public class Scene1BM : MonoBehaviour
     {
         Background = GetComponent<AudioSource>();
         Background.Play();
-        SetCurrentBackGroundSounds(BGMEnum.Normal);
         origin = Background.clip;
-        if(sceneBgm == null)
+        SetCurrentBackGroundSounds(BGMEnum.Normal);
+        if (sceneBgm == null)
         {
             sceneBgm = this;
         }
@@ -33,23 +33,23 @@ public class Scene1BM : MonoBehaviour
 
     public void SetCurrentBackGroundSounds(BGMEnum bgmEnum)
     {
-        if (bgmEnum == BGMEnum.Normal)
-        {
-            Debug.Log("Normal 시작~");
-            Background.Stop();
-            Background.clip = sounds[0];
-            Background.Play();
-        }
-        else if (bgmEnum == BGMEnum.Lich)
+        if (bgmEnum == BGMEnum.Lich)
         {
             Debug.Log("Lich 시작~");
             Background.Stop();
-            Background.clip = sounds[1];
+            Background.clip = sounds[0];
             Background.Play();
         }
         else if (bgmEnum == BGMEnum.Tree)
         {
             Debug.Log("Tree 시작~");
+            Background.Stop();
+            Background.clip = sounds[1];
+            Background.Play();
+        }
+        else if (bgmEnum == BGMEnum.Normal)
+        {
+            Debug.Log("Normal 시작~");
             Background.Stop();
             Background.clip = origin;
             Background.Play();

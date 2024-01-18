@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Player_animation;
+using System.Threading;
 
 public class PlayerCtrl : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class PlayerCtrl : MonoBehaviour
     private Transform tr;
     private BoxCollider bc;
     public float speed = 10f;
-    public float turnspeed = 60f;
     public int JumpPower;
     bool IsJumping = true;
     bool CrowdControl = false;
@@ -35,28 +35,42 @@ public class PlayerCtrl : MonoBehaviour
         bc = GetComponent<BoxCollider>();
         walk.SetActive(false);
     }
-
+    float a = 1;
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         player_Health = player.GetComponent<Player_Health>();
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis ("Vertical");
         float r = Input.GetAxis("Mouse X");
+        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ++a;
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            a--;
+        }
+        r *= a;
 
         Vector3 moveDir = (Vector3.forward*v) + (Vector3.right*h);
+        Vector3 rotationAxis = Vector3.up;
+
+        // 회전 벡터 정규화
+        Vector3 normalizedRotation = rotationAxis.normalized;
 
         if (CheckHitWall(moveDir))
             moveDir = Vector3.zero;
         if (!CrowdControl&&player_Health.lief)
         {
             tr.Translate(moveDir.normalized * (speed + inventory.status[3]) * Time.deltaTime);
-            tr.Rotate(Vector3.up * turnspeed * Time.deltaTime * r);
+            transform.Rotate(normalizedRotation, r * Time.deltaTime * 60);
         }
-        
-        //tr.Rotate(Random.insideUnitCircle);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+            //tr.Rotate(Random.insideUnitCircle);
+
+            if (Input.GetKeyDown(KeyCode.Space))
         {
             if (IsJumping)
             {

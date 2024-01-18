@@ -12,11 +12,14 @@ public class HYDRA : MonoBehaviour
     protected UnityEngine.AI.NavMeshAgent Hydra;
     protected GameObject player;
     [SerializeField] protected Animator HydraAnimator;
+    GameObject asd;
     [SerializeField] ContralBossHPBar contralBossHPBar;
 
     // Start is called before the first frame update
     void Awake()
     {
+        asd = GameObject.Find("BossHPBar");
+        contralBossHPBar = asd.GetComponent<ContralBossHPBar>();
         GetEnding = GetComponent<ending>();
         Hydra = GetComponent<UnityEngine.AI.NavMeshAgent>();
         player = GameObject.FindWithTag("Player");

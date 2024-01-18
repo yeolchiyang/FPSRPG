@@ -1,10 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using Player_animation;
-using Yang;
 
 public class Player_Shoot : MonoBehaviour
 {

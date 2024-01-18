@@ -101,8 +101,9 @@ public class upwitch : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                if (storyStep == 2)
+                if (storyStep1 == 2)
                 {
+                    Debug.Log("aaa");
                     uiContral.PowerUpUIContral();
                     uiContral.ConversationRemove();
                 }

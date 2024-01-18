@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.PackageManager;
-using UnityEngine;
-using Yang;
+﻿using UnityEngine;
 
 public class ProjectileMover : MonoBehaviour
 {

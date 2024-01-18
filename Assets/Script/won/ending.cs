@@ -70,7 +70,7 @@ public class ending : MonoBehaviour
 
                 break;
             case 4:
-                SceneManager.LoadScene("Scene3_empty");
+                SceneManager.LoadScene("Scene3");
                 break;
 
             default:

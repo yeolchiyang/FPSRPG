@@ -13,6 +13,7 @@ public class GameMenu : MonoBehaviour
 
     private void Start()
     {
+        startPoint.position = new Vector3(20, 0, 10);
         count = teleportCoolTime;
     }
 

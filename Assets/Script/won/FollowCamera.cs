@@ -37,15 +37,15 @@ public class FollowCamera : MonoBehaviour
     {
         camTr.position = targetTr.position + (-targetTr.forward * distance) + (Vector3.up * height);
         float rotationY = Input.GetAxis("Mouse Y");
-        FirstView += turnspeed * Time.deltaTime * rotationY;
+        FirstView += turnspeed * Time.fixedDeltaTime * rotationY;
         FirstView = Mathf.Clamp(FirstView, -20, First_MaxY);
-        thirdView += turnspeed * Time.deltaTime * rotationY;
+        thirdView += turnspeed * Time.fixedDeltaTime * rotationY;
         thirdView = Mathf.Clamp(thirdView, -10, third_MaxY);
 
         // targetTr의 rotation에서 y 성분을 가져옴
         ViewX = targetTr.rotation.eulerAngles.y;
 
-        ViewChanage += Time.deltaTime;
+        ViewChanage += Time.fixedDeltaTime;
 
         if (changepos)
         {
